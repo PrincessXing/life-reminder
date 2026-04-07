@@ -2,235 +2,240 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
-<meta name="theme-color" content="#1a2e1a"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#0d1a0f"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="FTools"/>
 <link rel="apple-touch-icon" href="icon.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="icon.png"/>
 <title>FTools</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
 :root{
-  --green:#3dba6f;--green2:#52d68a;--green3:#1a6e3a;
+  --g:#3dba6f;--g2:#52d68a;--g3:#1a6e3a;
   --bg:#0d1a0f;--bg2:#142019;--bg3:#1c2e1f;--card:#1c2e1f;
-  --red:#ff5a5a;--yellow:#ffd460;--blue:#4cc9f0;--orange:#ff9f4a;
-  --text:#e8f5e8;--text2:#6a9a6a;--border:#2a4a2a;
-  --shadow:0 4px 24px rgba(0,0,0,.5);--radius:18px;--radius-sm:12px;
+  --red:#ff5a5a;--yel:#ffd460;--blu:#4cc9f0;--ora:#ff9f4a;
+  --tx:#e8f5e8;--tx2:#6a9a6a;--bd:#2a4a2a;
+  --sh:0 4px 24px rgba(0,0,0,.5);--r:18px;--rs:12px;
 }
 @media(prefers-color-scheme:light){
-  :root{--bg:#f0f7f0;--bg2:#e2f0e2;--bg3:#fff;--card:#fff;--text:#1a2e1a;--text2:#5a8a5a;--border:#c8e0c8;--shadow:0 4px 24px rgba(0,100,0,.1)}
+  :root{--bg:#f0f7f0;--bg2:#e2f0e2;--bg3:#fff;--card:#fff;--tx:#1a2e1a;--tx2:#5a8a5a;--bd:#c8e0c8;--sh:0 4px 24px rgba(0,100,0,.1)}
 }
-body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro Display','PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-::-webkit-scrollbar-track{background:transparent}
-.hdr{background:var(--bg2);padding:env(safe-area-inset-top,0) 20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
-.hdr-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0 10px}
-.hdr-logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;box-shadow:0 0 16px rgba(61,186,111,.4)}
-.hdr h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--green2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
-.hdr-time{font-size:11px;color:var(--text2)}
-.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:61px;z-index:99}
-.tab{flex:1;padding:9px 4px 7px;text-align:center;font-size:10px;font-weight:700;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;letter-spacing:.5px}
-.tab.active{color:var(--green);border-bottom-color:var(--green)}
-.tab-icon{font-size:19px;display:block;margin-bottom:1px}
-.page{display:none;padding:14px 14px 100px;max-width:560px;margin:0 auto}
-.page.active{display:block}
-.card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border:1px solid var(--border)}
-.card-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
-.card-title::before{content:'';width:3px;height:13px;background:linear-gradient(var(--green),var(--green2));border-radius:2px;flex-shrink:0}
-.form-row{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.form-row label{font-size:12px;color:var(--text2);font-weight:500}
-input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;font-size:14px;color:var(--text);font-family:inherit;outline:none;transition:.2s;-webkit-appearance:none;appearance:none}
-input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(61,186,111,.15)}
-select option{background:var(--bg2);color:var(--text)}
-textarea{resize:vertical;min-height:65px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.btn{border:none;border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
-.btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(135deg,var(--green3),var(--green));color:#fff;width:100%;font-weight:800;box-shadow:0 4px 16px rgba(61,186,111,.3)}
-.btn-danger{background:rgba(255,90,90,.1);color:var(--red);padding:7px 14px;font-size:12px;border-radius:10px;border:1px solid rgba(255,90,90,.25)}
-.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
-.notif-bar{background:linear-gradient(135deg,rgba(255,212,96,.12),rgba(255,159,74,.1));border:1px solid rgba(255,212,96,.3);border-radius:14px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.notif-bar span{font-size:13px}
-.notif-bar .btn{padding:6px 14px;font-size:12px;background:var(--yellow);color:#333;font-weight:700;width:auto;border-radius:8px}
-/* SW status bar */
-.sw-bar{border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:12px;border:1px solid}
-.sw-bar.ok{background:rgba(61,186,111,.1);border-color:rgba(61,186,111,.3);color:var(--green)}
-.sw-bar.warn{background:rgba(255,212,96,.1);border-color:rgba(255,212,96,.3);color:var(--yellow)}
-.sw-bar.err{background:rgba(255,90,90,.1);border-color:rgba(255,90,90,.3);color:var(--red)}
-/* Crop carousel */
-.crop-carousel-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.crop-carousel-wrap::-webkit-scrollbar{display:none}
-.crop-carousel{display:flex;gap:9px;width:max-content;padding-right:16px}
-.crop-card{scroll-snap-align:start;background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:12px 10px;width:105px;flex-shrink:0;cursor:pointer;transition:.2s;text-align:center;position:relative}
-.crop-card:active{transform:scale(.96)}
-.crop-card.sel{border-color:var(--green);background:rgba(61,186,111,.1);box-shadow:0 0 12px rgba(61,186,111,.2)}
-.crop-icon{font-size:30px;display:block;margin-bottom:5px}
-.crop-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
-.crop-dur{font-size:11px;color:var(--text2)}
-.crop-price-lbl{font-size:11px;color:var(--yellow);margin-top:2px}
-.crop-edit-btn{position:absolute;top:5px;right:5px;font-size:11px;opacity:.4;background:none;border:none;cursor:pointer;padding:2px}
-.crop-add-card{scroll-snap-align:start;background:transparent;border:1.5px dashed var(--border);border-radius:16px;padding:12px 10px;width:105px;flex-shrink:0;cursor:pointer;text-align:center;color:var(--text2);transition:.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px}
-.crop-add-card:hover{border-color:var(--green);color:var(--green)}
-.crop-cat-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;scrollbar-width:none;padding-bottom:2px}
-.crop-cat-tabs::-webkit-scrollbar{display:none}
-.crop-cat-tab{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);color:var(--text2);cursor:pointer;transition:.2s;background:var(--bg2)}
-.crop-cat-tab.active{border-color:var(--green);color:var(--green);background:rgba(61,186,111,.1)}
-/* Modal */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:var(--bg3);border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:480px;border-top:1px solid var(--border);animation:slideUp .28s ease}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-hd{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-.modal-close{font-size:18px;cursor:pointer;color:var(--text2);background:var(--bg2);border:none;width:30px;height:30px;border-radius:50%}
-/* Person */
-.person-sel{display:flex;gap:8px;margin-bottom:10px}
-.person-opt{flex:1;padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:.2s}
-.person-opt.sel{border-color:var(--green);color:var(--green);background:rgba(61,186,111,.1)}
-.friend-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.friend-chip{padding:5px 12px;border-radius:20px;font-size:12px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;transition:.2s}
-.friend-chip.sel{border-color:var(--green);color:var(--green)}
-.time-shortcuts{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
-.tsc{padding:5px 10px;border-radius:8px;font-size:12px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:.15s}
-.tsc:hover{border-color:var(--green);color:var(--green)}
-/* Items */
-.item{background:var(--card);border-radius:var(--radius);padding:14px;border:1px solid var(--border);margin-bottom:9px;position:relative;overflow:hidden}
-.item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--green)}
-.item.mature{border-color:rgba(255,212,96,.4);background:linear-gradient(135deg,rgba(255,212,96,.07),rgba(255,159,74,.04))}
-.item.mature::before{background:var(--yellow)}
-.item.soon::before{background:var(--orange)}
-.item-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.item-body{flex:1;min-width:0}
-.item-toprow{display:flex;align-items:center;gap:7px;margin-bottom:4px}
-.item-emoji{font-size:20px;flex-shrink:0}
-.item-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.item-meta{font-size:11px;color:var(--text2);margin-bottom:4px}
-.item-cd{font-size:13px;font-weight:700;color:var(--green)}
-.item-cd.done{color:var(--red);animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-.progress{height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:7px}
-.progress-bar{height:100%;border-radius:2px;transition:width 1s linear}
-.del-btn{background:rgba(255,90,90,.1);border:none;color:var(--red);font-size:15px;width:30px;height:30px;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,'SF Pro Display','PingFang SC',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-text-size-adjust:100%}
+/* scrollbar */
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+/* header */
+.hdr{background:var(--bg2);padding:env(safe-area-inset-top,0) 18px 0;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;padding:12px 0 10px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-ico{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 0 14px rgba(61,186,111,.4)}
+.logo h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.hdr-time{font-size:11px;color:var(--tx2)}
+/* tabs */
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:61px;z-index:99}
+.tab{flex:1;padding:9px 2px 7px;text-align:center;font-size:10px;font-weight:700;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;-webkit-user-select:none;user-select:none}
+.tab.on{color:var(--g);border-bottom-color:var(--g)}
+.tab i{font-size:19px;display:block;margin-bottom:1px;font-style:normal}
+/* pages */
+.pg{display:none;padding:14px 14px 100px;max-width:560px;margin:0 auto}
+.pg.on{display:block}
+/* card */
+.card{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:12px;border:1px solid var(--bd)}
+.ct{font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.ct::before{content:'';width:3px;height:13px;background:linear-gradient(var(--g),var(--g2));border-radius:2px;flex-shrink:0}
+/* form */
+.fr{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.fr label{font-size:12px;color:var(--tx2);font-weight:500}
+input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--rs);padding:10px 13px;font-size:16px;/* iOS no-zoom */color:var(--tx);font-family:inherit;outline:none;-webkit-appearance:none;appearance:none;transition:border .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--g)}
+select option{background:var(--bg2);color:var(--tx)}
+textarea{resize:vertical;min-height:65px;font-size:14px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* buttons */
+.btn{border:none;border-radius:var(--rs);padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;-webkit-user-select:none;user-select:none;transition:.15s}
+.btn:active{opacity:.8;transform:scale(.97)}
+.btnp{background:linear-gradient(135deg,var(--g3),var(--g));color:#fff;width:100%;font-weight:800;box-shadow:0 4px 14px rgba(61,186,111,.3)}
+.btnd{background:rgba(255,90,90,.1);color:var(--red);padding:7px 14px;font-size:12px;border-radius:10px;border:1px solid rgba(255,90,90,.25)}
+.btns{padding:6px 12px;font-size:12px;border-radius:8px}
+/* notif bar */
+.nbar{background:linear-gradient(135deg,rgba(255,212,96,.12),rgba(255,159,74,.1));border:1px solid rgba(255,212,96,.3);border-radius:14px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nbar span{font-size:13px}
+.nbar .btn{padding:6px 14px;font-size:12px;background:var(--yel);color:#333;font-weight:700;width:auto;border-radius:8px}
+/* info bar */
+.ibar{border-radius:12px;padding:9px 13px;margin-bottom:12px;font-size:12px;border:1px solid}
+.ibar.ok{background:rgba(61,186,111,.08);border-color:rgba(61,186,111,.3);color:var(--g)}
+.ibar.warn{background:rgba(255,212,96,.08);border-color:rgba(255,212,96,.3);color:var(--yel)}
+/* crop carousel */
+.cc-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cc-wrap::-webkit-scrollbar{display:none}
+.cc-row{display:flex;gap:9px;width:max-content;padding-right:16px}
+.cc{scroll-snap-align:start;background:var(--bg2);border:1.5px solid var(--bd);border-radius:16px;padding:12px 10px;width:108px;flex-shrink:0;cursor:pointer;text-align:center;position:relative;-webkit-user-select:none;user-select:none;transition:border .15s}
+.cc.sel{border-color:var(--g);background:rgba(61,186,111,.1)}
+.cc .ci{font-size:30px;display:block;margin-bottom:5px}
+.cc .cn{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.cc .cd{font-size:11px;color:var(--tx2)}
+.cc .cp{font-size:11px;color:var(--yel);margin-top:2px}
+.cc .ce{position:absolute;top:5px;right:5px;font-size:11px;opacity:.4;background:none;border:none;cursor:pointer;padding:2px;-webkit-user-select:none}
+.cc-add{scroll-snap-align:start;background:transparent;border:1.5px dashed var(--bd);border-radius:16px;padding:12px 10px;width:108px;flex-shrink:0;cursor:pointer;text-align:center;color:var(--tx2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px}
+.cc-add:active{opacity:.7}
+/* cat tabs */
+.cctabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;scrollbar-width:none;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.cctabs::-webkit-scrollbar{display:none}
+.cctab{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--bd);color:var(--tx2);cursor:pointer;background:var(--bg2);-webkit-user-select:none}
+.cctab.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.1)}
+/* modal */
+.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;justify-content:center}
+.mover.on{display:flex}
+.modal{background:var(--bg3);border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:480px;border-top:1px solid var(--bd);animation:su .28s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhd{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.mcl{font-size:18px;cursor:pointer;color:var(--tx2);background:var(--bg2);border:none;width:30px;height:30px;border-radius:50%}
+/* person */
+.psel{display:flex;gap:8px;margin-bottom:10px}
+.popt{flex:1;padding:9px;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;-webkit-user-select:none}
+.popt.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.1)}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.fchip{padding:5px 12px;border-radius:20px;font-size:12px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);cursor:pointer;-webkit-user-select:none}
+.fchip.on{border-color:var(--g);color:var(--g)}
+/* time shortcuts */
+.tscs{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.tsc{padding:5px 10px;border-radius:8px;font-size:12px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;-webkit-user-select:none}
+.tsc:active{border-color:var(--g);color:var(--g)}
+/* items */
+.item{background:var(--card);border-radius:var(--r);padding:14px;border:1px solid var(--bd);margin-bottom:9px;position:relative;overflow:hidden}
+.item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--g)}
+.item.mat{border-color:rgba(255,212,96,.4);background:linear-gradient(135deg,rgba(255,212,96,.07),rgba(255,159,74,.04))}
+.item.mat::before{background:var(--yel)}
+.item.soon::before{background:var(--ora)}
+.irow{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ibody{flex:1;min-width:0}
+.itr{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.iemj{font-size:20px;flex-shrink:0}
+.itit{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.imeta{font-size:11px;color:var(--tx2);margin-bottom:4px}
+.icd{font-size:13px;font-weight:700;color:var(--g)}
+.icd.done{color:var(--red);animation:bl 1s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.4}}
+.prog{height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:7px}
+.progb{height:100%;border-radius:2px;transition:width 1s linear}
+.delbtn{background:rgba(255,90,90,.1);border:none;color:var(--red);font-size:15px;width:30px;height:30px;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;-webkit-user-select:none}
+/* cat chips */
 .cats{display:flex;flex-wrap:wrap;gap:6px}
-.cat-chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);background:var(--bg2);transition:.2s}
-.cat-chip.sel{border-color:currentColor}
-.sec-label{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1.5px;margin:14px 0 7px 3px;text-transform:uppercase}
-.empty{text-align:center;padding:44px 20px;color:var(--text2)}
-.empty-icon{font-size:44px;margin-bottom:10px;opacity:.4}
-.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.cchip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);color:var(--tx2);background:var(--bg2);-webkit-user-select:none}
+.cchip.on{border-color:currentColor}
+.sl{font-size:10px;color:var(--tx2);font-weight:700;letter-spacing:1.5px;margin:14px 0 7px 3px;text-transform:uppercase}
+.empty{text-align:center;padding:44px 20px;color:var(--tx2)}
+.eico{font-size:44px;margin-bottom:10px;opacity:.4}
+/* settings */
+.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd)}
 .srow:last-child{border:none}
-.slabel{font-size:14px;color:var(--text);font-weight:500}
-.ssub{font-size:11px;color:var(--text2);margin-top:1px}
-.toggle{width:46px;height:25px;background:var(--bg2);border-radius:13px;position:relative;cursor:pointer;transition:.3s;border:1px solid var(--border)}
-.toggle.on{background:var(--green);border-color:var(--green)}
-.toggle::after{content:'';width:19px;height:19px;background:#fff;border-radius:50%;position:absolute;top:2px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.toggle.on::after{left:24px}
-.sound-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
-.sound-item{padding:7px 13px;border-radius:10px;font-size:12px;background:var(--bg2);border:1.5px solid var(--border);color:var(--text2);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
-.sound-item.sel{border-color:var(--green);color:var(--green);background:rgba(61,186,111,.1)}
-.export-area{background:var(--bg2);border-radius:10px;padding:10px;font-size:11px;color:var(--text2);word-break:break-all;max-height:80px;overflow-y:auto;border:1px solid var(--border);margin-top:8px}
-.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg3);color:var(--text);padding:10px 20px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap;border:1px solid var(--border);box-shadow:var(--shadow)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:360px){.row2{grid-template-columns:1fr}}
+.slb{font-size:14px;color:var(--tx);font-weight:500}
+.ssb{font-size:11px;color:var(--tx2);margin-top:1px}
+.tog{width:46px;height:25px;background:var(--bg2);border-radius:13px;position:relative;cursor:pointer;border:1px solid var(--bd);transition:.3s;-webkit-user-select:none}
+.tog.on{background:var(--g);border-color:var(--g)}
+.tog::after{content:'';width:19px;height:19px;background:#fff;border-radius:50%;position:absolute;top:2px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.tog.on::after{left:24px}
+/* sound */
+.slist{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.si{padding:7px 13px;border-radius:10px;font-size:12px;background:var(--bg2);border:1.5px solid var(--bd);color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:5px;-webkit-user-select:none}
+.si.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.1)}
+/* export */
+.exparea{background:var(--bg2);border-radius:10px;padding:10px;font-size:11px;color:var(--tx2);word-break:break-all;max-height:80px;overflow-y:auto;border:1px solid var(--bd);margin-top:8px}
+/* toast */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg3);color:var(--tx);padding:10px 20px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap;border:1px solid var(--bd);box-shadow:var(--sh)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:360px){.r2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div class="hdr-inner">
-    <div class="hdr-logo">
-      <div class="logo-icon">F</div>
-      <h1>FTools</h1>
-    </div>
-    <div class="hdr-time" id="hdr-time"></div>
+  <div class="hdr-in">
+    <div class="logo"><div class="logo-ico">F</div><h1>FTools</h1></div>
+    <div class="hdr-time" id="htime"></div>
   </div>
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="goTab('remind')" id="tab-remind"><span class="tab-icon">⏰</span>提醒</div>
-  <div class="tab" onclick="goTab('farm')" id="tab-farm"><span class="tab-icon">🌾</span>农场</div>
-  <div class="tab" onclick="goTab('add')" id="tab-add"><span class="tab-icon">＋</span>添加</div>
-  <div class="tab" onclick="goTab('settings')" id="tab-settings"><span class="tab-icon">⚙️</span>设置</div>
+  <div class="tab on" id="tab-r" onclick="goTab('r')"><i>⏰</i>提醒</div>
+  <div class="tab" id="tab-f" onclick="goTab('f')"><i>🌾</i>农场</div>
+  <div class="tab" id="tab-a" onclick="goTab('a')"><i>＋</i>添加</div>
+  <div class="tab" id="tab-s" onclick="goTab('s')"><i>⚙️</i>设置</div>
 </div>
 
-<!-- 提醒页 -->
-<div class="page active" id="page-remind">
-  <div id="notif-banner" class="notif-bar" style="display:none">
-    <span>🔔 开启通知接收到期提醒</span>
-    <button class="btn" onclick="reqNotif()">开启</button>
-  </div>
-  <div id="sw-status"></div>
-  <div id="remind-list"></div>
+<!-- 提醒 -->
+<div class="pg on" id="pg-r">
+  <div id="nbar" class="nbar" style="display:none"><span>🔔 开启通知接收到期提醒</span><button class="btn" onclick="reqNotif()">开启</button></div>
+  <div id="pbar" class="ibar warn" style="display:none"></div>
+  <div id="rlist"></div>
 </div>
 
-<!-- 农场页 -->
-<div class="page" id="page-farm">
+<!-- 农场 -->
+<div class="pg" id="pg-f">
   <div class="card">
-    <div class="card-title">偷谁的菜</div>
-    <div class="person-sel">
-      <div class="person-opt sel" data-v="自己" onclick="pickPerson(this)">🙋 自己</div>
-      <div class="person-opt" data-v="好友" onclick="pickPerson(this)">👥 好友</div>
+    <div class="ct">偷谁的菜</div>
+    <div class="psel">
+      <div class="popt on" data-v="自己" onclick="pickP(this)">🙋 自己</div>
+      <div class="popt" data-v="好友" onclick="pickP(this)">👥 好友</div>
     </div>
-    <div id="friend-area" style="display:none">
-      <div class="friend-chips" id="friend-chips"></div>
+    <div id="farea" style="display:none">
+      <div class="fchips" id="fchips"></div>
       <div style="display:flex;gap:7px;margin-top:8px">
-        <input id="new-friend" placeholder="输入好友昵称" style="flex:1"/>
-        <button class="btn btn-sm" style="background:var(--green);color:#fff;width:auto" onclick="addFriend()">添加</button>
+        <input id="nfriend" placeholder="输入好友昵称" style="flex:1"/>
+        <button class="btn btns" style="background:var(--g);color:#fff;width:auto" onclick="addFriend()">添加</button>
       </div>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">选择作物 <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text2)">← 滑动 · ✏️编辑</span></div>
-    <div class="crop-cat-tabs" id="crop-cat-tabs"></div>
-    <div class="crop-carousel-wrap"><div class="crop-carousel" id="crop-carousel"></div></div>
+    <div class="ct">选择作物 <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--tx2)">← 滑动 · ✏️编辑</span></div>
+    <div class="cctabs" id="cctabs"></div>
+    <div class="cc-wrap"><div class="cc-row" id="ccrow"></div></div>
   </div>
   <div class="card">
-    <div class="card-title">自定义作物</div>
-    <div class="row2">
-      <div class="form-row"><label>名称</label><input id="cc-name" placeholder="如：荔枝"/></div>
-      <div class="form-row"><label>成熟时间</label><input id="cc-time" placeholder="1h30m 或 90"/></div>
+    <div class="ct">自定义作物</div>
+    <div class="r2">
+      <div class="fr"><label>名称</label><input id="ccn" placeholder="如：荔枝"/></div>
+      <div class="fr"><label>成熟时间</label><input id="cct" placeholder="1h30m 或 90"/></div>
     </div>
-    <div class="form-row"><label>单价（可选）</label><input id="cc-price" placeholder="如：500金币"/></div>
-    <div class="time-shortcuts">
-      <span style="font-size:11px;color:var(--text2);align-self:center">快捷：</span>
-      <div class="tsc" onclick="setCC('30m')">30分</div>
-      <div class="tsc" onclick="setCC('1h')">1h</div>
-      <div class="tsc" onclick="setCC('2h')">2h</div>
-      <div class="tsc" onclick="setCC('4h')">4h</div>
-      <div class="tsc" onclick="setCC('6h')">6h</div>
-      <div class="tsc" onclick="setCC('8h')">8h</div>
-      <div class="tsc" onclick="setCC('12h')">12h</div>
-      <div class="tsc" onclick="setCC('24h')">1天</div>
+    <div class="fr"><label>单价（可选）</label><input id="ccp" placeholder="如：500金币"/></div>
+    <div class="tscs">
+      <span style="font-size:11px;color:var(--tx2);align-self:center">快捷：</span>
+      <div class="tsc" onclick="setCCT('30m')">30分</div>
+      <div class="tsc" onclick="setCCT('1h')">1h</div>
+      <div class="tsc" onclick="setCCT('2h')">2h</div>
+      <div class="tsc" onclick="setCCT('4h')">4h</div>
+      <div class="tsc" onclick="setCCT('6h')">6h</div>
+      <div class="tsc" onclick="setCCT('8h')">8h</div>
+      <div class="tsc" onclick="setCCT('12h')">12h</div>
+      <div class="tsc" onclick="setCCT('24h')">1天</div>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">种植时间</div>
-    <div class="form-row"><label>留空 = 现在种植</label><input id="farm-plant-at" type="datetime-local"/></div>
-    <button class="btn btn-primary" onclick="addFarmTask()">🌱 添加偷菜提醒</button>
+    <div class="ct">种植时间</div>
+    <div class="fr"><label>留空 = 现在种植</label><input id="fpat" type="datetime-local"/></div>
+    <button class="btn btnp" onclick="addFarm()">🌱 添加偷菜提醒</button>
   </div>
-  <div id="farm-list"></div>
+  <div id="flist"></div>
 </div>
 
-<!-- 添加页 -->
-<div class="page" id="page-add">
+<!-- 添加 -->
+<div class="pg" id="pg-a">
   <div class="card">
-    <div class="card-title">分类</div>
-    <div class="cats" id="cat-chips"></div>
+    <div class="ct">分类</div>
+    <div class="cats" id="catchips"></div>
   </div>
   <div class="card">
-    <div class="card-title">提醒内容</div>
-    <div class="form-row"><label>标题</label><input id="r-title" placeholder="喝水、吃药、开会..."/></div>
-    <div class="form-row"><label>备注（可选）</label><textarea id="r-note" placeholder="详细说明..."></textarea></div>
-    <div class="form-row">
-      <label>提醒时间 <span style="color:var(--green);font-size:11px">（北京时间）</span></label>
-      <input id="r-time" type="datetime-local"/>
+    <div class="ct">提醒内容</div>
+    <div class="fr"><label>标题</label><input id="rt" placeholder="喝水、吃药、开会..."/></div>
+    <div class="fr"><label>备注（可选）</label><textarea id="rn" placeholder="详细说明..."></textarea></div>
+    <div class="fr">
+      <label>提醒时间 <span style="color:var(--g);font-size:11px">北京时间</span></label>
+      <input id="rtime" type="datetime-local"/>
     </div>
-    <div class="row2">
-      <div class="form-row"><label>重复</label>
-        <select id="r-repeat">
+    <div class="r2">
+      <div class="fr"><label>重复</label>
+        <select id="rrep">
           <option value="none">不重复</option>
           <option value="daily">每天</option>
           <option value="weekdays">工作日</option>
@@ -240,8 +245,8 @@ textarea{resize:vertical;min-height:65px}
           <option value="custom">自定义</option>
         </select>
       </div>
-      <div class="form-row"><label>提前提醒</label>
-        <select id="r-advance">
+      <div class="fr"><label>提前提醒</label>
+        <select id="radv">
           <option value="0">准时</option>
           <option value="5">5分钟前</option>
           <option value="10">10分钟前</option>
@@ -251,41 +256,38 @@ textarea{resize:vertical;min-height:65px}
         </select>
       </div>
     </div>
-    <div class="form-row" id="r-interval-row" style="display:none">
-      <label>间隔（分钟）</label>
-      <input id="r-interval" type="number" min="1" value="60"/>
-    </div>
-    <button class="btn btn-primary" onclick="addReminder()">✅ 保存提醒</button>
+    <div class="fr" id="rintrow" style="display:none"><label>间隔（分钟）</label><input id="rint" type="number" min="1" value="60"/></div>
+    <button class="btn btnp" onclick="addReminder()">✅ 保存提醒</button>
   </div>
 </div>
 
-<!-- 设置页 -->
-<div class="page" id="page-settings">
+<!-- 设置 -->
+<div class="pg" id="pg-s">
   <div class="card">
-    <div class="card-title">通知</div>
+    <div class="ct">通知</div>
     <div class="srow">
-      <div><div class="slabel">浏览器通知权限</div><div class="ssub" id="notif-txt">检测中...</div></div>
-      <button class="btn btn-primary" style="width:auto;padding:8px 14px;font-size:12px" onclick="reqNotif()">开启</button>
+      <div><div class="slb">浏览器通知</div><div class="ssb" id="ntxt">检测中...</div></div>
+      <button class="btn btnp" style="width:auto;padding:8px 14px;font-size:12px" onclick="reqNotif()">开启</button>
     </div>
     <div class="srow">
-      <div><div class="slabel">声音提醒</div><div class="ssub">到期时播放铃声</div></div>
-      <div class="toggle on" id="tog-sound" onclick="togS('sound')"></div>
+      <div><div class="slb">声音提醒</div><div class="ssb">到期播放铃声</div></div>
+      <div class="tog on" id="tog-sound" onclick="togSet('sound')"></div>
     </div>
     <div class="srow">
-      <div><div class="slabel">页面标题闪烁</div><div class="ssub">到期时标题闪烁 10 秒</div></div>
-      <div class="toggle on" id="tog-title" onclick="togS('titleAlert')"></div>
+      <div><div class="slb">标题闪烁</div><div class="ssb">到期时标题闪烁10秒</div></div>
+      <div class="tog on" id="tog-title" onclick="togSet('titleAlert')"></div>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">铃声选择 <span style="font-size:10px;font-weight:400;text-transform:none">点 ▶ 试听</span></div>
-    <div class="sound-list" id="sound-list"></div>
-    <div class="form-row" style="margin-top:12px">
-      <label>上传自定义铃声（MP3 / WAV / OGG，≤ 5MB）</label>
-      <input type="file" id="sound-file" accept="audio/*" onchange="uploadSound()" style="font-size:12px;padding:8px"/>
+    <div class="ct">铃声选择 <span style="font-size:10px;font-weight:400;text-transform:none">点 ▶ 试听</span></div>
+    <div class="slist" id="sndlist"></div>
+    <div class="fr" style="margin-top:12px">
+      <label>上传自定义铃声（MP3/WAV/OGG，≤5MB）</label>
+      <input type="file" id="sndfile" accept="audio/*" onchange="uploadSnd()" style="font-size:14px;padding:8px"/>
     </div>
-    <div class="form-row">
+    <div class="fr">
       <label>重复播放次数</label>
-      <select id="sound-repeat-count" onchange="saveRepeatCount()">
+      <select id="sndcnt" onchange="S.cfg.sndCnt=+this.value;save()">
         <option value="1">播放 1 次</option>
         <option value="2">播放 2 次</option>
         <option value="3">播放 3 次</option>
@@ -293,370 +295,601 @@ textarea{resize:vertical;min-height:65px}
     </div>
   </div>
   <div class="card">
-    <div class="card-title">自定义分类</div>
-    <div id="cat-manage"></div>
+    <div class="ct">自定义分类</div>
+    <div id="catmng"></div>
     <div style="display:flex;gap:7px;margin-top:10px">
-      <input id="nc-icon" placeholder="图标" style="width:56px"/>
-      <input id="nc-label" placeholder="分类名称" style="flex:1"/>
-      <button class="btn btn-sm btn-primary" style="width:auto" onclick="addCat()">添加</button>
+      <input id="nico" placeholder="图标" style="width:56px"/>
+      <input id="nlbl" placeholder="分类名称" style="flex:1"/>
+      <button class="btn btns btnp" style="width:auto" onclick="addCat()">添加</button>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">数据备份 / 迁移</div>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">更新代码前先导出，新版部署后导入即可恢复全部提醒</p>
+    <div class="ct">数据备份 / 迁移</div>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:10px">更新代码前先导出，新版部署后导入恢复全部提醒</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-primary" style="flex:1;min-width:100px" onclick="exportData()">📤 导出数据</button>
-      <button class="btn" style="flex:1;min-width:100px;background:var(--bg2);border:1px solid var(--border);color:var(--text)" onclick="triggerImport()">📥 导入数据</button>
+      <button class="btn btnp" style="flex:1;min-width:100px" onclick="exportD()">📤 导出数据</button>
+      <button class="btn" style="flex:1;min-width:100px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx)" onclick="document.getElementById('impfile').click()">📥 导入数据</button>
     </div>
-    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData()"/>
-    <div id="export-preview" class="export-area" style="display:none"></div>
+    <input type="file" id="impfile" accept=".json" style="display:none" onchange="importD()"/>
+    <div id="expview" class="exparea" style="display:none"></div>
   </div>
   <div class="card">
-    <div class="card-title">数据管理</div>
-    <div class="srow">
-      <div><div class="slabel">清除已到期提醒</div></div>
-      <button class="btn btn-danger" onclick="clearDone()">清除</button>
-    </div>
-    <div class="srow">
-      <div><div class="slabel">清除全部数据</div></div>
-      <button class="btn btn-danger" onclick="clearAll()">全部清除</button>
-    </div>
+    <div class="ct">数据管理</div>
+    <div class="srow"><div><div class="slb">清除已到期提醒</div></div><button class="btn btnd" onclick="clearDone()">清除</button></div>
+    <div class="srow"><div><div class="slb">清除全部数据</div></div><button class="btn btnd" onclick="clearAll()">全部清除</button></div>
   </div>
   <div class="card">
-    <div class="card-title">使用说明</div>
-    <p style="font-size:12px;color:var(--text2);line-height:1.9">
-      📌 手机浏览器 → <b style="color:var(--text)">添加到主屏幕</b> → 像App一样用<br>
-      🔔 开启通知权限 + 安装 Service Worker 后，<b style="color:var(--green)">关闭页面也能收到提醒</b><br>
-      ⚠️ iOS Safari 需将页面<b style="color:var(--text)">添加到主屏幕</b>后才支持后台通知<br>
-      💾 换设备/更新代码前先「导出数据」备份<br>
-      ⏱ 时间格式：<b style="color:var(--green)">1h30m</b>、<b style="color:var(--green)">90</b>、<b style="color:var(--green)">2h</b>、<b style="color:var(--green)">1d</b><br>
+    <div class="ct">使用说明</div>
+    <p style="font-size:12px;color:var(--tx2);line-height:1.9">
+      📌 Safari → 分享 → <b style="color:var(--tx)">添加到主屏幕</b> → 像App一样使用<br>
+      🔔 开启通知权限，页面保持后台运行可收到提醒<br>
+      💾 换设备/更新前请先「导出数据」备份<br>
+      ⏱ 时间格式：<b style="color:var(--g)">1h30m</b>、<b style="color:var(--g)">90</b>、<b style="color:var(--g)">2h</b>、<b style="color:var(--g)">1d</b><br>
       🌗 自动跟随系统深色/浅色模式
     </p>
   </div>
-  <div style="text-align:center;font-size:11px;color:var(--text2);padding:8px;opacity:.4">FTools v5.0</div>
+  <div style="text-align:center;font-size:11px;color:var(--tx2);padding:8px;opacity:.4">FTools v5.1</div>
 </div>
 
-<!-- Crop Edit Modal -->
-<div class="modal-overlay" id="crop-modal" onclick="closeCropModal(event)">
+<!-- 编辑作物弹窗 -->
+<div class="mover" id="cmodal" onclick="if(event.target===this)closeCM()">
   <div class="modal">
-    <div class="modal-hd">编辑作物 <button class="modal-close" onclick="closeCropModalBtn()">✕</button></div>
-    <input type="hidden" id="edit-idx"/>
-    <div class="row2">
-      <div class="form-row"><label>图标 Emoji</label><input id="edit-icon"/></div>
-      <div class="form-row"><label>名称</label><input id="edit-name"/></div>
+    <div class="mhd">编辑作物<button class="mcl" onclick="closeCM()">✕</button></div>
+    <input type="hidden" id="eidx"/>
+    <div class="r2">
+      <div class="fr"><label>图标</label><input id="eico"/></div>
+      <div class="fr"><label>名称</label><input id="enm"/></div>
     </div>
-    <div class="row2">
-      <div class="form-row"><label>成熟时间</label><input id="edit-time" placeholder="1h30m 或 90"/></div>
-      <div class="form-row"><label>单价（可选）</label><input id="edit-price" placeholder="500金币"/></div>
+    <div class="r2">
+      <div class="fr"><label>成熟时间</label><input id="etm" placeholder="1h30m 或 90"/></div>
+      <div class="fr"><label>单价</label><input id="epr" placeholder="500金币"/></div>
     </div>
-    <button class="btn btn-primary" onclick="saveCropEdit()">保存</button>
+    <button class="btn btnp" onclick="saveCE()">保存</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- =================== SERVICE WORKER (inline blob) =================== -->
 <script>
-// Inline SW as blob so single HTML file works without server config
-const SW_CODE = `
-const CACHE='ftools-v5';
-const CHECK_INTERVAL = 30000; // 30s
-
-self.addEventListener('install', e => { self.skipWaiting(); });
-self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
-
-// Background sync check
-self.addEventListener('periodicsync', e => {
-  if(e.tag === 'check-reminders') e.waitUntil(checkAndNotify());
-});
-
-// Message from page: schedule a reminder
-self.addEventListener('message', e => {
-  if(e.data && e.data.type === 'SCHEDULE') checkAndNotify();
-  if(e.data && e.data.type === 'PING') e.source.postMessage({type:'PONG'});
-});
-
-async function checkAndNotify(){
-  const now = Date.now();
-  let stored = {};
-  try{ stored = JSON.parse(await getStore('ft_v4') || '{}'); }catch(e){}
-  const reminders = stored.reminders || [];
-  const notified = new Set(JSON.parse(await getStore('ft_notified') || '[]'));
-  let changed = false;
-  for(const r of reminders){
-    if(r.done && r.repeat==='none') continue;
-    const at = r.triggerAt - (r.advance||0)*60000;
-    if(now >= at && !notified.has(r.id)){
-      notified.add(r.id);changed=true;
-      const cats = stored.cats || [];
-      const cat = r.cat==='farm' ? {icon:'🌾'} : (cats.find(c=>c.id===r.cat)||{icon:'📌'});
-      await self.registration.showNotification(cat.icon+' '+r.title, {
-        body: r.note||'时间到了！',
-        icon: '/icon.png',
-        badge: '/icon.png',
-        tag: r.id,
-        renotify: true,
-        requireInteraction: false,
-      });
-      // schedule next if repeat
-      if(r.repeat && r.repeat!=='none') schedNext(r, now);
-    }
-  }
-  if(changed) await setStore('ft_notified', JSON.stringify([...notified]));
-}
-
-function schedNext(r, now){
-  const t=r.triggerAt;let next;
-  if(r.repeat==='daily')   next=t+86400000;
-  else if(r.repeat==='weekly') next=t+604800000;
-  else if(r.repeat==='hourly') next=t+3600000;
-  else if(r.repeat==='30min')  next=t+1800000;
-  else if(r.repeat==='custom') next=t+(r.interval||60)*60000;
-  if(next&&next>now) r.triggerAt=next;
-}
-
-// Simple KV using Cache API as storage (localStorage not available in SW)
-async function getStore(key){
-  try{
-    const c=await caches.open(CACHE);
-    const r=await c.match('/__sw_store__/'+key);
-    return r ? r.text() : null;
-  }catch(e){return null}
-}
-async function setStore(key,val){
-  try{
-    const c=await caches.open(CACHE);
-    await c.put('/__sw_store__/'+key, new Response(val));
-  }catch(e){}
-}
-
-// Poll timer: check every 30s even without periodic sync
-setInterval(checkAndNotify, 30000);
-`;
-
-// Register SW from blob
-async function registerSW(){
-  if(!('serviceWorker' in navigator)) return false;
-  try{
-    const blob = new Blob([SW_CODE],{type:'text/javascript'});
-    const url = URL.createObjectURL(blob);
-    const reg = await navigator.serviceWorker.register(url,{scope:'./'});
-    // Try periodic background sync
-    if('periodicSync' in reg){
-      try{
-        const status = await navigator.permissions.query({name:'periodic-background-sync'});
-        if(status.state==='granted') await reg.periodicSync.register('check-reminders',{minInterval:60000});
-      }catch(e){}
-    }
-    // Mirror localStorage to SW cache every time data changes
-    navigator.serviceWorker.ready.then(r=>{
-      if(r.active) r.active.postMessage({type:'SCHEDULE'});
-    });
-    return true;
-  }catch(e){
-    console.warn('SW registration failed:',e);
-    return false;
-  }
-}
-
-// Sync localStorage → SW cache
-function syncToSW(){
-  try{
-    const data = localStorage.getItem('ft_v4');
-    if(!data || !navigator.serviceWorker.controller) return;
-    navigator.serviceWorker.controller.postMessage({type:'SCHEDULE'});
-    // Also write via cache API mirror via SW message
-    if('caches' in window){
-      caches.open('ftools-v5').then(c=>{
-        c.put('/__sw_store__/ft_v4', new Response(data));
-      });
-    }
-  }catch(e){}
-}
-</script>
-
-<script>
-// =================== CROPS ===================
-const CROP_CATS = ['蔬菜','水果','粮食','花卉','药材','特产'];
-const ALL_CROPS = [
-  {icon:'🌱',name:'牧草',   cat:'蔬菜',min:8},
-  {icon:'🥕',name:'白萝卜', cat:'蔬菜',min:10},
-  {icon:'🥕',name:'胡萝卜', cat:'蔬菜',min:13},
-  {icon:'🥬',name:'大白菜', cat:'蔬菜',min:14},
-  {icon:'🌽',name:'玉米',   cat:'蔬菜',min:14},
-  {icon:'🥔',name:'土豆',   cat:'蔬菜',min:15},
-  {icon:'🍆',name:'茄子',   cat:'蔬菜',min:16},
-  {icon:'🟢',name:'豌豆',   cat:'蔬菜',min:18},
-  {icon:'🌶️',name:'辣椒',  cat:'蔬菜',min:20},
-  {icon:'🎃',name:'南瓜',   cat:'蔬菜',min:22},
-  {icon:'🍄',name:'蘑菇',   cat:'蔬菜',min:24},
-  {icon:'🌿',name:'薄荷',   cat:'蔬菜',min:20},
-  {icon:'💚',name:'艾草',   cat:'蔬菜',min:18},
-  {icon:'🌿',name:'芦荟',   cat:'蔬菜',min:30},
-  {icon:'🅱️',name:'西兰花', cat:'蔬菜',min:18},
-  {icon:'🧅',name:'洋葱',   cat:'蔬菜',min:24},
-  {icon:'🧄',name:'大蒜',   cat:'蔬菜',min:16},
-  {icon:'🍠',name:'红薯',   cat:'蔬菜',min:22},
-  {icon:'🎋',name:'竹笋',   cat:'蔬菜',min:12},
-  {icon:'🫘',name:'大豆',   cat:'蔬菜',min:20},
-  {icon:'🍅',name:'番茄',   cat:'水果',min:17},
-  {icon:'🍓',name:'草莓',   cat:'水果',min:35},
-  {icon:'🍉',name:'西瓜',   cat:'水果',min:41},
-  {icon:'🍌',name:'香蕉',   cat:'水果',min:45},
-  {icon:'🍑',name:'桃子',   cat:'水果',min:60},
-  {icon:'🍊',name:'橙子',   cat:'水果',min:69},
-  {icon:'🍇',name:'葡萄',   cat:'水果',min:86},
-  {icon:'🍎',name:'苹果',   cat:'水果',min:30},
-  {icon:'🫐',name:'石榴',   cat:'水果',min:96},
-  {icon:'🍋',name:'柚子',   cat:'水果',min:113},
-  {icon:'🍍',name:'菠萝',   cat:'水果',min:116},
-  {icon:'🥥',name:'椰子',   cat:'水果',min:124},
-  {icon:'🥝',name:'猕猴桃', cat:'水果',min:106},
-  {icon:'🍈',name:'木瓜',   cat:'水果',min:120},
-  {icon:'🍈',name:'杨桃',   cat:'水果',min:120},
-  {icon:'🍋',name:'柠檬',   cat:'水果',min:96},
-  {icon:'🍒',name:'樱桃',   cat:'水果',min:72},
-  {icon:'🫐',name:'蓝莓',   cat:'水果',min:48},
-  {icon:'🍑',name:'荔枝',   cat:'水果',min:96},
-  {icon:'🍑',name:'龙眼',   cat:'水果',min:86},
-  {icon:'🍈',name:'火龙果', cat:'水果',min:40},
-  {icon:'🍐',name:'梨',     cat:'水果',min:72},
-  {icon:'🌾',name:'小麦',   cat:'粮食',min:14},
-  {icon:'🌾',name:'水稻',   cat:'粮食',min:14},
-  {icon:'🎋',name:'甘蔗',   cat:'粮食',min:45},
-  {icon:'🟡',name:'葫芦',   cat:'粮食',min:139},
-  {icon:'🌰',name:'栗子',   cat:'粮食',min:120},
-  {icon:'🟠',name:'金桔',   cat:'粮食',min:86},
-  {icon:'🟠',name:'红枣',   cat:'粮食',min:16},
-  {icon:'🫚',name:'花生',   cat:'粮食',min:30},
-  {icon:'🌹',name:'红玫瑰', cat:'花卉',min:18},
-  {icon:'🌷',name:'郁金香', cat:'花卉',min:52},
-  {icon:'🌸',name:'樱花',   cat:'花卉',min:44},
-  {icon:'🌻',name:'向日葵', cat:'花卉',min:36},
-  {icon:'💜',name:'薰衣草', cat:'花卉',min:61},
-  {icon:'🌼',name:'雏菊',   cat:'花卉',min:17},
-  {icon:'🌺',name:'荷花',   cat:'花卉',min:44},
-  {icon:'🌸',name:'牡丹',   cat:'花卉',min:44},
-  {icon:'🌸',name:'马蹄莲', cat:'花卉',min:64},
-  {icon:'💜',name:'曼珠沙华',cat:'花卉',min:48},
-  {icon:'🌺',name:'非洲菊', cat:'花卉',min:21},
-  {icon:'💐',name:'百合',   cat:'花卉',min:56},
-  {icon:'🌹',name:'荷花玉兰',cat:'花卉',min:30},
-  {icon:'🌿',name:'虫草',   cat:'药材',min:64},
-  {icon:'🟤',name:'灵芝',   cat:'药材',min:60},
-  {icon:'🔴',name:'藏红花', cat:'药材',min:56},
-  {icon:'⬜',name:'雪莲',   cat:'药材',min:56},
-  {icon:'🌿',name:'何首乌', cat:'药材',min:56},
-  {icon:'🟡',name:'人参',   cat:'药材',min:480},
-  {icon:'🌿',name:'黄芪',   cat:'药材',min:72},
-  {icon:'🌿',name:'冬凌草', cat:'药材',min:36},
-  {icon:'🌿',name:'萱草',   cat:'药材',min:24},
-  {icon:'🌰',name:'莲藕',   cat:'特产',min:60},
-  {icon:'🟡',name:'沙棘',   cat:'特产',min:48},
+// ========== 作物库 ==========
+const CCAT = ['蔬菜','水果','粮食','花卉','药材','特产'];
+const ALLC = [
+  {e:'🌱',n:'牧草',   c:'蔬菜',m:8},  {e:'🥕',n:'白萝卜',c:'蔬菜',m:10},
+  {e:'🥕',n:'胡萝卜',c:'蔬菜',m:13}, {e:'🥬',n:'大白菜',c:'蔬菜',m:14},
+  {e:'🌽',n:'玉米',  c:'蔬菜',m:14}, {e:'🥔',n:'土豆',  c:'蔬菜',m:15},
+  {e:'🍆',n:'茄子',  c:'蔬菜',m:16}, {e:'🟢',n:'豌豆',  c:'蔬菜',m:18},
+  {e:'💚',n:'艾草',  c:'蔬菜',m:18}, {e:'🌶️',n:'辣椒', c:'蔬菜',m:20},
+  {e:'🌿',n:'薄荷',  c:'蔬菜',m:20}, {e:'🎃',n:'南瓜',  c:'蔬菜',m:22},
+  {e:'🍄',n:'蘑菇',  c:'蔬菜',m:24}, {e:'🧅',n:'洋葱',  c:'蔬菜',m:24},
+  {e:'🌿',n:'芦荟',  c:'蔬菜',m:30}, {e:'🧄',n:'大蒜',  c:'蔬菜',m:16},
+  {e:'🍠',n:'红薯',  c:'蔬菜',m:22}, {e:'🎋',n:'竹笋',  c:'蔬菜',m:12},
+  {e:'🫘',n:'大豆',  c:'蔬菜',m:20}, {e:'🥦',n:'西兰花',c:'蔬菜',m:18},
+  {e:'🍅',n:'番茄',  c:'水果',m:17}, {e:'🍓',n:'草莓',  c:'水果',m:35},
+  {e:'🍉',n:'西瓜',  c:'水果',m:41}, {e:'🍌',n:'香蕉',  c:'水果',m:45},
+  {e:'🍑',n:'桃子',  c:'水果',m:60}, {e:'🍊',n:'橙子',  c:'水果',m:69},
+  {e:'🍇',n:'葡萄',  c:'水果',m:86}, {e:'🍎',n:'苹果',  c:'水果',m:30},
+  {e:'🍏',n:'石榴',  c:'水果',m:96}, {e:'🍋',n:'柚子',  c:'水果',m:113},
+  {e:'🍍',n:'菠萝',  c:'水果',m:116},{e:'🥥',n:'椰子',  c:'水果',m:124},
+  {e:'🥝',n:'猕猴桃',c:'水果',m:106},{e:'🍈',n:'木瓜',  c:'水果',m:120},
+  {e:'🍈',n:'杨桃',  c:'水果',m:120},{e:'🍋',n:'柠檬',  c:'水果',m:96},
+  {e:'🍒',n:'樱桃',  c:'水果',m:72}, {e:'🫐',n:'蓝莓',  c:'水果',m:48},
+  {e:'🍑',n:'荔枝',  c:'水果',m:96}, {e:'🍑',n:'龙眼',  c:'水果',m:86},
+  {e:'🍈',n:'火龙果',c:'水果',m:40}, {e:'🍐',n:'梨',    c:'水果',m:72},
+  {e:'🌾',n:'小麦',  c:'粮食',m:14}, {e:'🌾',n:'水稻',  c:'粮食',m:14},
+  {e:'🎋',n:'甘蔗',  c:'粮食',m:45}, {e:'🟡',n:'葫芦',  c:'粮食',m:139},
+  {e:'🌰',n:'栗子',  c:'粮食',m:120},{e:'🟠',n:'金桔',  c:'粮食',m:86},
+  {e:'🟠',n:'红枣',  c:'粮食',m:16}, {e:'🫚',n:'花生',  c:'粮食',m:30},
+  {e:'🌹',n:'红玫瑰',c:'花卉',m:18}, {e:'🌷',n:'郁金香',c:'花卉',m:52},
+  {e:'🌸',n:'樱花',  c:'花卉',m:44}, {e:'🌻',n:'向日葵',c:'花卉',m:36},
+  {e:'💜',n:'薰衣草',c:'花卉',m:61}, {e:'🌼',n:'雏菊',  c:'花卉',m:17},
+  {e:'🌺',n:'荷花',  c:'花卉',m:44}, {e:'🌸',n:'牡丹',  c:'花卉',m:44},
+  {e:'🌸',n:'马蹄莲',c:'花卉',m:64}, {e:'💜',n:'曼珠沙华',c:'花卉',m:48},
+  {e:'🌺',n:'非洲菊',c:'花卉',m:21}, {e:'💐',n:'百合',  c:'花卉',m:56},
+  {e:'🌿',n:'虫草',  c:'药材',m:64}, {e:'🟤',n:'灵芝',  c:'药材',m:60},
+  {e:'🔴',n:'藏红花',c:'药材',m:56}, {e:'⬜',n:'雪莲',  c:'药材',m:56},
+  {e:'🌿',n:'何首乌',c:'药材',m:56}, {e:'🟡',n:'人参',  c:'药材',m:480},
+  {e:'🌿',n:'黄芪',  c:'药材',m:72}, {e:'🌿',n:'冬凌草',c:'药材',m:36},
+  {e:'🌿',n:'萱草',  c:'药材',m:24}, {e:'🌰',n:'莲藕',  c:'特产',m:60},
+  {e:'🟡',n:'沙棘',  c:'特产',m:48},
 ];
 
-const DEFAULT_CATS = [
-  {id:'health',label:'健康',icon:'💊',color:'#ff5a5a'},
-  {id:'work',  label:'工作',icon:'💼',color:'#4cc9f0'},
-  {id:'life',  label:'生活',icon:'🏠',color:'#ff9f4a'},
-  {id:'study', label:'学习',icon:'📚',color:'#c084fc'},
-  {id:'food',  label:'饮食',icon:'🍽️',color:'#3dba6f'},
-  {id:'sport', label:'运动',icon:'🏃',color:'#fb923c'},
-  {id:'other', label:'其他',icon:'📌',color:'#6a9a6a'},
+const DCAT = [
+  {id:'health',l:'健康',e:'💊',col:'#ff5a5a'},
+  {id:'work',  l:'工作',e:'💼',col:'#4cc9f0'},
+  {id:'life',  l:'生活',e:'🏠',col:'#ff9f4a'},
+  {id:'study', l:'学习',e:'📚',col:'#c084fc'},
+  {id:'food',  l:'饮食',e:'🍽️',col:'#3dba6f'},
+  {id:'sport', l:'运动',e:'🏃',col:'#fb923c'},
+  {id:'other', l:'其他',e:'📌',col:'#6a9a6a'},
 ];
 
-const SOUNDS = [
-  {id:'bell',    label:'清脆铃声'},
-  {id:'chime',   label:'钟声'},
-  {id:'marimba', label:'木琴'},
-  {id:'ding',    label:'叮咚'},
-  {id:'beep',    label:'提示音'},
-  {id:'pop',     label:'气泡音'},
-  {id:'alert',   label:'警报'},
-  {id:'custom',  label:'自定义'},
+const SNDS = [
+  {id:'bell',   l:'清脆铃声'},
+  {id:'chime',  l:'钟声'},
+  {id:'marimba',l:'木琴'},
+  {id:'ding',   l:'叮咚'},
+  {id:'beep',   l:'提示音'},
+  {id:'pop',    l:'气泡音'},
+  {id:'alert',  l:'警报'},
+  {id:'custom', l:'自定义'},
 ];
 
-const REPEAT_LBL = {none:'不重复',daily:'每天',weekdays:'工作日',weekly:'每周',hourly:'每小时','30min':'每30分',custom:'自定义'};
+const RLBL = {none:'不重复',daily:'每天',weekdays:'工作日',weekly:'每周',hourly:'每小时','30min':'每30分',custom:'自定义'};
 
-// =================== STATE ===================
+// ========== 状态 ==========
 let S = {
-  reminders:[],
-  cats: JSON.parse(JSON.stringify(DEFAULT_CATS)),
-  userCrops:[],
-  friends:[],
-  settings:{sound:true, titleAlert:true, selectedSound:'bell', customSoundData:null, soundRepeat:2},
+  rem:[], cats:JSON.parse(JSON.stringify(DCAT)),
+  ucrop:[], friends:[],
+  cfg:{sound:true,titleAlert:true,snd:'bell',sndData:null,sndCnt:2}
 };
-let selCat='life', selCropCat='蔬菜', selCropIdx=0, selPerson='自己', selFriend='';
-let notified = new Set();
-let audioCtx = null;
-let swReady = false;
+let selCat='life', selCC='蔬菜', selCI=0, selP='自己', selF='';
+let ntf = new Set();
+let actx = null;
+let audioReady = false;
 
-// =================== STORAGE ===================
-const KEY = 'ft_v4';
-function save(){
-  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
-  syncToSW();
-}
+// ========== 存储 ==========
+const KEY='ft_v5';
+function save(){ try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){} }
 function load(){
   try{
-    const d = JSON.parse(localStorage.getItem(KEY)||'{}');
-    if(d.reminders) S.reminders = d.reminders;
-    if(d.cats)      S.cats = d.cats;
-    if(d.userCrops) S.userCrops = d.userCrops;
-    if(d.friends)   S.friends = d.friends;
-    if(d.settings)  S.settings = {...S.settings, ...d.settings};
+    const d=JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(d.rem)     S.rem=d.rem;
+    if(d.cats)    S.cats=d.cats;
+    if(d.ucrop)   S.ucrop=d.ucrop;
+    if(d.friends) S.friends=d.friends;
+    if(d.cfg)     S.cfg={...S.cfg,...d.cfg};
   }catch(e){}
 }
 
-// =================== BOOT ===================
-(async()=>{
-  load();
-  setDefTime();
-  renderAll();
-  renderSoundList();
-  document.getElementById('sound-repeat-count').value = String(S.settings.soundRepeat||2);
-  checkNotif();
-  swReady = await registerSW();
-  renderSWStatus();
-  setInterval(tick, 1000);
-  // Unlock AudioContext on first user interaction
-  document.addEventListener('touchstart', unlockAudio, {once:true});
-  document.addEventListener('click',      unlockAudio, {once:true});
-})();
+// ========== 启动 ==========
+load();
+setDefTime();
+renderAll();
+renderSndList();
+document.getElementById('sndcnt').value=String(S.cfg.sndCnt||2);
+checkNotif();
+setInterval(tick,1000);
+// unlock audio on first touch/click — critical for iOS
+document.addEventListener('touchstart', unlockAudio, {once:true,passive:true});
+document.addEventListener('click',      unlockAudio, {once:true});
 
 function renderAll(){
-  renderCatChips();
-  renderCropCatTabs();
-  renderCropCarousel();
-  renderFriendChips();
-  renderRemindList();
-  renderFarmList();
-  renderCatManage();
+  renderCatChips(); renderCCTabs(); renderCCRow();
+  renderFChips(); renderRList(); renderFList(); renderCatMng();
 }
 
-function renderSWStatus(){
-  const el = document.getElementById('sw-status');
-  if(!el) return;
-  if(swReady){
-    el.innerHTML = '<div class="sw-bar ok">✅ 后台提醒已激活，关闭页面也能收到通知</div>';
-  } else {
-    el.innerHTML = '<div class="sw-bar warn">⚠️ 后台提醒未激活，请保持页面开着；iOS 需添加到主屏幕后使用</div>';
+// ========== 时钟 ==========
+function tick(){
+  const n=new Date(), el=document.getElementById('htime');
+  if(el) el.textContent=n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  checkTrig();
+  renderRList();
+  renderFList();
+}
+
+// ========== 通知 ==========
+function checkNotif(){
+  const p=typeof Notification!=='undefined'?Notification.permission:'denied';
+  const nb=document.getElementById('nbar');
+  if(nb) nb.style.display=p!=='granted'?'flex':'none';
+  const nt=document.getElementById('ntxt');
+  if(nt) nt.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝（浏览器设置中允许）':'⚠️ 未开启';
+  // page visibility tip
+  const pb=document.getElementById('pbar');
+  if(pb){
+    pb.style.display='block';
+    pb.className='ibar warn';
+    pb.textContent='⚠️ 提醒需页面保持运行；iOS 添加到主屏幕后体验更好';
   }
 }
-
-// =================== CLOCK ===================
-function tick(){
-  const n = new Date();
-  const el = document.getElementById('hdr-time');
-  if(el) el.textContent = n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  checkTriggers();
-  renderRemindList();
-  renderFarmList();
+async function reqNotif(){
+  if(typeof Notification==='undefined'){toast('此浏览器不支持通知');return}
+  const p=await Notification.requestPermission();
+  checkNotif();
+  toast(p==='granted'?'🔔 通知已开启！':'请在浏览器设置中允许通知权限');
+}
+function notify(title,body){
+  if(S.cfg.sound) playSound();
+  if(Notification.permission==='granted'){
+    try{new Notification(title,{body,icon:'./icon.png'})}catch(e){}
+  }
+  if(S.cfg.titleAlert) flashTitle(title);
+}
+function flashTitle(msg){
+  let on=true,n=0;
+  const iv=setInterval(()=>{
+    document.title=on?'❗ '+msg:'FTools'; on=!on; n++;
+    if(n>20){clearInterval(iv);document.title='FTools';}
+  },500);
 }
 
-// =================== NOTIF ===================
-function checkNotif(){
-  const p = typeof Notification!=='undefined' ? Notification.permission : 'denied';
-  const b = document.getElementById('notif-banner');
-  if(b) b.style.display = p!=='granted' ? 'flex' : 'none';
-  const t = document.getElementById('notif-txt
+// ========== 音频 ==========
+function unlockAudio(){
+  if(audioReady) return;
+  try{
+    actx=new(window.AudioContext||window.webkitAudioContext)();
+    // play silent buffer to unlock
+    const buf=actx.createBuffer(1,1,22050);
+    const src=actx.createBufferSource(); src.buffer=buf;
+    src.connect(actx.destination); src.start(0);
+    audioReady=true;
+  }catch(e){}
+}
+function getCtx(){
+  if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function playSound(){
+  // Read snd ID fresh from state every time
+  const id=S.cfg.snd;
+  const cnt=S.cfg.sndCnt||2;
+  if(id==='custom'&&S.cfg.sndData){
+    for(let i=0;i<cnt;i++) setTimeout(()=>{try{new Audio(S.cfg.sndData).play().catch(()=>{})}catch(e){}},i*1300);
+    return;
+  }
+  for(let i=0;i<cnt;i++) setTimeout(()=>synthSnd(id),i*1100);
+}
+function synthSnd(id){
+  try{
+    const ctx=getCtx();
+    if(id==='bell')    synth(ctx,[1318,1568,1760],85);
+    else if(id==='chime')   synth(ctx,[523,659,784,1046],115);
+    else if(id==='marimba') synth(ctx,[784,1047,1319,1047,784],95);
+    else if(id==='ding')    synth(ctx,[1046,1319],160);
+    else if(id==='beep')    synth(ctx,[880,1100,880],100);
+    else if(id==='pop')     synthPop(ctx);
+    else if(id==='alert')   synth(ctx,[440,880,440,880],80,'square');
+    else synth(ctx,[1318,1568,1760],85);
+  }catch(e){console.warn('audio:',e)}
+}
+function synth(ctx,freqs,dur=100,type='sine'){
+  freqs.forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=type; o.connect(g); g.connect(ctx.destination);
+    o.frequency.value=f;
+    const t=ctx.currentTime+i*(dur/1000);
+    g.gain.setValueAtTime(0.25,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+dur/950);
+    o.start(t); o.stop(t+dur/1000+0.05);
+  });
+}
+function synthPop(ctx){
+  const b=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate);
+  const d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*.018));
+  const s=ctx.createBufferSource(); s.buffer=b; s.connect(ctx.destination); s.start();
+}
+function renderSndList(){
+  const el=document.getElementById('sndlist'); if(!el) return;
+  el.innerHTML=SNDS.map(s=>`
+    <div class="si ${S.cfg.snd===s.id?'on':''}" onclick="pickSnd('${s.id}')">
+      ${s.l}<span style="font-size:10px;opacity:.55;margin-left:3px" onclick="event.stopPropagation();previewSnd('${s.id}')">▶</span>
+    </div>`).join('');
+}
+function pickSnd(id){
+  if(id==='custom'&&!S.cfg.sndData){toast('请先上传自定义铃声');return}
+  S.cfg.snd=id; save(); renderSndList();
+  toast('已选：'+SNDS.find(s=>s.id===id)?.l);
+  synthSnd(id); // immediate preview
+}
+function previewSnd(id){
+  unlockAudio();
+  if(id==='custom'&&S.cfg.sndData){try{new Audio(S.cfg.sndData).play().catch(()=>{})}catch(e){} return}
+  synthSnd(id);
+}
+function uploadSnd(){
+  const f=document.getElementById('sndfile').files[0]; if(!f) return;
+  if(f.size>5*1024*1024){toast('文件不超过5MB');return}
+  const r=new FileReader();
+  r.onload=e=>{S.cfg.sndData=e.target.result;S.cfg.snd='custom';save();renderSndList();toast('✅ 铃声已上传并选中')};
+  r.readAsDataURL(f);
+}
+
+// ========== 触发检查 ==========
+function checkTrig(){
+  const now=Date.now();
+  S.rem.forEach(r=>{
+    if(r.done&&r.rep==='none') return;
+    const at=r.at-(r.adv||0)*60000;
+    if(now>=at&&!ntf.has(r.id)){
+      ntf.add(r.id);
+      const cat=r.cat==='farm'?{e:'🌾'}:(S.cats.find(c=>c.id===r.cat)||{e:'📌'});
+      notify(cat.e+' '+r.title, r.note||'时间到了！');
+      if(r.rep&&r.rep!=='none') schedNext(r,now);
+    }
+  });
+  save();
+}
+function schedNext(r,now){
+  const t=r.at; let nx;
+  if(r.rep==='daily')    nx=t+86400000;
+  else if(r.rep==='weekly')  nx=t+604800000;
+  else if(r.rep==='hourly')  nx=t+3600000;
+  else if(r.rep==='30min')   nx=t+1800000;
+  else if(r.rep==='custom')  nx=t+(r.intv||60)*60000;
+  else if(r.rep==='weekdays'){let d=new Date(t);do{d=new Date(d.getTime()+86400000)}while(d.getDay()===0||d.getDay()===6);nx=d.getTime();}
+  if(nx&&nx>now){r.at=nx;ntf.delete(r.id);}
+}
+
+// ========== 作物 ==========
+function allC(){ return [...ALLC,...S.ucrop]; }
+function catC(c){ return allC().filter(x=>x.c===c); }
+function renderCCTabs(){
+  const el=document.getElementById('cctabs'); if(!el) return;
+  const ex=[...new Set(S.ucrop.map(x=>x.c).filter(x=>!CCAT.includes(x)))];
+  el.innerHTML=[...CCAT,...ex].map(c=>`<div class="cctab ${selCC===c?'on':''}" onclick="pickCC('${c}')">${c}</div>`).join('');
+}
+function pickCC(c){ selCC=c; selCI=0; renderCCTabs(); renderCCRow(); }
+function renderCCRow(){
+  const el=document.getElementById('ccrow'); if(!el) return;
+  const crops=catC(selCC);
+  el.innerHTML=crops.map((c,i)=>`
+    <div class="cc ${selCI===i?'sel':''}" onclick="selCrop(${i})">
+      <button class="ce" onclick="event.stopPropagation();openCE(${i})">✏️</button>
+      <span class="ci">${c.e}</span>
+      <div class="cn">${c.n}</div>
+      <div class="cd">${fmtM(c.m)}</div>
+      ${c.p?`<div class="cp">💰${c.p}</div>`:''}
+    </div>`).join('')+`<div class="cc-add" onclick="document.getElementById('ccn').focus()"><span style="font-size:22px">➕</span>自定义</div>`;
+}
+function selCrop(i){ selCI=i; renderCCRow(); }
+function openCE(i){
+  const c=catC(selCC)[i];
+  const ai=allC().findIndex(x=>x.n===c.n&&x.c===c.c);
+  document.getElementById('eidx').value=ai;
+  document.getElementById('eico').value=c.e;
+  document.getElementById('enm').value=c.n;
+  document.getElementById('etm').value=fmtM(c.m);
+  document.getElementById('epr').value=c.p||'';
+  document.getElementById('cmodal').classList.add('on');
+}
+function closeCM(){ document.getElementById('cmodal').classList.remove('on'); }
+function saveCE(){
+  const i=+document.getElementById('eidx').value;
+  const m=parseT(document.getElementById('etm').value);
+  if(!m){toast('时间格式有误');return}
+  const c=allC()[i];
+  const p={e:document.getElementById('eico').value||c.e,n:document.getElementById('enm').value||c.n,c:c.c,m,p:document.getElementById('epr').value.trim()};
+  if(i<ALLC.length){
+    const ui=S.ucrop.findIndex(x=>x.n===c.n&&x.c===c.c);
+    if(ui>=0) S.ucrop[ui]=p; else S.ucrop.push(p);
+  } else { S.ucrop[i-ALLC.length]=p; }
+  save(); renderCCRow(); closeCM(); toast('✅ 已保存');
+}
+function setCCT(v){ document.getElementById('cct').value=v; }
+
+function addFarm(){
+  const owner=selP==='自己'?'自己':selF;
+  if(selP==='好友'&&!selF){toast('请选择或添加好友');return}
+  const tv=document.getElementById('fpat').value;
+  const planted=tv?new Date(tv).getTime():Date.now();
+  const cn=document.getElementById('ccn').value.trim();
+  const ct=document.getElementById('cct').value.trim();
+  let nm,mn,pr='';
+  if(cn&&ct){
+    mn=parseT(ct); if(!mn){toast('时间格式有误');return}
+    nm=cn; pr=document.getElementById('ccp').value.trim();
+    S.ucrop.push({e:'🌿',n:nm,c:'特产',m:mn,p:pr});
+    save(); renderCCTabs(); renderCCRow();
+    document.getElementById('ccn').value='';
+    document.getElementById('cct').value='';
+    document.getElementById('ccp').value='';
+  } else {
+    const crops=catC(selCC); const cr=crops[selCI];
+    if(!cr){toast('请选择作物');return}
+    nm=cr.n; mn=cr.m; pr=cr.p||'';
+  }
+  const r={
+    id:Date.now()+'_'+rnd(), cat:'farm',
+    title:owner==='自己'?'我的'+nm:owner+'的'+nm,
+    note:(owner==='自己'?'自己的菜熟了！':'去偷 '+owner+' 的菜！')+(pr?' 💰'+pr:''),
+    at:planted+mn*60000, pa:planted, rep:'none', adv:0, done:false,
+  };
+  S.rem.push(r); save();
+  toast('🌱 '+r.title+' '+fmtM(mn)+'后成熟');
+  document.querySelectorAll('.popt').forEach(e=>e.classList.remove('on'));
+  document.querySelector('.popt[data-v="自己"]').classList.add('on');
+  selP='自己'; selF='';
+  document.getElementById('farea').style.display='none';
+  document.getElementById('fpat').value='';
+  renderFChips(); renderFList();
+}
+
+// ========== 好友 ==========
+function pickP(el){
+  document.querySelectorAll('.popt').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on'); selP=el.dataset.v;
+  document.getElementById('farea').style.display=selP==='好友'?'block':'none';
+}
+function renderFChips(){
+  const el=document.getElementById('fchips'); if(!el) return;
+  el.innerHTML=S.friends.map(f=>`<div class="fchip ${selF===f?'on':''}" onclick="pickF('${f}')">${f}</div>`).join('');
+}
+function pickF(n){ selF=n; renderFChips(); }
+function addFriend(){
+  const v=document.getElementById('nfriend').value.trim(); if(!v) return;
+  if(!S.friends.includes(v)) S.friends.push(v);
+  selF=v; document.getElementById('nfriend').value='';
+  save(); renderFChips();
+}
+
+// ========== 分类 ==========
+function renderCatChips(){
+  const el=document.getElementById('catchips'); if(!el) return;
+  el.innerHTML=S.cats.map(c=>`
+    <div class="cchip ${selCat===c.id?'on':''}" style="color:${c.col}" onclick="pickCat('${c.id}')">${c.e} ${c.l}</div>
+  `).join('')+`<div class="cchip" onclick="goTab('s')" style="color:var(--tx2);border-style:dashed">＋</div>`;
+}
+function pickCat(id){ selCat=id; renderCatChips(); }
+function renderCatMng(){
+  const el=document.getElementById('catmng'); if(!el) return;
+  el.innerHTML=S.cats.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)">
+      <span>${c.e}</span><span style="flex:1;font-size:13px">${c.l}</span>
+      <button class="btn btnd btns" onclick="rmCat(${i})" ${i<DCAT.length?'disabled style="opacity:.3"':''}>删除</button>
+    </div>`).join('');
+}
+function addCat(){
+  const e=document.getElementById('nico').value.trim()||'📌';
+  const l=document.getElementById('nlbl').value.trim();
+  if(!l){toast('请填写分类名称');return}
+  const cols=['#ff5a5a','#4cc9f0','#ff9f4a','#c084fc','#3dba6f','#ffd460','#fb923c'];
+  S.cats.push({id:'c'+Date.now(),l,e,col:cols[S.cats.length%cols.length]});
+  document.getElementById('nico').value='';
+  document.getElementById('nlbl').value='';
+  save(); renderCatChips(); renderCatMng(); toast('✅ 分类已添加');
+}
+function rmCat(i){
+  if(i<DCAT.length){toast('默认分类不可删除');return}
+  S.cats.splice(i,1); save(); renderCatChips(); renderCatMng();
+}
+
+// ========== 提醒 ==========
+document.getElementById('rrep').addEventListener('change',function(){
+  document.getElementById('rintrow').style.display=this.value==='custom'?'flex':'none';
+});
+function addReminder(){
+  const title=document.getElementById('rt').value.trim();
+  const tv=document.getElementById('rtime').value;
+  if(!title){toast('请填写标题');return}
+  if(!tv){toast('请选择时间');return}
+  const at=new Date(tv).getTime(); // datetime-local already local time
+  const r={
+    id:Date.now()+'_'+rnd(), cat:selCat, title,
+    note:document.getElementById('rn').value.trim(),
+    at, pa:Date.now(),
+    rep:document.getElementById('rrep').value,
+    intv:+document.getElementById('rint').value||60,
+    adv:+document.getElementById('radv').value||0,
+    done:false,
+  };
+  S.rem.push(r); save();
+  toast('✅ 提醒已保存！');
+  document.getElementById('rt').value='';
+  document.getElementById('rn').value='';
+  setDefTime(); goTab('r');
+}
+
+// ========== 列表渲染 ==========
+function renderRList(){
+  const now=Date.now(), el=document.getElementById('rlist'); if(!el) return;
+  const items=S.rem.filter(r=>r.cat!=='farm').sort((a,b)=>a.at-b.at);
+  if(!items.length){el.innerHTML='<div class="empty"><div class="eico">⏰</div>还没有提醒，去"添加"创建吧</div>';return}
+  const act=items.filter(r=>r.at>=now||r.rep!=='none');
+  const dn =items.filter(r=>r.at<now&&r.rep==='none');
+  let h='';
+  if(act.length) h+='<div class="sl">进行中</div>'+act.map(r=>itemH(r,now)).join('');
+  if(dn.length)  h+='<div class="sl">已到期</div>'+dn.map(r=>itemH(r,now)).join('');
+  el.innerHTML=h;
+}
+function renderFList(){
+  const now=Date.now(), el=document.getElementById('flist'); if(!el) return;
+  const items=S.rem.filter(r=>r.cat==='farm').sort((a,b)=>a.at-b.at);
+  if(!items.length){el.innerHTML='<div class="empty"><div class="eico">🌾</div>还没有农场提醒</div>';return}
+  el.innerHTML='<div class="sl">我的农场</div>'+items.map(r=>itemH(r,now)).join('');
+}
+function itemH(r,now){
+  const cat=r.cat==='farm'?{e:'🌾',col:'var(--g)'}:(S.cats.find(c=>c.id===r.cat)||{e:'📌',col:'#6a9a6a'});
+  const rem=r.at-now;
+  const mat=rem<=0, soon=rem>0&&rem<600000;
+  const pct=r.pa?Math.min(100,Math.max(0,(now-r.pa)/(r.at-r.pa)*100)):mat?100:0;
+  return `<div class="item ${mat?'mat':soon?'soon':''}">
+    <div class="irow">
+      <div class="ibody">
+        <div class="itr"><span class="iemj">${cat.e}</span><span class="itit">${r.title}</span></div>
+        ${r.note?`<div class="imeta">${r.note}</div>`:''}
+        <div class="imeta">🕐 ${new Date(r.at).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        ${r.rep&&r.rep!=='none'?`<div class="imeta">🔄 ${RLBL[r.rep]||''}</div>`:''}
+        <div class="icd ${mat?'done':''}">${mat?'⚡ 立刻行动！':fmtCD(rem)}</div>
+        <div class="prog"><div class="progb" style="width:${pct}%;background:${mat?'var(--yel)':cat.col}"></div></div>
+      </div>
+      <button class="delbtn" onclick="delR('${r.id}')">🗑</button>
+    </div>
+  </div>`;
+}
+function delR(id){ S.rem=S.rem.filter(r=>r.id!==id); ntf.delete(id); save(); }
+
+// ========== 设置 ==========
+function togSet(key){
+  S.cfg[key]=!S.cfg[key]; save();
+  document.getElementById('tog-'+{sound:'sound',titleAlert:'title'}[key]).className='tog'+(S.cfg[key]?' on':'');
+}
+function clearDone(){
+  if(!confirm('清除所有已到期提醒？')) return;
+  const now=Date.now();
+  S.rem=S.rem.filter(r=>r.at>=now||r.rep!=='none');
+  save(); toast('✅ 已清除');
+}
+function clearAll(){
+  if(!confirm('确定清除全部数据？')) return;
+  S.rem=[]; save(); toast('✅ 已清除');
+}
+
+// ========== 导出/导入 ==========
+function exportD(){
+  const d=JSON.stringify({rem:S.rem,friends:S.friends,cats:S.cats.slice(DCAT.length),ucrop:S.ucrop,cfg:{...S.cfg,sndData:null}},null,2);
+  const blob=new Blob([d],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url;
+  a.download='ftools_'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  URL.revokeObjectURL(url);
+  const ev=document.getElementById('expview'); ev.style.display='block'; ev.textContent=d.slice(0,300)+'...';
+  toast('📤 数据已导出！');
+}
+function importD(){
+  const f=document.getElementById('impfile').files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      if(d.rem)     S.rem=[...S.rem,...d.rem.filter(x=>!S.rem.find(y=>y.id===x.id))];
+      if(d.friends) S.friends=[...new Set([...S.friends,...d.friends])];
+      if(d.cats)    S.cats=[...JSON.parse(JSON.stringify(DCAT)),...d.cats];
+      if(d.ucrop)   S.ucrop=[...S.ucrop,...d.ucrop];
+      if(d.cfg)     S.cfg={...S.cfg,...d.cfg};
+      save(); renderAll(); renderSndList();
+      toast('✅ 导入成功！共'+S.rem.length+'条提醒');
+    }catch(x){toast('导入失败，请检查文件格式')}
+  };
+  r.readAsText(f);
+}
+
+// ========== 工具函数 ==========
+function parseT(s){
+  if(!s) return 0;
+  s=s.trim().toLowerCase().replace('小时','h').replace('分钟','m').replace('分','m').replace('时','h').replace('天','d');
+  const dm=s.match(/^(\d+\.?\d*)d$/i); if(dm) return Math.round(+dm[1]*1440);
+  const hm=s.match(/^(\d+\.?\d*)h(\d+\.?\d*)?m?$/i); if(hm) return Math.round(+hm[1]*60+(+hm[2]||0));
+  const mm=s.match(/^(\d+\.?\d*)m?$/i); if(mm) return Math.round(+mm[1]);
+  return 0;
+}
+function fmtM(m){ return m<60?m+'分钟':m%60===0?m/60+'小时':Math.floor(m/60)+'小时'+m%60+'分'; }
+function fmtCD(ms){
+  if(ms<=0) return '已到期';
+  const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
+  if(h>0) return h+'小时'+m+'分'+sc+'秒';
+  if(m>0) return m+'分'+sc+'秒';
+  return sc+'秒';
+}
+function setDefTime(){
+  const el=document.getElementById('rtime'); if(!el) return;
+  const d=new Date(Date.now()+3600000);
+  el.value=d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':'+p2(d.getMinutes());
+}
+function p2(n){ return String(n).padStart(2,'0'); }
+function rnd(){ return Math.random().toString(36).slice(2,6); }
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2600);
+}
+function goTab(k){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('tab-'+k).classList.add('on');
+  document.getElementById('pg-'+k).classList.add('on');
+}
+</script>
+</body>
+</html>
