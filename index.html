@@ -3,178 +3,267 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
-<meta name="theme-color" content="#4CAF50"/>
+<meta name="theme-color" content="#1a1a2e"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-<meta name="apple-mobile-web-app-title" content="生活提醒"/>
-<!-- iOS 主屏幕图标，替换 href 里的图片地址即可 -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="FTools"/>
 <link rel="apple-touch-icon" href="icon.png"/>
-<!-- 不同尺寸可分别指定（可选） -->
-<link rel="apple-touch-icon" sizes="120x120" href="icon.png"/>
-<link rel="apple-touch-icon" sizes="152x152" href="icon.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="icon.png"/>
-<title>🔔 生活提醒工具</title>
+<title>FTools</title>
 <style>
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{margin:0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f0f4f0;min-height:100vh}
-  :root{--green:#43a047;--green2:#66bb6a;--red:#e53935;--yellow:#fdd835;--blue:#1e88e5;--purple:#8e24aa;--orange:#fb8c00;--card:#fff;--shadow:0 2px 12px rgba(0,0,0,0.08)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+:root{
+  --bg:#0f0f1a;--bg2:#16162a;--bg3:#1e1e35;--card:#1e1e35;
+  --green:#00d4aa;--green2:#00f5c4;--red:#ff4d6d;--yellow:#ffd60a;
+  --blue:#4cc9f0;--purple:#b5179e;--orange:#f77f00;--pink:#ff006e;
+  --text:#f0f0ff;--text2:#8888aa;--border:#2a2a45;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --radius:18px;--radius-sm:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro Display','PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh;overflow-x:hidden}
 
-  /* Header */
-  .hdr{background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;padding:16px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
-  .hdr h1{margin:0;font-size:18px;font-weight:700;letter-spacing:1px}
-  .hdr p{margin:2px 0 0;font-size:12px;opacity:.85}
+/* Scrollbar */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-  /* Tabs */
-  .tabs{display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);position:sticky;top:60px;z-index:99}
-  .tab{flex:1;padding:12px 4px;text-align:center;font-size:13px;font-weight:600;color:#888;cursor:pointer;border-bottom:3px solid transparent;transition:.2s}
-  .tab.active{color:var(--green);border-bottom-color:var(--green)}
-  .tab span{display:block;font-size:18px;margin-bottom:2px}
+/* Header */
+.hdr{background:linear-gradient(135deg,#0f0f1a,#1a1a35);padding:env(safe-area-inset-top,0) 20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0 12px}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--green),var(--blue));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 16px rgba(0,212,170,.4)}
+.hdr h1{font-size:20px;font-weight:700;letter-spacing:2px;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr-time{font-size:12px;color:var(--text2)}
 
-  /* Content */
-  .page{display:none;padding:16px;max-width:520px;margin:0 auto}
-  .page.active{display:block}
+/* Tabs */
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:65px;z-index:99}
+.tab{flex:1;padding:10px 4px 8px;text-align:center;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;letter-spacing:.5px}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+.tab-icon{font-size:20px;display:block;margin-bottom:2px}
 
-  /* Cards */
-  .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
-  .card-title{font-size:14px;font-weight:700;color:#333;margin:0 0 12px;display:flex;align-items:center;gap:6px}
+/* Pages */
+.page{display:none;padding:16px 16px 100px;max-width:560px;margin:0 auto}
+.page.active{display:block}
 
-  /* Form elements */
-  .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-  .form-row label{font-size:12px;color:#888}
-  input,select,textarea{width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;transition:.2s;background:#fafafa}
-  input:focus,select:focus,textarea:focus{border-color:var(--green);background:#fff}
-  textarea{resize:vertical;min-height:70px}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px;border:1px solid var(--border)}
+.card-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:14px;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.card-title::before{content:'';width:3px;height:14px;background:linear-gradient(var(--green),var(--blue));border-radius:2px;display:inline-block}
 
-  /* Buttons */
-  .btn{border:none;border-radius:10px;padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
-  .btn:active{transform:scale(.97)}
-  .btn-green{background:linear-gradient(90deg,var(--green2),var(--green));color:#fff;width:100%}
-  .btn-red{background:#ffebee;color:var(--red);padding:6px 10px;font-size:12px;border-radius:8px}
-  .btn-icon{background:none;border:none;cursor:pointer;font-size:18px;padding:4px}
+/* Form */
+.form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.form-row label{font-size:12px;color:var(--text2);font-weight:500}
+input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;font-size:14px;color:var(--text);font-family:inherit;outline:none;transition:.2s;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,212,170,.15)}
+select option{background:var(--bg2)}
+textarea{resize:vertical;min-height:70px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-  /* Category chips */
-  .cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-  .cat{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid transparent;transition:.15s}
-  .cat.sel{border-color:currentColor}
+/* Buttons */
+.btn{border:none;border-radius:var(--radius-sm);padding:13px 18px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;letter-spacing:.5px}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn-primary{background:linear-gradient(135deg,var(--green),var(--blue));color:#000;width:100%;font-weight:800}
+.btn-danger{background:rgba(255,77,109,.15);color:var(--red);padding:7px 14px;font-size:12px;border-radius:10px;border:1px solid rgba(255,77,109,.3)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
 
-  /* Reminder items */
-  .item{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;position:relative;border-left:4px solid #ccc}
-  .item.mature{background:linear-gradient(135deg,#fffde7,#fff9c4);border-left-color:var(--yellow);animation:pulse 1.5s infinite}
-  .item.soon{border-left-color:#ff7043}
-  .item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-  .item-info{flex:1}
-  .item-title{font-size:15px;font-weight:700;color:#222;margin-bottom:3px}
-  .item-sub{font-size:12px;color:#888;margin-bottom:6px}
-  .item-countdown{font-size:13px;font-weight:700}
-  .item-countdown.done{color:var(--red);font-size:14px}
-  .progress{height:5px;background:#eee;border-radius:3px;overflow:hidden;margin-top:8px}
-  .progress-bar{height:100%;border-radius:3px;transition:width 1s linear}
-  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;margin-right:4px}
+/* Notification banner */
+.notif-bar{background:linear-gradient(135deg,rgba(255,214,10,.1),rgba(247,127,0,.1));border:1px solid rgba(255,214,10,.3);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.notif-bar.ok{background:linear-gradient(135deg,rgba(0,212,170,.1),rgba(76,201,240,.1));border-color:rgba(0,212,170,.3)}
+.notif-bar span{font-size:13px;color:var(--text)}
+.notif-bar .btn{padding:7px 16px;font-size:12px;background:var(--yellow);border-radius:8px;color:#000;font-weight:700;width:auto}
 
-  /* Repeat badge */
-  .repeat-info{font-size:11px;color:#aaa;margin-top:4px}
+/* ===== FARM CAROUSEL ===== */
+.crop-carousel-wrap{overflow-x:auto;margin:0 -18px;padding:0 18px 10px;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.crop-carousel-wrap::-webkit-scrollbar{display:none}
+.crop-carousel{display:flex;gap:10px;width:max-content}
+.crop-card{scroll-snap-align:start;background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:14px 12px;width:110px;flex-shrink:0;cursor:pointer;transition:.2s;text-align:center;position:relative}
+.crop-card:active{transform:scale(.95);border-color:var(--green)}
+.crop-card.selected{border-color:var(--green);background:rgba(0,212,170,.1);box-shadow:0 0 14px rgba(0,212,170,.2)}
+.crop-card .crop-icon{font-size:32px;display:block;margin-bottom:6px}
+.crop-card .crop-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.crop-card .crop-time{font-size:11px;color:var(--text2)}
+.crop-card .crop-price{font-size:11px;color:var(--yellow);margin-top:3px}
+.crop-card .crop-edit{position:absolute;top:6px;right:6px;font-size:12px;opacity:.5}
 
-  /* Notification banner */
-  .notif-bar{background:#fff8e1;border:1px solid #ffcc02;border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .notif-bar.ok{background:#e8f5e9;border-color:#66bb6a;color:#2e7d32}
-  .notif-bar span{font-size:13px}
-  .notif-bar .btn{padding:6px 14px;font-size:13px;background:var(--yellow);border-radius:8px;color:#333}
+/* Custom crop add */
+.custom-crop-form{background:var(--bg2);border:1.5px dashed var(--border);border-radius:16px;padding:14px 12px;width:110px;flex-shrink:0;text-align:center;cursor:pointer;transition:.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--text2);font-size:12px;scroll-snap-align:start}
+.custom-crop-form:hover{border-color:var(--green);color:var(--green)}
 
-  /* Toast */
-  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Crop edit modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg3);border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:480px;border-top:1px solid var(--border);animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{font-size:20px;cursor:pointer;color:var(--text2);background:var(--bg2);border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 
-  /* Empty state */
-  .empty{text-align:center;padding:40px 20px;color:#bbb;font-size:14px}
-  .empty div{font-size:40px;margin-bottom:8px}
+/* Person selector */
+.person-sel{display:flex;gap:8px;margin-bottom:12px}
+.person-opt{flex:1;padding:10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:.2s}
+.person-opt.sel{border-color:var(--green);color:var(--green);background:rgba(0,212,170,.1)}
 
-  /* Section separator */
-  .sec-label{font-size:11px;color:#aaa;font-weight:700;letter-spacing:1px;margin:16px 0 8px;padding-left:4px}
+/* Friend list */
+.friend-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.friend-chip{padding:5px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;transition:.2s}
+.friend-chip.sel{border-color:var(--green);color:var(--green);background:rgba(0,212,170,.1)}
+.friend-chip.add{border-style:dashed;color:var(--text2)}
 
-  /* Alarm indicator */
-  .alarm-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px}
-  .alarm-dot.off{background:#ccc}
+/* Time shortcut input */
+.time-shortcut{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.time-sc-btn{padding:5px 10px;border-radius:8px;font-size:12px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:.2s}
+.time-sc-btn:hover{border-color:var(--green);color:var(--green)}
 
-  @keyframes pulse{0%,100%{box-shadow:0 2px 12px rgba(253,216,53,.3)}50%{box-shadow:0 2px 20px rgba(253,216,53,.7)}}
+/* ===== REMINDER ITEMS ===== */
+.item{background:var(--card);border-radius:var(--radius);padding:15px;border:1px solid var(--border);margin-bottom:10px;position:relative;overflow:hidden;transition:.2s}
+.item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px}
+.item.mature{border-color:rgba(255,214,10,.4);background:linear-gradient(135deg,rgba(255,214,10,.08),rgba(247,127,0,.05))}
+.item.mature::before{background:var(--yellow)}
+.item.soon::before{background:var(--orange)}
+.item-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.item-body{flex:1;min-width:0}
+.item-top-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.item-emoji{font-size:20px;flex-shrink:0}
+.item-title{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-meta{font-size:12px;color:var(--text2);margin-bottom:6px}
+.item-cd{font-size:13px;font-weight:700;color:var(--green)}
+.item-cd.done{color:var(--red);font-size:14px;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.progress{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:8px}
+.progress-bar{height:100%;border-radius:2px;transition:width 1s linear}
+.del-btn{background:rgba(255,77,109,.1);border:none;color:var(--red);font-size:16px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
-  /* Bottom nav safe area */
-  .page{padding-bottom:80px}
+/* Category chips */
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.cat-chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);background:var(--bg2);transition:.2s;display:flex;align-items:center;gap:4px}
+.cat-chip.sel{border-color:currentColor;background:rgba(255,255,255,.05)}
+.cat-chip.add-cat{border-style:dashed}
 
-  /* Settings */
-  .settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0}
-  .settings-row:last-child{border:none}
-  .settings-label{font-size:14px;color:#333}
-  .settings-sub{font-size:12px;color:#aaa;margin-top:2px}
-  .toggle{width:44px;height:24px;background:#ccc;border-radius:12px;position:relative;cursor:pointer;transition:.3s}
-  .toggle.on{background:var(--green)}
-  .toggle::after{content:'';width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
-  .toggle.on::after{left:22px}
+/* Section label */
+.sec-label{font-size:11px;color:var(--text2);font-weight:700;letter-spacing:1.5px;margin:16px 0 8px 4px;text-transform:uppercase}
 
-  /* Crop quick add */
-  .crop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
-  .crop-btn{background:#f5f5f5;border:none;border-radius:10px;padding:8px 4px;font-size:12px;cursor:pointer;text-align:center;transition:.15s}
-  .crop-btn:active{background:#e0f2f1}
-  .crop-btn span{display:block;font-size:20px;margin-bottom:2px}
+/* Empty */
+.empty{text-align:center;padding:50px 20px;color:var(--text2)}
+.empty-icon{font-size:50px;margin-bottom:12px;opacity:.5}
 
-  @media(max-width:360px){.row2{grid-template-columns:1fr}}
+/* Settings */
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border:none}
+.settings-label{font-size:14px;color:var(--text);font-weight:500}
+.settings-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.toggle{width:48px;height:26px;background:var(--bg2);border-radius:13px;position:relative;cursor:pointer;transition:.3s;border:1px solid var(--border)}
+.toggle.on{background:var(--green);border-color:var(--green)}
+.toggle::after{content:'';width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.toggle.on::after{left:25px}
+
+/* Sound picker */
+.sound-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.sound-item{padding:7px 14px;border-radius:10px;font-size:13px;background:var(--bg2);border:1.5px solid var(--border);color:var(--text2);cursor:pointer;transition:.2s}
+.sound-item.sel{border-color:var(--green);color:var(--green);background:rgba(0,212,170,.1)}
+
+/* Toast */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg3);color:var(--text);padding:11px 22px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap;border:1px solid var(--border);box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:360px){.row2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="hdr">
-  <h1>🔔 生活提醒工具</h1>
-  <p id="hdr-time">加载中...</p>
+  <div class="hdr-inner">
+    <div class="hdr-logo">
+      <div class="logo-icon">F</div>
+      <h1>FTools</h1>
+    </div>
+    <div class="hdr-time" id="hdr-time"></div>
+  </div>
 </div>
 
+<!-- Tabs -->
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('remind')" id="tab-remind"><span>⏰</span>提醒</div>
-  <div class="tab" onclick="switchTab('farm')" id="tab-farm"><span>🌾</span>农场</div>
-  <div class="tab" onclick="switchTab('add')" id="tab-add"><span>➕</span>添加</div>
-  <div class="tab" onclick="switchTab('settings')" id="tab-settings"><span>⚙️</span>设置</div>
+  <div class="tab active" onclick="switchTab('remind')" id="tab-remind"><span class="tab-icon">⏰</span>提醒</div>
+  <div class="tab" onclick="switchTab('farm')" id="tab-farm"><span class="tab-icon">🌾</span>农场</div>
+  <div class="tab" onclick="switchTab('add')" id="tab-add"><span class="tab-icon">＋</span>添加</div>
+  <div class="tab" onclick="switchTab('settings')" id="tab-settings"><span class="tab-icon">⚙️</span>设置</div>
 </div>
 
-<!-- 提醒列表页 -->
+<!-- ======= 提醒页 ======= -->
 <div class="page active" id="page-remind">
   <div id="notif-banner" class="notif-bar" style="display:none">
-    <span>🔔 开启通知，到时间自动弹提醒</span>
+    <span>🔔 开启通知以接收到期提醒</span>
     <button class="btn" onclick="reqNotif()">开启</button>
   </div>
   <div id="remind-list"></div>
 </div>
 
-<!-- 农场页 -->
+<!-- ======= 农场页 ======= -->
 <div class="page" id="page-farm">
   <div class="card">
-    <div class="card-title">🌱 快速添加农场作物</div>
-    <div class="form-row"><label>好友昵称（填"自己"表示自己的地）</label>
-      <input id="farm-owner" placeholder="如：小明 / 自己"/>
+    <div class="card-title">选择对象</div>
+    <div class="person-sel" id="person-sel">
+      <div class="person-opt sel" data-val="自己" onclick="selectPerson(this)">🙋 自己</div>
+      <div class="person-opt" data-val="好友" onclick="selectPerson(this)">👥 好友</div>
     </div>
-    <div class="crop-grid" id="crop-grid"></div>
-    <div class="form-row"><label>或自定义作物</label>
-      <div class="row2">
-        <input id="farm-custom-name" placeholder="作物名称"/>
-        <input id="farm-custom-min" type="number" placeholder="成熟分钟数" min="1"/>
+    <div id="friend-area" style="display:none">
+      <div class="form-row" style="margin-bottom:6px"><label>选择或添加好友</label></div>
+      <div class="friend-chips" id="friend-chips"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input id="new-friend-input" placeholder="输入好友昵称" style="flex:1"/>
+        <button class="btn btn-sm" style="background:var(--green);color:#000;width:auto" onclick="addFriend()">添加</button>
       </div>
     </div>
-    <div class="form-row"><label>种植时间（留空=现在）</label>
-      <input id="farm-time" type="datetime-local"/>
-    </div>
-    <button class="btn btn-green" onclick="addFarm()">🌱 添加偷菜提醒</button>
   </div>
+
+  <div class="card">
+    <div class="card-title">选择作物 <span style="font-size:11px;color:var(--text2);font-weight:400;text-transform:none">左右滑动·点击编辑价格</span></div>
+    <div class="crop-carousel-wrap">
+      <div class="crop-carousel" id="crop-carousel"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">自定义作物</div>
+    <div class="row2">
+      <div class="form-row"><label>作物名称</label><input id="custom-crop-name" placeholder="如：花生"/></div>
+      <div class="form-row"><label>成熟时间</label>
+        <input id="custom-crop-time-str" placeholder="如：1h30m 或 90"/>
+      </div>
+    </div>
+    <div class="form-row"><label>单价（可选）</label>
+      <input id="custom-crop-price" placeholder="如：100金币" type="text"/>
+    </div>
+    <div class="time-shortcut">
+      <span style="font-size:11px;color:var(--text2);align-self:center">快捷：</span>
+      <div class="time-sc-btn" onclick="setCustomTime('30m')">30分</div>
+      <div class="time-sc-btn" onclick="setCustomTime('1h')">1小时</div>
+      <div class="time-sc-btn" onclick="setCustomTime('2h')">2小时</div>
+      <div class="time-sc-btn" onclick="setCustomTime('4h')">4小时</div>
+      <div class="time-sc-btn" onclick="setCustomTime('8h')">8小时</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">种植时间</div>
+    <div class="form-row"><label>留空表示现在种植</label>
+      <input id="farm-planted-at" type="datetime-local"/>
+    </div>
+    <button class="btn btn-primary" onclick="addFarmReminder()">🌱 添加偷菜提醒</button>
+  </div>
+
   <div id="farm-list"></div>
 </div>
 
-<!-- 添加提醒页 -->
+<!-- ======= 添加页 ======= -->
 <div class="page" id="page-add">
   <div class="card">
-    <div class="card-title">📝 新建提醒</div>
-    <!-- Category -->
-    <div class="form-row"><label>分类</label>
-      <div class="cats" id="cat-chips"></div>
-    </div>
+    <div class="card-title">分类</div>
+    <div class="cats" id="cat-chips"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">提醒内容</div>
     <div class="form-row"><label>标题</label>
-      <input id="r-title" placeholder="提醒内容，如：喝水、吃药、开会..."/>
+      <input id="r-title" placeholder="如：喝水、吃药、开会..."/>
     </div>
     <div class="form-row"><label>备注（可选）</label>
       <textarea id="r-note" placeholder="详细说明..."></textarea>
@@ -182,443 +271,601 @@
     <div class="form-row"><label>提醒时间</label>
       <input id="r-time" type="datetime-local"/>
     </div>
-    <div class="form-row"><label>重复</label>
-      <select id="r-repeat">
-        <option value="none">不重复</option>
-        <option value="daily">每天</option>
-        <option value="weekdays">每个工作日</option>
-        <option value="weekly">每周</option>
-        <option value="hourly">每小时</option>
-        <option value="30min">每30分钟</option>
-        <option value="custom">自定义间隔</option>
-      </select>
+    <div class="row2">
+      <div class="form-row"><label>重复</label>
+        <select id="r-repeat">
+          <option value="none">不重复</option>
+          <option value="daily">每天</option>
+          <option value="weekdays">工作日</option>
+          <option value="weekly">每周</option>
+          <option value="hourly">每小时</option>
+          <option value="30min">每30分钟</option>
+          <option value="custom">自定义间隔</option>
+        </select>
+      </div>
+      <div class="form-row"><label>提前提醒</label>
+        <select id="r-advance">
+          <option value="0">准时</option>
+          <option value="5">提前5分</option>
+          <option value="10">提前10分</option>
+          <option value="15">提前15分</option>
+          <option value="30">提前30分</option>
+          <option value="60">提前1小时</option>
+        </select>
+      </div>
     </div>
     <div class="form-row" id="custom-interval-row" style="display:none">
       <label>间隔（分钟）</label>
       <input id="r-interval" type="number" min="1" value="60"/>
     </div>
-    <div class="form-row"><label>提前提醒</label>
-      <select id="r-advance">
-        <option value="0">准时</option>
-        <option value="5">提前5分钟</option>
-        <option value="10">提前10分钟</option>
-        <option value="15">提前15分钟</option>
-        <option value="30">提前30分钟</option>
-        <option value="60">提前1小时</option>
-      </select>
-    </div>
-    <button class="btn btn-green" onclick="addReminder()">✅ 保存提醒</button>
+    <button class="btn btn-primary" onclick="addReminder()">✅ 保存提醒</button>
   </div>
 </div>
 
-<!-- 设置页 -->
+<!-- ======= 设置页 ======= -->
 <div class="page" id="page-settings">
   <div class="card">
-    <div class="card-title">⚙️ 通知设置</div>
+    <div class="card-title">通知</div>
     <div class="settings-row">
       <div><div class="settings-label">浏览器通知</div><div class="settings-sub" id="notif-status-text">未开启</div></div>
-      <button class="btn btn-green" style="width:auto;padding:8px 16px" onclick="reqNotif()">开启</button>
+      <button class="btn btn-primary" style="width:auto;padding:8px 16px;font-size:13px" onclick="reqNotif()">开启</button>
     </div>
     <div class="settings-row">
       <div><div class="settings-label">声音提醒</div><div class="settings-sub">到期时播放提示音</div></div>
-      <div class="toggle on" id="toggle-sound" onclick="toggleSound()"></div>
+      <div class="toggle on" id="toggle-sound" onclick="toggleS('sound')"></div>
     </div>
     <div class="settings-row">
-      <div><div class="settings-label">页面标题提醒</div><div class="settings-sub">有到期提醒时标题显示❗</div></div>
-      <div class="toggle on" id="toggle-title" onclick="toggleTitleAlert()"></div>
+      <div><div class="settings-label">页面标题提醒</div><div class="settings-sub">到期时标题闪烁 10 秒</div></div>
+      <div class="toggle on" id="toggle-title" onclick="toggleS('titleAlert')"></div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-title">🗑️ 数据管理</div>
-    <div class="settings-row">
-      <div><div class="settings-label">清除已完成提醒</div><div class="settings-sub">删除所有已到期的提醒</div></div>
-      <button class="btn btn-red" onclick="clearDone()">清除</button>
-    </div>
-    <div class="settings-row">
-      <div><div class="settings-label">清除所有数据</div><div class="settings-sub">删除全部提醒和设置</div></div>
-      <button class="btn btn-red" onclick="clearAll()">全部清除</button>
+
+  <div class="card" id="sound-picker-card">
+    <div class="card-title">选择提示音</div>
+    <div class="sound-list" id="sound-list"></div>
+    <div style="margin-top:12px">
+      <div class="form-row"><label>或上传自定义铃声（MP3/WAV/OGG）</label>
+        <input type="file" id="sound-upload" accept="audio/*" onchange="uploadSound()" style="font-size:13px;padding:8px"/>
+      </div>
     </div>
   </div>
+
   <div class="card">
-    <div class="card-title">ℹ️ 使用说明</div>
-    <p style="font-size:13px;color:#666;line-height:1.7;margin:0">
-      📌 <b>手机使用：</b>浏览器打开本页面，点"添加到主屏幕"可像App一样使用<br>
-      🔔 <b>通知提醒：</b>需要开启浏览器通知权限，并保持页面在后台运行<br>
-      💾 <b>数据存储：</b>所有数据保存在本地浏览器，不会上传<br>
-      🌾 <b>农场偷菜：</b>切换到"农场"标签快速添加作物提醒
+    <div class="card-title">自定义分类</div>
+    <div id="cat-manage-list" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px">
+      <input id="new-cat-icon" placeholder="图标" style="width:60px"/>
+      <input id="new-cat-label" placeholder="分类名称" style="flex:1"/>
+      <button class="btn btn-sm btn-primary" style="width:auto" onclick="addCat()">添加</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">数据管理</div>
+    <div class="settings-row">
+      <div><div class="settings-label">清除已到期提醒</div></div>
+      <button class="btn btn-danger" onclick="clearDone()">清除</button>
+    </div>
+    <div class="settings-row">
+      <div><div class="settings-label">清除全部数据</div></div>
+      <button class="btn btn-danger" onclick="clearAll()">全部清除</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">使用说明</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.8">
+      📌 手机浏览器打开 → 添加到主屏幕 → 像App一样使用<br>
+      🔔 需开启浏览器通知权限并保持页面后台运行<br>
+      💾 数据存储在本地浏览器，不上传任何服务器<br>
+      ⏱ 时间输入支持：<b style="color:var(--green)">1h30m</b>、<b style="color:var(--green)">90</b>、<b style="color:var(--green)">2h</b> 等格式
     </p>
   </div>
-  <div style="text-align:center;font-size:12px;color:#ccc;padding:8px">生活提醒工具 v2.0</div>
+  <div style="text-align:center;font-size:12px;color:var(--text2);padding:8px;opacity:.5">FTools v3.0</div>
+</div>
+
+<!-- Crop Edit Modal -->
+<div class="modal-overlay" id="crop-modal" onclick="closeCropModal(event)">
+  <div class="modal">
+    <div class="modal-title">
+      编辑作物
+      <button class="modal-close" onclick="closeCropModalBtn()">✕</button>
+    </div>
+    <input type="hidden" id="edit-crop-idx"/>
+    <div class="row2">
+      <div class="form-row"><label>图标（Emoji）</label><input id="edit-crop-icon" placeholder="🥕"/></div>
+      <div class="form-row"><label>名称</label><input id="edit-crop-name" placeholder="萝卜"/></div>
+    </div>
+    <div class="row2">
+      <div class="form-row"><label>成熟时间</label><input id="edit-crop-time" placeholder="如：1h30m 或 90"/></div>
+      <div class="form-row"><label>单价（可选）</label><input id="edit-crop-price" placeholder="如：100金币"/></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveCropEdit()">保存</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== Data =====
-const CATS = [
-  {id:'farm',   label:'农场偷菜', icon:'🌾', color:'#43a047'},
-  {id:'health', label:'健康',     icon:'💊', color:'#e53935'},
-  {id:'work',   label:'工作',     icon:'💼', color:'#1e88e5'},
-  {id:'life',   label:'生活',     icon:'🏠', color:'#fb8c00'},
-  {id:'study',  label:'学习',     icon:'📚', color:'#8e24aa'},
-  {id:'food',   label:'饮食',     icon:'🍽️', color:'#00897b'},
-  {id:'sport',  label:'运动',     icon:'🏃', color:'#f4511e'},
-  {id:'other',  label:'其他',     icon:'📌', color:'#546e7a'},
+// ========== DEFAULT DATA ==========
+const DEFAULT_CATS = [
+  {id:'health',label:'健康',icon:'💊',color:'#ff4d6d'},
+  {id:'work',  label:'工作',icon:'💼',color:'#4cc9f0'},
+  {id:'life',  label:'生活',icon:'🏠',color:'#f77f00'},
+  {id:'study', label:'学习',icon:'📚',color:'#b5179e'},
+  {id:'food',  label:'饮食',icon:'🍽️',color:'#00d4aa'},
+  {id:'sport', label:'运动',icon:'🏃',color:'#f77f00'},
+  {id:'other', label:'其他',icon:'📌',color:'#8888aa'},
 ];
-
-const CROPS = [
-  {name:'萝卜',  icon:'🥕', min:5},
-  {name:'白菜',  icon:'🥬', min:10},
-  {name:'土豆',  icon:'🥔', min:30},
-  {name:'西红柿',icon:'🍅', min:60},
-  {name:'玉米',  icon:'🌽', min:120},
-  {name:'南瓜',  icon:'🎃', min:240},
-  {name:'草莓',  icon:'🍓', min:360},
-  {name:'西瓜',  icon:'🍉', min:480},
+const DEFAULT_CROPS = [
+  {icon:'🥕',name:'萝卜', min:5,   price:''},
+  {icon:'🥬',name:'白菜', min:10,  price:''},
+  {icon:'🥔',name:'土豆', min:30,  price:''},
+  {icon:'🍅',name:'西红柿',min:60, price:''},
+  {icon:'🌽',name:'玉米', min:120, price:''},
+  {icon:'🎃',name:'南瓜', min:240, price:''},
+  {icon:'🍓',name:'草莓', min:360, price:''},
+  {icon:'🍉',name:'西瓜', min:480, price:''},
 ];
+const SOUNDS = [
+  {id:'beep',   label:'系统提示音'},
+  {id:'bell',   label:'清脆铃声'},
+  {id:'chime',  label:'钟声'},
+  {id:'pop',    label:'气泡音'},
+  {id:'custom', label:'自定义铃声'},
+];
+const REPEAT_LABELS = {none:'不重复',daily:'每天',weekdays:'工作日',weekly:'每周',hourly:'每小时','30min':'每30分',custom:'自定义'};
 
-const REPEAT_LABELS = {none:'不重复',daily:'每天',weekdays:'每个工作日',weekly:'每周',hourly:'每小时','30min':'每30分钟',custom:'自定义间隔'};
-
+// ========== STATE ==========
 let state = {
   reminders: [],
-  settings: {sound:true, titleAlert:true}
+  cats: JSON.parse(JSON.stringify(DEFAULT_CATS)),
+  crops: JSON.parse(JSON.stringify(DEFAULT_CROPS)),
+  friends: [],
+  settings: {sound:true,titleAlert:true,selectedSound:'beep',customSoundData:null},
 };
-let selCat = 'life';
+let selCat = 'health';
+let selCropIdx = 0;
+let selPerson = '自己';
+let selFriend = '';
 let notified = new Set();
-let titleAlertActive = false;
+let audioCtx = null;
 
-// ===== Storage =====
-function save(){localStorage.setItem('lr_state', JSON.stringify(state))}
+// ========== STORAGE ==========
+function save(){try{localStorage.setItem('ft_v3',JSON.stringify(state))}catch(e){}}
 function load(){
   try{
-    const d = JSON.parse(localStorage.getItem('lr_state')||'{}');
-    if(d.reminders) state.reminders = d.reminders;
-    if(d.settings)  state.settings  = {...state.settings, ...d.settings};
+    const d=JSON.parse(localStorage.getItem('ft_v3')||'{}');
+    if(d.reminders) state.reminders=d.reminders;
+    if(d.cats)      state.cats=d.cats;
+    if(d.crops)     state.crops=d.crops;
+    if(d.friends)   state.friends=d.friends;
+    if(d.settings)  state.settings={...state.settings,...d.settings};
   }catch(e){}
 }
 
-// ===== Init =====
+// ========== INIT ==========
 load();
-initCats();
-initCropGrid();
-initSettings();
-render();
-setInterval(tick, 1000);
+setDefaultTime();
+renderAll();
+initSoundList();
+initCatManage();
 checkNotifPerm();
+setInterval(tick,1000);
 
-// ===== Time =====
+function renderAll(){renderCatChips();renderCropCarousel();renderFriendChips();renderRemindList();renderFarmList();renderCatManage();}
+
+// ========== CLOCK ==========
 function tick(){
-  const now = new Date();
-  document.getElementById('hdr-time').textContent = now.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const n=new Date();
+  const el=document.getElementById('hdr-time');
+  if(el) el.textContent=n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
   checkTriggers();
-  render();
+  renderRemindList();
+  renderFarmList();
 }
 
-// ===== Notification =====
+// ========== NOTIF ==========
 function checkNotifPerm(){
-  const p = typeof Notification !== 'undefined' ? Notification.permission : 'denied';
-  const b = document.getElementById('notif-banner');
-  if(p !== 'granted'){b.style.display='flex'}
-  else{b.style.display='none'}
-  document.getElementById('notif-status-text').textContent = p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝':'未开启';
+  const p=typeof Notification!=='undefined'?Notification.permission:'denied';
+  const b=document.getElementById('notif-banner');
+  if(b) b.style.display=p!=='granted'?'flex':'none';
+  const s=document.getElementById('notif-status-text');
+  if(s) s.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝（请在浏览器设置中允许）':'⚠️ 未开启';
 }
 async function reqNotif(){
   if(typeof Notification==='undefined'){showToast('当前浏览器不支持通知');return}
-  const p = await Notification.requestPermission();
+  const p=await Notification.requestPermission();
   checkNotifPerm();
-  if(p==='granted') showToast('🔔 通知已开启！');
-  else showToast('请在浏览器设置中允许通知');
+  showToast(p==='granted'?'🔔 通知已开启！':'请在浏览器设置中允许通知权限');
 }
-
-function notify(title, body){
-  if(state.settings.sound) playBeep();
-  if(Notification.permission==='granted'){
-    new Notification(title, {body, icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y="52" font-size="52">🔔</text></svg>'});
-  }
+function notify(title,body){
+  if(state.settings.sound) playSound();
+  if(Notification.permission==='granted') new Notification(title,{body});
   if(state.settings.titleAlert) flashTitle(title);
 }
+function flashTitle(msg){
+  let on=true,n=0,orig='FTools';
+  const iv=setInterval(()=>{
+    document.title=on?'❗ '+msg:orig;on=!on;n++;
+    if(n>20){clearInterval(iv);document.title=orig}// 20 flips ≈ 10s
+  },500);
+}
 
-function playBeep(){
+// ========== SOUND ==========
+function getAudioCtx(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+function playSound(){
+  const s=state.settings.selectedSound;
+  if(s==='custom'&&state.settings.customSoundData){
+    playCustomSound(state.settings.customSoundData);return;
+  }
   try{
-    const ctx = new(window.AudioContext||window.webkitAudioContext)();
-    [0,100,200].forEach(t=>{
-      const o=ctx.createOscillator(), g=ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.frequency.value=880; g.gain.setValueAtTime(.3,ctx.currentTime+t/1000);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t/1000+.2);
-      o.start(ctx.currentTime+t/1000); o.stop(ctx.currentTime+t/1000+.2);
-    });
+    const ctx=getAudioCtx();
+    if(s==='beep')  synthBeep(ctx,[880,1100,880]);
+    else if(s==='bell')  synthBeep(ctx,[1318,1568,1760],80);
+    else if(s==='chime') synthBeep(ctx,[523,659,784,1046],120);
+    else if(s==='pop')   synthPop(ctx);
+    else synthBeep(ctx,[880,1100,880]);
   }catch(e){}
 }
-
-function flashTitle(msg){
-  titleAlertActive = true;
-  let on=true, n=0;
-  const orig = '🔔 生活提醒工具';
-  const iv = setInterval(()=>{
-    document.title = on ? '❗ '+msg : orig;
-    on=!on; n++;
-    if(n>10){clearInterval(iv);document.title=orig;titleAlertActive=false}
-  },600);
+function synthBeep(ctx,freqs,dur=100){
+  freqs.forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.frequency.value=f;o.type='sine';
+    const t=ctx.currentTime+i*dur/1000;
+    g.gain.setValueAtTime(0.3,t);g.gain.exponentialRampToValueAtTime(0.001,t+dur/1000*0.9);
+    o.start(t);o.stop(t+dur/1000);
+  });
+}
+function synthPop(ctx){
+  const buf=ctx.createBuffer(1,ctx.sampleRate*0.1,ctx.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.02));
+  const s=ctx.createBufferSource();s.buffer=buf;s.connect(ctx.destination);s.start();
+}
+function playCustomSound(dataUrl){
+  try{const a=new Audio(dataUrl);a.play()}catch(e){}
+}
+function previewSound(id){
+  const tmp=state.settings.selectedSound;
+  state.settings.selectedSound=id;
+  playSound();
+  state.settings.selectedSound=tmp;
+}
+function initSoundList(){
+  const el=document.getElementById('sound-list');
+  if(!el) return;
+  el.innerHTML=SOUNDS.map(s=>`
+    <div class="sound-item ${state.settings.selectedSound===s.id?'sel':''}" onclick="selectSound('${s.id}')">
+      ${s.label} <span style="font-size:11px;opacity:.6" onclick="event.stopPropagation();previewSound('${s.id}')">▶</span>
+    </div>`).join('');
+}
+function selectSound(id){
+  if(id==='custom'&&!state.settings.customSoundData){showToast('请先上传自定义铃声');return}
+  state.settings.selectedSound=id;save();initSoundList();
+}
+function uploadSound(){
+  const f=document.getElementById('sound-upload').files[0];
+  if(!f) return;
+  if(f.size>5*1024*1024){showToast('文件不超过5MB');return}
+  const r=new FileReader();
+  r.onload=e=>{state.settings.customSoundData=e.target.result;state.settings.selectedSound='custom';save();initSoundList();showToast('✅ 铃声已上传');};
+  r.readAsDataURL(f);
 }
 
-// ===== Triggers =====
+// ========== TRIGGERS ==========
 function checkTriggers(){
-  const now = Date.now();
+  const now=Date.now();
   state.reminders.forEach(r=>{
-    if(r.done && r.repeat==='none') return;
-    const trigAt = r.triggerAt - (r.advance||0)*60000;
-    if(now >= trigAt && !notified.has(r.id)){
+    if(r.done&&r.repeat==='none') return;
+    const at=r.triggerAt-(r.advance||0)*60000;
+    if(now>=at&&!notified.has(r.id)){
       notified.add(r.id);
-      const cat = CATS.find(c=>c.id===r.cat)||CATS[7];
+      const cat=state.cats.find(c=>c.id===r.cat)||{icon:'📌'};
       notify(cat.icon+' '+r.title, r.note||'');
-      if(r.repeat && r.repeat!=='none') scheduleNext(r);
+      if(r.repeat&&r.repeat!=='none') scheduleNext(r);
     }
   });
   save();
 }
-
 function scheduleNext(r){
-  const now = Date.now();
+  const now=Date.now();
   let next;
-  if(r.repeat==='daily')    next = r.triggerAt + 86400000;
-  else if(r.repeat==='weekly') next = r.triggerAt + 7*86400000;
-  else if(r.repeat==='hourly') next = r.triggerAt + 3600000;
-  else if(r.repeat==='30min') next = r.triggerAt + 1800000;
-  else if(r.repeat==='custom') next = r.triggerAt + (r.interval||60)*60000;
-  else if(r.repeat==='weekdays'){
-    let d = new Date(r.triggerAt);
-    do{ d = new Date(d.getTime()+86400000) }while(d.getDay()===0||d.getDay()===6);
-    next = d.getTime();
+  if(r.repeat==='daily') next=r.triggerAt+86400000;
+  else if(r.repeat==='weekly') next=r.triggerAt+604800000;
+  else if(r.repeat==='hourly') next=r.triggerAt+3600000;
+  else if(r.repeat==='30min') next=r.triggerAt+1800000;
+  else if(r.repeat==='custom') next=r.triggerAt+(r.interval||60)*60000;
+  else if(r.repeat==='weekdays'){let d=new Date(r.triggerAt);do{d=new Date(d.getTime()+86400000)}while(d.getDay()===0||d.getDay()===6);next=d.getTime();}
+  if(next&&next>now){r.triggerAt=next;notified.delete(r.id);}
+}
+
+// ========== CATS ==========
+function renderCatChips(){
+  const el=document.getElementById('cat-chips');
+  if(!el) return;
+  el.innerHTML=state.cats.map(c=>`
+    <div class="cat-chip ${selCat===c.id?'sel':''}" style="color:${c.color}" onclick="selCatFn('${c.id}')">
+      ${c.icon} ${c.label}
+    </div>`).join('')+`<div class="cat-chip add-cat" onclick="switchTab('settings')" style="color:var(--text2)">＋</div>`;
+}
+function selCatFn(id){selCat=id;renderCatChips();}
+function renderCatManage(){
+  const el=document.getElementById('cat-manage-list');
+  if(!el) return;
+  el.innerHTML=state.cats.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:18px">${c.icon}</span>
+      <span style="flex:1;font-size:14px;color:var(--text)">${c.label}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeCat(${i})" ${i<7?'disabled style="opacity:.3"':''}>删除</button>
+    </div>`).join('');
+}
+function addCat(){
+  const icon=document.getElementById('new-cat-icon').value.trim()||'📌';
+  const label=document.getElementById('new-cat-label').value.trim();
+  if(!label){showToast('请填写分类名称');return}
+  const id='cat_'+Date.now();
+  const colors=['#ff4d6d','#4cc9f0','#f77f00','#b5179e','#00d4aa','#ffd60a'];
+  state.cats.push({id,label,icon,color:colors[state.cats.length%colors.length]});
+  document.getElementById('new-cat-icon').value='';
+  document.getElementById('new-cat-label').value='';
+  save();renderCatChips();renderCatManage();showToast('✅ 分类已添加');
+}
+function removeCat(i){
+  if(i<7){showToast('默认分类不可删除');return}
+  state.cats.splice(i,1);save();renderCatChips();renderCatManage();
+}
+function initCatManage(){renderCatManage();}
+
+// ========== FARM ==========
+function renderCropCarousel(){
+  const el=document.getElementById('crop-carousel');
+  if(!el) return;
+  el.innerHTML=state.crops.map((c,i)=>`
+    <div class="crop-card ${selCropIdx===i?'selected':''}" onclick="selectCrop(${i})">
+      <span class="crop-icon">${c.icon}</span>
+      <div class="crop-name">${c.name}</div>
+      <div class="crop-time">${fmtMin(c.min)}</div>
+      ${c.price?`<div class="crop-price">💰${c.price}</div>`:''}
+      <span class="crop-edit" onclick="event.stopPropagation();openCropEdit(${i})">✏️</span>
+    </div>`).join('')+`
+    <div class="custom-crop-form" onclick="document.getElementById('custom-crop-name').focus();switchTab('farm')">
+      <span style="font-size:24px">➕</span>自定义
+    </div>`;
+}
+function selectCrop(i){selCropIdx=i;renderCropCarousel();}
+function fmtMin(m){return m<60?m+'分钟':m%60===0?(m/60)+'小时':(Math.floor(m/60)+'小时'+m%60+'分')}
+
+function openCropEdit(i){
+  const c=state.crops[i];
+  document.getElementById('edit-crop-idx').value=i;
+  document.getElementById('edit-crop-icon').value=c.icon;
+  document.getElementById('edit-crop-name').value=c.name;
+  document.getElementById('edit-crop-time').value=fmtMin(c.min);
+  document.getElementById('edit-crop-price').value=c.price||'';
+  document.getElementById('crop-modal').classList.add('open');
+}
+function closeCropModal(e){if(e.target===document.getElementById('crop-modal')) closeCropModalBtn();}
+function closeCropModalBtn(){document.getElementById('crop-modal').classList.remove('open');}
+function saveCropEdit(){
+  const i=parseInt(document.getElementById('edit-crop-idx').value);
+  const timeStr=document.getElementById('edit-crop-time').value;
+  const min=parseTimeStr(timeStr);
+  if(!min){showToast('时间格式有误，如：1h30m 或 90');return}
+  state.crops[i]={
+    icon:document.getElementById('edit-crop-icon').value||state.crops[i].icon,
+    name:document.getElementById('edit-crop-name').value||state.crops[i].name,
+    min,price:document.getElementById('edit-crop-price').value.trim(),
+  };
+  save();renderCropCarousel();closeCropModalBtn();showToast('✅ 已保存');
+}
+
+// Parse time string: "1h30m", "90", "2h", "30m", "1小时30分"
+function parseTimeStr(s){
+  s=s.trim().toLowerCase().replace('小时','h').replace('分钟','m').replace('分','m').replace('时','h');
+  if(!s) return 0;
+  const hm=s.match(/(\d+\.?\d*)h(?:(\d+\.?\d*)m)?/);
+  if(hm) return Math.round(parseFloat(hm[1])*60+(parseFloat(hm[2])||0));
+  const mo=s.match(/^(\d+\.?\d*)m?$/);
+  if(mo) return Math.round(parseFloat(mo[1]));
+  return 0;
+}
+function setCustomTime(str){document.getElementById('custom-crop-time-str').value=str;}
+
+// Person selector
+function selectPerson(el){
+  document.querySelectorAll('.person-opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  selPerson=el.dataset.val;
+  document.getElementById('friend-area').style.display=selPerson==='好友'?'block':'none';
+}
+function renderFriendChips(){
+  const el=document.getElementById('friend-chips');
+  if(!el) return;
+  el.innerHTML=state.friends.map(f=>`
+    <div class="friend-chip ${selFriend===f?'sel':''}" onclick="selectFriend('${f}')">${f}</div>`).join('');
+}
+function selectFriend(name){selFriend=name;renderFriendChips();}
+function addFriend(){
+  const v=document.getElementById('new-friend-input').value.trim();
+  if(!v) return;
+  if(!state.friends.includes(v)) state.friends.push(v);
+  selFriend=v;
+  document.getElementById('new-friend-input').value='';
+  save();renderFriendChips();
+}
+
+function addFarmReminder(){
+  let owner;
+  if(selPerson==='自己') owner='自己';
+  else{
+    if(!selFriend){showToast('请选择或添加好友');return}
+    owner=selFriend;
   }
-  if(next && next > now){
-    r.triggerAt = next;
-    notified.delete(r.id);
+  const timeVal=document.getElementById('farm-planted-at').value;
+  const planted=timeVal?new Date(timeVal).getTime():Date.now();
+
+  // Check custom crop first
+  const cName=document.getElementById('custom-crop-name').value.trim();
+  const cTimeStr=document.getElementById('custom-crop-time-str').value.trim();
+  const cPrice=document.getElementById('custom-crop-price').value.trim();
+
+  let cropName,cropMin,cropPrice='';
+  if(cName&&cTimeStr){
+    cropMin=parseTimeStr(cTimeStr);
+    if(!cropMin){showToast('时间格式有误，如：1h30m 或 90');return}
+    cropName=cName;cropPrice=cPrice;
+    // Save to crops list
+    state.crops.push({icon:'🌿',name:cropName,min:cropMin,price:cropPrice});
+    save();renderCropCarousel();
+    document.getElementById('custom-crop-name').value='';
+    document.getElementById('custom-crop-time-str').value='';
+    document.getElementById('custom-crop-price').value='';
+  } else {
+    const c=state.crops[selCropIdx];
+    cropName=c.name;cropMin=c.min;cropPrice=c.price||'';
   }
+
+  const r={
+    id:Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    cat:'farm',
+    title:owner==='自己'?'我的'+cropName:owner+'的'+cropName,
+    note:(owner==='自己'?'自己的菜熟了！':('去偷 '+owner+' 的菜！'))+(cropPrice?' 💰'+cropPrice:''),
+    triggerAt:planted+cropMin*60000,plantedAt:planted,
+    repeat:'none',advance:0,done:false,
+  };
+  state.reminders.push(r);save();
+  showToast(`🌱 已添加 ${r.title}（${fmtMin(cropMin)}后成熟）`);
+  // Reset person to 自己
+  document.querySelectorAll('.person-opt').forEach(e=>e.classList.remove('sel'));
+  document.querySelector('.person-opt[data-val="自己"]').classList.add('sel');
+  selPerson='自己';selFriend='';
+  document.getElementById('friend-area').style.display='none';
+  document.getElementById('farm-planted-at').value='';
+  renderFarmList();
 }
 
-// ===== UI Init =====
-function initCats(){
-  const wrap = document.getElementById('cat-chips');
-  wrap.innerHTML = '';
-  CATS.forEach(c=>{
-    const el = document.createElement('div');
-    el.className = 'cat'+(c.id===selCat?' sel':'');
-    el.style.background = c.id===selCat ? c.color+'22':'#f5f5f5';
-    el.style.color = c.color;
-    el.textContent = c.icon+' '+c.label;
-    el.onclick = ()=>{ selCat=c.id; initCats(); };
-    wrap.appendChild(el);
-  });
+// ========== GENERAL REMINDER ==========
+document.getElementById('r-repeat').addEventListener('change',function(){
+  document.getElementById('custom-interval-row').style.display=this.value==='custom'?'flex':'none';
+});
+function addReminder(){
+  const title=document.getElementById('r-title').value.trim();
+  const timeVal=document.getElementById('r-time').value;
+  if(!title){showToast('请填写提醒标题');return}
+  if(!timeVal){showToast('请选择提醒时间');return}
+  const r={
+    id:Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    cat:selCat,title,
+    note:document.getElementById('r-note').value.trim(),
+    triggerAt:new Date(timeVal).getTime(),
+    plantedAt:Date.now(),
+    repeat:document.getElementById('r-repeat').value,
+    interval:parseInt(document.getElementById('r-interval').value)||60,
+    advance:parseInt(document.getElementById('r-advance').value)||0,
+    done:false,
+  };
+  state.reminders.push(r);save();
+  showToast('✅ 提醒已保存！');
+  document.getElementById('r-title').value='';
+  document.getElementById('r-note').value='';
+  setDefaultTime();
+  switchTab('remind');
 }
 
-function initCropGrid(){
-  const wrap = document.getElementById('crop-grid');
-  wrap.innerHTML = '';
-  CROPS.forEach(c=>{
-    const el = document.createElement('button');
-    el.className = 'crop-btn';
-    el.innerHTML = `<span>${c.icon}</span>${c.name}<br><small style="color:#aaa">${c.min<60?c.min+'分':c.min/60+'小时'}</small>`;
-    el.onclick = ()=> quickAddCrop(c);
-    wrap.appendChild(el);
-  });
+// ========== RENDER LISTS ==========
+function renderRemindList(){
+  const now=Date.now();
+  const el=document.getElementById('remind-list');
+  if(!el) return;
+  const items=state.reminders.filter(r=>r.cat!=='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
+  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">⏰</div>还没有提醒，去"添加"创建吧</div>';return}
+  const active=items.filter(r=>r.triggerAt>=now||r.repeat!=='none');
+  const done=items.filter(r=>r.triggerAt<now&&r.repeat==='none');
+  let html='';
+  if(active.length) html+='<div class="sec-label">进行中</div>'+active.map(r=>itemHtml(r,now)).join('');
+  if(done.length)   html+='<div class="sec-label">已到期</div>'+done.map(r=>itemHtml(r,now)).join('');
+  el.innerHTML=html;
+}
+function renderFarmList(){
+  const now=Date.now();
+  const el=document.getElementById('farm-list');
+  if(!el) return;
+  const items=state.reminders.filter(r=>r.cat==='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
+  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">🌾</div>还没有农场提醒</div>';return}
+  el.innerHTML='<div class="sec-label">我的农场</div>'+items.map(r=>itemHtml(r,now)).join('');
+}
+function itemHtml(r,now){
+  const cat=state.cats.find(c=>c.id===r.cat)||{icon:'📌',color:'#8888aa'};
+  const rem=r.triggerAt-now;
+  const mature=rem<=0;
+  const soon=rem>0&&rem<600000;
+  const pct=r.plantedAt?Math.min(100,Math.max(0,(now-r.plantedAt)/(r.triggerAt-r.plantedAt)*100)):mature?100:0;
+  const barColor=mature?'var(--yellow)':cat.color||'var(--green)';
+  return `<div class="item ${mature?'mature':soon?'soon':''}">
+    <div class="item-row">
+      <div class="item-body">
+        <div class="item-top-row">
+          <span class="item-emoji">${r.cat==='farm'?'🌾':cat.icon}</span>
+          <span class="item-title">${r.title}</span>
+        </div>
+        ${r.note?`<div class="item-meta">${r.note}</div>`:''}
+        <div class="item-meta">🕐 ${new Date(r.triggerAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        ${r.repeat&&r.repeat!=='none'?`<div class="item-meta">🔄 ${REPEAT_LABELS[r.repeat]||''}</div>`:''}
+        <div class="item-cd ${mature?'done':''}">${mature?'⚡ 立刻行动！':fmtCountdown(rem)}</div>
+        <div class="progress"><div class="progress-bar" style="width:${pct}%;background:${barColor}"></div></div>
+      </div>
+      <button class="del-btn" onclick="removeItem('${r.id}')">🗑</button>
+    </div>
+  </div>`;
+}
+function removeItem(id){state.reminders=state.reminders.filter(r=>r.id!==id);notified.delete(id);save();}
+
+// ========== SETTINGS ==========
+function toggleS(key){state.settings[key]=!state.settings[key];save();
+  document.getElementById('toggle-'+({sound:'sound',titleAlert:'title'}[key])).className='toggle'+(state.settings[key]?' on':'');
 }
 
-function initSettings(){
-  document.getElementById('toggle-sound').className = 'toggle'+(state.settings.sound?' on':'');
-  document.getElementById('toggle-title').className = 'toggle'+(state.settings.titleAlert?' on':'');
+// ========== HELPERS ==========
+function fmtCountdown(ms){
+  if(ms<=0) return '已到期';
+  const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
+  if(h>0) return h+'小时'+m+'分'+sc+'秒';
+  if(m>0) return m+'分'+sc+'秒';
+  return sc+'秒';
 }
-
-// ===== Tab switching =====
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   document.getElementById('page-'+name).classList.add('active');
-  if(name==='remind'||name==='farm') render();
 }
-
-// ===== Render =====
-function render(){
-  renderRemindList();
-  renderFarmList();
+function setDefaultTime(){
+  const d=new Date(Date.now()+3600000);
+  const f=d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':'+p2(d.getMinutes());
+  const el=document.getElementById('r-time');if(el) el.value=f;
 }
+function p2(n){return String(n).padStart(2,'0')}
 
-function renderRemindList(){
-  const now = Date.now();
-  const el = document.getElementById('remind-list');
-  const items = state.reminders.filter(r=>r.cat!=='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
-  if(!items.length){ el.innerHTML='<div class="empty"><div>⏰</div>还没有提醒，去"添加"创建吧</div>'; return; }
-
-  const active=items.filter(r=>r.triggerAt>=now||r.repeat!=='none');
-  const done=items.filter(r=>r.triggerAt<now&&r.repeat==='none');
-
-  let html='';
-  if(active.length){ html+='<div class="sec-label">进行中</div>'+active.map(r=>itemHtml(r,now)).join(''); }
-  if(done.length){   html+='<div class="sec-label">已到期</div>'+done.map(r=>itemHtml(r,now)).join(''); }
-  el.innerHTML = html;
-}
-
-function renderFarmList(){
-  const now = Date.now();
-  const el = document.getElementById('farm-list');
-  const items = state.reminders.filter(r=>r.cat==='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
-  if(!items.length){ el.innerHTML='<div class="empty"><div>🌾</div>还没有农场提醒</div>'; return; }
-  el.innerHTML = items.map(r=>itemHtml(r,now)).join('');
-}
-
-function itemHtml(r, now){
-  const cat = CATS.find(c=>c.id===r.cat)||CATS[7];
-  const remaining = r.triggerAt - now;
-  const mature = remaining <= 0;
-  const soon = remaining > 0 && remaining < 600000; // <10min
-  const pct = r.plantedAt ? Math.min(100,Math.max(0,(now-r.plantedAt)/(r.triggerAt-r.plantedAt)*100)) : (mature?100:0);
-  const cls = mature?'mature':soon?'soon':'';
-
-  return `<div class="item ${cls}" style="border-left-color:${cat.color}">
-    <div class="item-top">
-      <div class="item-info">
-        <div class="item-title">${cat.icon} ${r.title}</div>
-        ${r.note?`<div class="item-sub">${r.note}</div>`:''}
-        <div class="item-sub">🕐 ${new Date(r.triggerAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-        ${r.repeat&&r.repeat!=='none'?`<div class="repeat-info">🔄 ${REPEAT_LABELS[r.repeat]||'自定义'}</div>`:''}
-        <div class="item-countdown ${mature?'done':''}">${mature?'⚡ 立即去做！':formatCountdown(remaining)}</div>
-        <div class="progress"><div class="progress-bar" style="width:${pct}%;background:${mature?'#fdd835':cat.color}"></div></div>
-      </div>
-      <button class="btn-icon" onclick="removeItem('${r.id}')">🗑️</button>
-    </div>
-  </div>`;
-}
-
-// ===== Add Reminder =====
-document.getElementById('r-repeat').addEventListener('change',function(){
-  document.getElementById('custom-interval-row').style.display = this.value==='custom'?'flex':'none';
-});
-
-function addReminder(){
-  const title = document.getElementById('r-title').value.trim();
-  const timeVal = document.getElementById('r-time').value;
-  if(!title){ showToast('请填写提醒标题'); return; }
-  if(!timeVal){ showToast('请选择提醒时间'); return; }
-
-  const r = {
-    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
-    cat: selCat,
-    title,
-    note: document.getElementById('r-note').value.trim(),
-    triggerAt: new Date(timeVal).getTime(),
-    plantedAt: Date.now(),
-    repeat: document.getElementById('r-repeat').value,
-    interval: parseInt(document.getElementById('r-interval').value)||60,
-    advance: parseInt(document.getElementById('r-advance').value)||0,
-    done: false,
-  };
-  r.triggerAt -= r.advance*60000; // adjust for advance
-
-  state.reminders.push(r);
-  save();
-  showToast('✅ 提醒已保存！');
-  document.getElementById('r-title').value='';
-  document.getElementById('r-note').value='';
-  document.getElementById('r-time').value='';
-  switchTab('remind');
-}
-
-// ===== Add Farm =====
-function quickAddCrop(crop){
-  const owner = document.getElementById('farm-owner').value.trim();
-  if(!owner){ showToast('请填写好友昵称'); return; }
-  const timeVal = document.getElementById('farm-time').value;
-  const planted = timeVal ? new Date(timeVal).getTime() : Date.now();
-  const triggerAt = planted + crop.min*60000;
-  const r = {
-    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
-    cat:'farm',
-    title: owner+'的'+crop.name,
-    note: owner==='自己'||owner==='我'?'该偷别人的了！':'去偷菜！',
-    triggerAt, plantedAt:planted,
-    repeat:'none', advance:0, done:false,
-  };
-  state.reminders.push(r);
-  save();
-  showToast(`🌱 已添加 ${owner} 的${crop.name}提醒（${crop.min<60?crop.min+'分钟':crop.min/60+'小时'}后成熟）`);
-  render();
-}
-
-function addFarm(){
-  const owner = document.getElementById('farm-owner').value.trim();
-  const name  = document.getElementById('farm-custom-name').value.trim();
-  const minVal = parseInt(document.getElementById('farm-custom-min').value)||0;
-  if(!owner){ showToast('请填写好友昵称'); return; }
-  if(!name || !minVal){ showToast('请填写作物名称和时间'); return; }
-  const timeVal = document.getElementById('farm-time').value;
-  const planted = timeVal ? new Date(timeVal).getTime() : Date.now();
-  const r = {
-    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
-    cat:'farm', title:owner+'的'+name, note:'去偷菜！',
-    triggerAt:planted+minVal*60000, plantedAt:planted,
-    repeat:'none', advance:0, done:false,
-  };
-  state.reminders.push(r);
-  save();
-  showToast(`🌱 已添加 ${owner} 的${name}提醒`);
-  document.getElementById('farm-custom-name').value='';
-  document.getElementById('farm-custom-min').value='';
-  render();
-}
-
-// ===== Remove =====
-function removeItem(id){
-  state.reminders = state.reminders.filter(r=>r.id!==id);
-  notified.delete(id);
-  save(); render();
-}
-
-// ===== Settings =====
-function toggleSound(){
-  state.settings.sound = !state.settings.sound;
-  initSettings(); save();
-  showToast(state.settings.sound?'🔊 声音已开启':'🔇 声音已关闭');
-}
-function toggleTitleAlert(){
-  state.settings.titleAlert = !state.settings.titleAlert;
-  initSettings(); save();
-}
 function clearDone(){
-  if(!confirm('清除所有已到期的提醒？')) return;
+  if(!confirm('清除所有已到期提醒？')) return;
   const now=Date.now();
-  state.reminders = state.reminders.filter(r=>r.triggerAt>=now||r.repeat!=='none');
-  save(); render(); showToast('✅ 已清除');
+  state.reminders=state.reminders.filter(r=>r.triggerAt>=now||r.repeat!=='none');
+  save();showToast('✅ 已清除');
 }
 function clearAll(){
-  if(!confirm('确定要清除所有数据？此操作不可恢复！')) return;
-  state.reminders=[];
-  save(); render(); showToast('✅ 已全部清除');
+  if(!confirm('确定清除所有数据？不可恢复！')) return;
+  state.reminders=[];save();showToast('✅ 已清除');
 }
-
-// ===== Helpers =====
-function formatCountdown(ms){
-  if(ms<=0) return '已到期';
-  const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
-  if(h>0) return h+'小时'+m+'分'+sec+'秒';
-  if(m>0) return m+'分'+sec+'秒';
-  return sec+'秒';
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// Set default time to now+1h
-(function setDefaultTime(){
-  const d=new Date(Date.now()+3600000);
-  const fmt=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());
-  document.getElementById('r-time').value=fmt;
-  document.getElementById('farm-time').value='';
-  function p(n){return String(n).padStart(2,'0')}
-})();
 </script>
 </body>
 </html>
