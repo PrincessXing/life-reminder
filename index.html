@@ -20,41 +20,27 @@
   --shadow:0 4px 24px rgba(0,0,0,.5);--radius:18px;--radius-sm:12px;
 }
 @media(prefers-color-scheme:light){
-  :root{
-    --bg:#f0f7f0;--bg2:#e2f0e2;--bg3:#fff;--card:#fff;
-    --text:#1a2e1a;--text2:#5a8a5a;--border:#c8e0c8;
-    --shadow:0 4px 24px rgba(0,100,0,.1);
-  }
+  :root{--bg:#f0f7f0;--bg2:#e2f0e2;--bg3:#fff;--card:#fff;--text:#1a2e1a;--text2:#5a8a5a;--border:#c8e0c8;--shadow:0 4px 24px rgba(0,100,0,.1)}
 }
 body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro Display','PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 ::-webkit-scrollbar-track{background:transparent}
-
-/* Header */
 .hdr{background:var(--bg2);padding:env(safe-area-inset-top,0) 20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
 .hdr-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0 10px}
 .hdr-logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;box-shadow:0 0 16px rgba(61,186,111,.4);letter-spacing:-1px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;box-shadow:0 0 16px rgba(61,186,111,.4)}
 .hdr h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--green2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
 .hdr-time{font-size:11px;color:var(--text2)}
-
-/* Tabs */
 .tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:61px;z-index:99}
 .tab{flex:1;padding:9px 4px 7px;text-align:center;font-size:10px;font-weight:700;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;letter-spacing:.5px}
 .tab.active{color:var(--green);border-bottom-color:var(--green)}
 .tab-icon{font-size:19px;display:block;margin-bottom:1px}
-
-/* Pages */
 .page{display:none;padding:14px 14px 100px;max-width:560px;margin:0 auto}
 .page.active{display:block}
-
-/* Cards */
 .card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border:1px solid var(--border)}
 .card-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
 .card-title::before{content:'';width:3px;height:13px;background:linear-gradient(var(--green),var(--green2));border-radius:2px;flex-shrink:0}
-
-/* Form */
 .form-row{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
 .form-row label{font-size:12px;color:var(--text2);font-weight:500}
 input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;font-size:14px;color:var(--text);font-family:inherit;outline:none;transition:.2s;-webkit-appearance:none;appearance:none}
@@ -62,40 +48,37 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0
 select option{background:var(--bg2);color:var(--text)}
 textarea{resize:vertical;min-height:65px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
-/* Buttons */
 .btn{border:none;border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:linear-gradient(135deg,var(--green3),var(--green));color:#fff;width:100%;font-weight:800;box-shadow:0 4px 16px rgba(61,186,111,.3)}
 .btn-danger{background:rgba(255,90,90,.1);color:var(--red);padding:7px 14px;font-size:12px;border-radius:10px;border:1px solid rgba(255,90,90,.25)}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
-
-/* Notif bar */
 .notif-bar{background:linear-gradient(135deg,rgba(255,212,96,.12),rgba(255,159,74,.1));border:1px solid rgba(255,212,96,.3);border-radius:14px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .notif-bar span{font-size:13px}
 .notif-bar .btn{padding:6px 14px;font-size:12px;background:var(--yellow);color:#333;font-weight:700;width:auto;border-radius:8px}
-
-/* ===== FARM CROP CAROUSEL ===== */
+/* SW status bar */
+.sw-bar{border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:12px;border:1px solid}
+.sw-bar.ok{background:rgba(61,186,111,.1);border-color:rgba(61,186,111,.3);color:var(--green)}
+.sw-bar.warn{background:rgba(255,212,96,.1);border-color:rgba(255,212,96,.3);color:var(--yellow)}
+.sw-bar.err{background:rgba(255,90,90,.1);border-color:rgba(255,90,90,.3);color:var(--red)}
+/* Crop carousel */
 .crop-carousel-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .crop-carousel-wrap::-webkit-scrollbar{display:none}
 .crop-carousel{display:flex;gap:9px;width:max-content;padding-right:16px}
 .crop-card{scroll-snap-align:start;background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:12px 10px;width:105px;flex-shrink:0;cursor:pointer;transition:.2s;text-align:center;position:relative}
-.crop-card:active,.crop-card:hover{transform:scale(.97)}
+.crop-card:active{transform:scale(.96)}
 .crop-card.sel{border-color:var(--green);background:rgba(61,186,111,.1);box-shadow:0 0 12px rgba(61,186,111,.2)}
 .crop-icon{font-size:30px;display:block;margin-bottom:5px}
 .crop-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
 .crop-dur{font-size:11px;color:var(--text2)}
 .crop-price-lbl{font-size:11px;color:var(--yellow);margin-top:2px}
-.crop-edit-btn{position:absolute;top:5px;right:5px;font-size:11px;opacity:.45;background:none;border:none;cursor:pointer;padding:2px}
+.crop-edit-btn{position:absolute;top:5px;right:5px;font-size:11px;opacity:.4;background:none;border:none;cursor:pointer;padding:2px}
 .crop-add-card{scroll-snap-align:start;background:transparent;border:1.5px dashed var(--border);border-radius:16px;padding:12px 10px;width:105px;flex-shrink:0;cursor:pointer;text-align:center;color:var(--text2);transition:.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px}
 .crop-add-card:hover{border-color:var(--green);color:var(--green)}
-
-/* Crop categories */
 .crop-cat-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;scrollbar-width:none;padding-bottom:2px}
 .crop-cat-tabs::-webkit-scrollbar{display:none}
 .crop-cat-tab{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);color:var(--text2);cursor:pointer;transition:.2s;background:var(--bg2)}
 .crop-cat-tab.active{border-color:var(--green);color:var(--green);background:rgba(61,186,111,.1)}
-
 /* Modal */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
@@ -103,22 +86,16 @@ textarea{resize:vertical;min-height:65px}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-hd{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
 .modal-close{font-size:18px;cursor:pointer;color:var(--text2);background:var(--bg2);border:none;width:30px;height:30px;border-radius:50%}
-
-/* Person selector */
+/* Person */
 .person-sel{display:flex;gap:8px;margin-bottom:10px}
 .person-opt{flex:1;padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:.2s}
 .person-opt.sel{border-color:var(--green);color:var(--green);background:rgba(61,186,111,.1)}
-
-/* Friend chips */
 .friend-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .friend-chip{padding:5px 12px;border-radius:20px;font-size:12px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;transition:.2s}
 .friend-chip.sel{border-color:var(--green);color:var(--green)}
-
-/* Time shortcuts */
 .time-shortcuts{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
 .tsc{padding:5px 10px;border-radius:8px;font-size:12px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:.15s}
 .tsc:hover{border-color:var(--green);color:var(--green)}
-
 /* Items */
 .item{background:var(--card);border-radius:var(--radius);padding:14px;border:1px solid var(--border);margin-bottom:9px;position:relative;overflow:hidden}
 .item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--green)}
@@ -137,20 +114,12 @@ textarea{resize:vertical;min-height:65px}
 .progress{height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:7px}
 .progress-bar{height:100%;border-radius:2px;transition:width 1s linear}
 .del-btn{background:rgba(255,90,90,.1);border:none;color:var(--red);font-size:15px;width:30px;height:30px;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-
-/* Category chips */
 .cats{display:flex;flex-wrap:wrap;gap:6px}
 .cat-chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);background:var(--bg2);transition:.2s}
 .cat-chip.sel{border-color:currentColor}
-
-/* Section label */
 .sec-label{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1.5px;margin:14px 0 7px 3px;text-transform:uppercase}
-
-/* Empty */
 .empty{text-align:center;padding:44px 20px;color:var(--text2)}
 .empty-icon{font-size:44px;margin-bottom:10px;opacity:.4}
-
-/* Settings */
 .srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
 .srow:last-child{border:none}
 .slabel{font-size:14px;color:var(--text);font-weight:500}
@@ -159,20 +128,12 @@ textarea{resize:vertical;min-height:65px}
 .toggle.on{background:var(--green);border-color:var(--green)}
 .toggle::after{content:'';width:19px;height:19px;background:#fff;border-radius:50%;position:absolute;top:2px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .toggle.on::after{left:24px}
-
-/* Sound picker */
 .sound-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
 .sound-item{padding:7px 13px;border-radius:10px;font-size:12px;background:var(--bg2);border:1.5px solid var(--border);color:var(--text2);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
 .sound-item.sel{border-color:var(--green);color:var(--green);background:rgba(61,186,111,.1)}
-.sound-play{font-size:10px;opacity:.6;margin-left:2px}
-
-/* Export/Import */
 .export-area{background:var(--bg2);border-radius:10px;padding:10px;font-size:11px;color:var(--text2);word-break:break-all;max-height:80px;overflow-y:auto;border:1px solid var(--border);margin-top:8px}
-
-/* Toast */
 .toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg3);color:var(--text);padding:10px 20px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap;border:1px solid var(--border);box-shadow:var(--shadow)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 @media(max-width:360px){.row2{grid-template-columns:1fr}}
 </style>
 </head>
@@ -195,16 +156,17 @@ textarea{resize:vertical;min-height:65px}
   <div class="tab" onclick="goTab('settings')" id="tab-settings"><span class="tab-icon">⚙️</span>设置</div>
 </div>
 
-<!-- ===== 提醒页 ===== -->
+<!-- 提醒页 -->
 <div class="page active" id="page-remind">
   <div id="notif-banner" class="notif-bar" style="display:none">
     <span>🔔 开启通知接收到期提醒</span>
     <button class="btn" onclick="reqNotif()">开启</button>
   </div>
+  <div id="sw-status"></div>
   <div id="remind-list"></div>
 </div>
 
-<!-- ===== 农场页 ===== -->
+<!-- 农场页 -->
 <div class="page" id="page-farm">
   <div class="card">
     <div class="card-title">偷谁的菜</div>
@@ -220,15 +182,11 @@ textarea{resize:vertical;min-height:65px}
       </div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title">选择作物 <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text2)">← 左右滑动 · ✏️编辑</span></div>
+    <div class="card-title">选择作物 <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text2)">← 滑动 · ✏️编辑</span></div>
     <div class="crop-cat-tabs" id="crop-cat-tabs"></div>
-    <div class="crop-carousel-wrap">
-      <div class="crop-carousel" id="crop-carousel"></div>
-    </div>
+    <div class="crop-carousel-wrap"><div class="crop-carousel" id="crop-carousel"></div></div>
   </div>
-
   <div class="card">
     <div class="card-title">自定义作物</div>
     <div class="row2">
@@ -248,19 +206,15 @@ textarea{resize:vertical;min-height:65px}
       <div class="tsc" onclick="setCC('24h')">1天</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">种植时间</div>
-    <div class="form-row"><label>留空 = 现在种植</label>
-      <input id="farm-plant-at" type="datetime-local"/>
-    </div>
+    <div class="form-row"><label>留空 = 现在种植</label><input id="farm-plant-at" type="datetime-local"/></div>
     <button class="btn btn-primary" onclick="addFarmTask()">🌱 添加偷菜提醒</button>
   </div>
-
   <div id="farm-list"></div>
 </div>
 
-<!-- ===== 添加页 ===== -->
+<!-- 添加页 -->
 <div class="page" id="page-add">
   <div class="card">
     <div class="card-title">分类</div>
@@ -270,7 +224,10 @@ textarea{resize:vertical;min-height:65px}
     <div class="card-title">提醒内容</div>
     <div class="form-row"><label>标题</label><input id="r-title" placeholder="喝水、吃药、开会..."/></div>
     <div class="form-row"><label>备注（可选）</label><textarea id="r-note" placeholder="详细说明..."></textarea></div>
-    <div class="form-row"><label>提醒时间</label><input id="r-time" type="datetime-local"/></div>
+    <div class="form-row">
+      <label>提醒时间 <span style="color:var(--green);font-size:11px">（北京时间）</span></label>
+      <input id="r-time" type="datetime-local"/>
+    </div>
     <div class="row2">
       <div class="form-row"><label>重复</label>
         <select id="r-repeat">
@@ -283,7 +240,7 @@ textarea{resize:vertical;min-height:65px}
           <option value="custom">自定义</option>
         </select>
       </div>
-      <div class="form-row"><label>提前</label>
+      <div class="form-row"><label>提前提醒</label>
         <select id="r-advance">
           <option value="0">准时</option>
           <option value="5">5分钟前</option>
@@ -302,41 +259,39 @@ textarea{resize:vertical;min-height:65px}
   </div>
 </div>
 
-<!-- ===== 设置页 ===== -->
+<!-- 设置页 -->
 <div class="page" id="page-settings">
   <div class="card">
     <div class="card-title">通知</div>
     <div class="srow">
-      <div><div class="slabel">浏览器通知</div><div class="ssub" id="notif-txt">未开启</div></div>
+      <div><div class="slabel">浏览器通知权限</div><div class="ssub" id="notif-txt">检测中...</div></div>
       <button class="btn btn-primary" style="width:auto;padding:8px 14px;font-size:12px" onclick="reqNotif()">开启</button>
     </div>
     <div class="srow">
-      <div><div class="slabel">声音提醒</div><div class="ssub">到期播放提示音</div></div>
+      <div><div class="slabel">声音提醒</div><div class="ssub">到期时播放铃声</div></div>
       <div class="toggle on" id="tog-sound" onclick="togS('sound')"></div>
     </div>
     <div class="srow">
-      <div><div class="slabel">标题闪烁提醒</div><div class="ssub">到期时标题闪烁 10 秒</div></div>
+      <div><div class="slabel">页面标题闪烁</div><div class="ssub">到期时标题闪烁 10 秒</div></div>
       <div class="toggle on" id="tog-title" onclick="togS('titleAlert')"></div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title">铃声选择</div>
+    <div class="card-title">铃声选择 <span style="font-size:10px;font-weight:400;text-transform:none">点 ▶ 试听</span></div>
     <div class="sound-list" id="sound-list"></div>
-    <div class="form-row" style="margin-top:10px">
-      <label>上传自定义铃声（MP3/WAV/OGG，≤5MB）</label>
+    <div class="form-row" style="margin-top:12px">
+      <label>上传自定义铃声（MP3 / WAV / OGG，≤ 5MB）</label>
       <input type="file" id="sound-file" accept="audio/*" onchange="uploadSound()" style="font-size:12px;padding:8px"/>
     </div>
     <div class="form-row">
       <label>重复播放次数</label>
-      <select id="sound-repeat-count">
+      <select id="sound-repeat-count" onchange="saveRepeatCount()">
         <option value="1">播放 1 次</option>
-        <option value="2" selected>播放 2 次</option>
+        <option value="2">播放 2 次</option>
         <option value="3">播放 3 次</option>
       </select>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">自定义分类</div>
     <div id="cat-manage"></div>
@@ -346,10 +301,9 @@ textarea{resize:vertical;min-height:65px}
       <button class="btn btn-sm btn-primary" style="width:auto" onclick="addCat()">添加</button>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">数据备份 / 迁移</div>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">导出数据后，换设备或更新代码后可直接导入，提醒不丢失</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">更新代码前先导出，新版部署后导入即可恢复全部提醒</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-primary" style="flex:1;min-width:100px" onclick="exportData()">📤 导出数据</button>
       <button class="btn" style="flex:1;min-width:100px;background:var(--bg2);border:1px solid var(--border);color:var(--text)" onclick="triggerImport()">📥 导入数据</button>
@@ -357,7 +311,6 @@ textarea{resize:vertical;min-height:65px}
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData()"/>
     <div id="export-preview" class="export-area" style="display:none"></div>
   </div>
-
   <div class="card">
     <div class="card-title">数据管理</div>
     <div class="srow">
@@ -369,18 +322,18 @@ textarea{resize:vertical;min-height:65px}
       <button class="btn btn-danger" onclick="clearAll()">全部清除</button>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">使用说明</div>
-    <p style="font-size:12px;color:var(--text2);line-height:1.85">
-      📌 手机浏览器 → 添加到主屏幕 → 像App一样用<br>
-      🔔 需开启浏览器通知并保持页面后台运行<br>
-      💾 换设备或更新代码前请先"导出数据"备份<br>
-      ⏱ 时间格式：<b style="color:var(--green)">1h30m</b>、<b style="color:var(--green)">90</b>、<b style="color:var(--green)">2h</b><br>
-      🌗 自动跟随系统深色/浅色模式切换
+    <p style="font-size:12px;color:var(--text2);line-height:1.9">
+      📌 手机浏览器 → <b style="color:var(--text)">添加到主屏幕</b> → 像App一样用<br>
+      🔔 开启通知权限 + 安装 Service Worker 后，<b style="color:var(--green)">关闭页面也能收到提醒</b><br>
+      ⚠️ iOS Safari 需将页面<b style="color:var(--text)">添加到主屏幕</b>后才支持后台通知<br>
+      💾 换设备/更新代码前先「导出数据」备份<br>
+      ⏱ 时间格式：<b style="color:var(--green)">1h30m</b>、<b style="color:var(--green)">90</b>、<b style="color:var(--green)">2h</b>、<b style="color:var(--green)">1d</b><br>
+      🌗 自动跟随系统深色/浅色模式
     </p>
   </div>
-  <div style="text-align:center;font-size:11px;color:var(--text2);padding:8px;opacity:.4">FTools v4.0</div>
+  <div style="text-align:center;font-size:11px;color:var(--text2);padding:8px;opacity:.4">FTools v5.0</div>
 </div>
 
 <!-- Crop Edit Modal -->
@@ -389,7 +342,7 @@ textarea{resize:vertical;min-height:65px}
     <div class="modal-hd">编辑作物 <button class="modal-close" onclick="closeCropModalBtn()">✕</button></div>
     <input type="hidden" id="edit-idx"/>
     <div class="row2">
-      <div class="form-row"><label>图标 Emoji</label><input id="edit-icon" placeholder="🥕"/></div>
+      <div class="form-row"><label>图标 Emoji</label><input id="edit-icon"/></div>
       <div class="form-row"><label>名称</label><input id="edit-name"/></div>
     </div>
     <div class="row2">
@@ -402,11 +355,130 @@ textarea{resize:vertical;min-height:65px}
 
 <div class="toast" id="toast"></div>
 
+<!-- =================== SERVICE WORKER (inline blob) =================== -->
 <script>
-// ====== CROP DATABASE (QQ Farm Complete) ======
+// Inline SW as blob so single HTML file works without server config
+const SW_CODE = `
+const CACHE='ftools-v5';
+const CHECK_INTERVAL = 30000; // 30s
+
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+
+// Background sync check
+self.addEventListener('periodicsync', e => {
+  if(e.tag === 'check-reminders') e.waitUntil(checkAndNotify());
+});
+
+// Message from page: schedule a reminder
+self.addEventListener('message', e => {
+  if(e.data && e.data.type === 'SCHEDULE') checkAndNotify();
+  if(e.data && e.data.type === 'PING') e.source.postMessage({type:'PONG'});
+});
+
+async function checkAndNotify(){
+  const now = Date.now();
+  let stored = {};
+  try{ stored = JSON.parse(await getStore('ft_v4') || '{}'); }catch(e){}
+  const reminders = stored.reminders || [];
+  const notified = new Set(JSON.parse(await getStore('ft_notified') || '[]'));
+  let changed = false;
+  for(const r of reminders){
+    if(r.done && r.repeat==='none') continue;
+    const at = r.triggerAt - (r.advance||0)*60000;
+    if(now >= at && !notified.has(r.id)){
+      notified.add(r.id);changed=true;
+      const cats = stored.cats || [];
+      const cat = r.cat==='farm' ? {icon:'🌾'} : (cats.find(c=>c.id===r.cat)||{icon:'📌'});
+      await self.registration.showNotification(cat.icon+' '+r.title, {
+        body: r.note||'时间到了！',
+        icon: '/icon.png',
+        badge: '/icon.png',
+        tag: r.id,
+        renotify: true,
+        requireInteraction: false,
+      });
+      // schedule next if repeat
+      if(r.repeat && r.repeat!=='none') schedNext(r, now);
+    }
+  }
+  if(changed) await setStore('ft_notified', JSON.stringify([...notified]));
+}
+
+function schedNext(r, now){
+  const t=r.triggerAt;let next;
+  if(r.repeat==='daily')   next=t+86400000;
+  else if(r.repeat==='weekly') next=t+604800000;
+  else if(r.repeat==='hourly') next=t+3600000;
+  else if(r.repeat==='30min')  next=t+1800000;
+  else if(r.repeat==='custom') next=t+(r.interval||60)*60000;
+  if(next&&next>now) r.triggerAt=next;
+}
+
+// Simple KV using Cache API as storage (localStorage not available in SW)
+async function getStore(key){
+  try{
+    const c=await caches.open(CACHE);
+    const r=await c.match('/__sw_store__/'+key);
+    return r ? r.text() : null;
+  }catch(e){return null}
+}
+async function setStore(key,val){
+  try{
+    const c=await caches.open(CACHE);
+    await c.put('/__sw_store__/'+key, new Response(val));
+  }catch(e){}
+}
+
+// Poll timer: check every 30s even without periodic sync
+setInterval(checkAndNotify, 30000);
+`;
+
+// Register SW from blob
+async function registerSW(){
+  if(!('serviceWorker' in navigator)) return false;
+  try{
+    const blob = new Blob([SW_CODE],{type:'text/javascript'});
+    const url = URL.createObjectURL(blob);
+    const reg = await navigator.serviceWorker.register(url,{scope:'./'});
+    // Try periodic background sync
+    if('periodicSync' in reg){
+      try{
+        const status = await navigator.permissions.query({name:'periodic-background-sync'});
+        if(status.state==='granted') await reg.periodicSync.register('check-reminders',{minInterval:60000});
+      }catch(e){}
+    }
+    // Mirror localStorage to SW cache every time data changes
+    navigator.serviceWorker.ready.then(r=>{
+      if(r.active) r.active.postMessage({type:'SCHEDULE'});
+    });
+    return true;
+  }catch(e){
+    console.warn('SW registration failed:',e);
+    return false;
+  }
+}
+
+// Sync localStorage → SW cache
+function syncToSW(){
+  try{
+    const data = localStorage.getItem('ft_v4');
+    if(!data || !navigator.serviceWorker.controller) return;
+    navigator.serviceWorker.controller.postMessage({type:'SCHEDULE'});
+    // Also write via cache API mirror via SW message
+    if('caches' in window){
+      caches.open('ftools-v5').then(c=>{
+        c.put('/__sw_store__/ft_v4', new Response(data));
+      });
+    }
+  }catch(e){}
+}
+</script>
+
+<script>
+// =================== CROPS ===================
 const CROP_CATS = ['蔬菜','水果','粮食','花卉','药材','特产'];
 const ALL_CROPS = [
-  // 蔬菜
   {icon:'🌱',name:'牧草',   cat:'蔬菜',min:8},
   {icon:'🥕',name:'白萝卜', cat:'蔬菜',min:10},
   {icon:'🥕',name:'胡萝卜', cat:'蔬菜',min:13},
@@ -421,7 +493,12 @@ const ALL_CROPS = [
   {icon:'🌿',name:'薄荷',   cat:'蔬菜',min:20},
   {icon:'💚',name:'艾草',   cat:'蔬菜',min:18},
   {icon:'🌿',name:'芦荟',   cat:'蔬菜',min:30},
-  // 水果
+  {icon:'🅱️',name:'西兰花', cat:'蔬菜',min:18},
+  {icon:'🧅',name:'洋葱',   cat:'蔬菜',min:24},
+  {icon:'🧄',name:'大蒜',   cat:'蔬菜',min:16},
+  {icon:'🍠',name:'红薯',   cat:'蔬菜',min:22},
+  {icon:'🎋',name:'竹笋',   cat:'蔬菜',min:12},
+  {icon:'🫘',name:'大豆',   cat:'蔬菜',min:20},
   {icon:'🍅',name:'番茄',   cat:'水果',min:17},
   {icon:'🍓',name:'草莓',   cat:'水果',min:35},
   {icon:'🍉',name:'西瓜',   cat:'水果',min:41},
@@ -430,7 +507,7 @@ const ALL_CROPS = [
   {icon:'🍊',name:'橙子',   cat:'水果',min:69},
   {icon:'🍇',name:'葡萄',   cat:'水果',min:86},
   {icon:'🍎',name:'苹果',   cat:'水果',min:30},
-  {icon:'🍏',name:'石榴',   cat:'水果',min:96},
+  {icon:'🫐',name:'石榴',   cat:'水果',min:96},
   {icon:'🍋',name:'柚子',   cat:'水果',min:113},
   {icon:'🍍',name:'菠萝',   cat:'水果',min:116},
   {icon:'🥥',name:'椰子',   cat:'水果',min:124},
@@ -444,20 +521,19 @@ const ALL_CROPS = [
   {icon:'🍑',name:'龙眼',   cat:'水果',min:86},
   {icon:'🍈',name:'火龙果', cat:'水果',min:40},
   {icon:'🍐',name:'梨',     cat:'水果',min:72},
-  // 粮食
   {icon:'🌾',name:'小麦',   cat:'粮食',min:14},
   {icon:'🌾',name:'水稻',   cat:'粮食',min:14},
   {icon:'🎋',name:'甘蔗',   cat:'粮食',min:45},
   {icon:'🟡',name:'葫芦',   cat:'粮食',min:139},
   {icon:'🌰',name:'栗子',   cat:'粮食',min:120},
-  {icon:'🟡',name:'金桔',   cat:'粮食',min:86},
+  {icon:'🟠',name:'金桔',   cat:'粮食',min:86},
   {icon:'🟠',name:'红枣',   cat:'粮食',min:16},
-  // 花卉
+  {icon:'🫚',name:'花生',   cat:'粮食',min:30},
   {icon:'🌹',name:'红玫瑰', cat:'花卉',min:18},
   {icon:'🌷',name:'郁金香', cat:'花卉',min:52},
   {icon:'🌸',name:'樱花',   cat:'花卉',min:44},
   {icon:'🌻',name:'向日葵', cat:'花卉',min:36},
-  {icon:'💐',name:'薰衣草', cat:'花卉',min:61},
+  {icon:'💜',name:'薰衣草', cat:'花卉',min:61},
   {icon:'🌼',name:'雏菊',   cat:'花卉',min:17},
   {icon:'🌺',name:'荷花',   cat:'花卉',min:44},
   {icon:'🌸',name:'牡丹',   cat:'花卉',min:44},
@@ -466,26 +542,17 @@ const ALL_CROPS = [
   {icon:'🌺',name:'非洲菊', cat:'花卉',min:21},
   {icon:'💐',name:'百合',   cat:'花卉',min:56},
   {icon:'🌹',name:'荷花玉兰',cat:'花卉',min:30},
-  // 药材
-  {icon:'🟤',name:'灵芝',   cat:'药材',min:60},
   {icon:'🌿',name:'虫草',   cat:'药材',min:64},
+  {icon:'🟤',name:'灵芝',   cat:'药材',min:60},
   {icon:'🔴',name:'藏红花', cat:'药材',min:56},
   {icon:'⬜',name:'雪莲',   cat:'药材',min:56},
   {icon:'🌿',name:'何首乌', cat:'药材',min:56},
   {icon:'🟡',name:'人参',   cat:'药材',min:480},
-  {icon:'🟡',name:'黄芪',   cat:'药材',min:72},
+  {icon:'🌿',name:'黄芪',   cat:'药材',min:72},
   {icon:'🌿',name:'冬凌草', cat:'药材',min:36},
-  {icon:'🟢',name:'萱草',   cat:'药材',min:24},
-  {icon:'🌿',name:'沙棘',   cat:'特产',min:48},
-  // 特产
-  {icon:'🫚',name:'花生',   cat:'特产',min:30},
-  {icon:'🫘',name:'大豆',   cat:'特产',min:20},
-  {icon:'🧅',name:'洋葱',   cat:'特产',min:24},
-  {icon:'🧄',name:'大蒜',   cat:'特产',min:16},
-  {icon:'🥦',name:'西兰花', cat:'特产',min:18},
-  {icon:'🍠',name:'红薯',   cat:'特产',min:22},
+  {icon:'🌿',name:'萱草',   cat:'药材',min:24},
   {icon:'🌰',name:'莲藕',   cat:'特产',min:60},
-  {icon:'🟤',name:'竹笋',   cat:'特产',min:12},
+  {icon:'🟡',name:'沙棘',   cat:'特产',min:48},
 ];
 
 const DEFAULT_CATS = [
@@ -499,54 +566,63 @@ const DEFAULT_CATS = [
 ];
 
 const SOUNDS = [
-  {id:'beep',  label:'系统提示'},
-  {id:'bell',  label:'清脆铃声'},
-  {id:'chime', label:'钟声'},
-  {id:'pop',   label:'气泡音'},
-  {id:'marimba',label:'木琴'},
-  {id:'ding',  label:'叮咚'},
-  {id:'alert', label:'警报'},
-  {id:'custom',label:'自定义'},
+  {id:'bell',    label:'清脆铃声'},
+  {id:'chime',   label:'钟声'},
+  {id:'marimba', label:'木琴'},
+  {id:'ding',    label:'叮咚'},
+  {id:'beep',    label:'提示音'},
+  {id:'pop',     label:'气泡音'},
+  {id:'alert',   label:'警报'},
+  {id:'custom',  label:'自定义'},
 ];
 
 const REPEAT_LBL = {none:'不重复',daily:'每天',weekdays:'工作日',weekly:'每周',hourly:'每小时','30min':'每30分',custom:'自定义'};
 
-// ====== STATE ======
+// =================== STATE ===================
 let S = {
   reminders:[],
-  cats:JSON.parse(JSON.stringify(DEFAULT_CATS)),
-  userCrops:[], // user added custom crops
+  cats: JSON.parse(JSON.stringify(DEFAULT_CATS)),
+  userCrops:[],
   friends:[],
-  settings:{sound:true,titleAlert:true,selectedSound:'bell',customSoundData:null,soundRepeat:2},
+  settings:{sound:true, titleAlert:true, selectedSound:'bell', customSoundData:null, soundRepeat:2},
 };
 let selCat='life', selCropCat='蔬菜', selCropIdx=0, selPerson='自己', selFriend='';
-let notified=new Set();
-let audioCtx=null;
+let notified = new Set();
+let audioCtx = null;
+let swReady = false;
 
-// ====== STORAGE ======
-const KEY='ft_v4';
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+// =================== STORAGE ===================
+const KEY = 'ft_v4';
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+  syncToSW();
+}
 function load(){
   try{
-    const d=JSON.parse(localStorage.getItem(KEY)||'{}');
-    if(d.reminders) S.reminders=d.reminders;
-    if(d.cats)      S.cats=d.cats;
-    if(d.userCrops) S.userCrops=d.userCrops;
-    if(d.friends)   S.friends=d.friends;
-    if(d.settings)  S.settings={...S.settings,...d.settings};
+    const d = JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(d.reminders) S.reminders = d.reminders;
+    if(d.cats)      S.cats = d.cats;
+    if(d.userCrops) S.userCrops = d.userCrops;
+    if(d.friends)   S.friends = d.friends;
+    if(d.settings)  S.settings = {...S.settings, ...d.settings};
   }catch(e){}
 }
 
-// ====== BOOT ======
-load();
-setDefTime();
-renderAll();
-renderSoundList();
-renderCatManage();
-checkNotif();
-setInterval(tick,1000);
-document.getElementById('sound-repeat-count').value=String(S.settings.soundRepeat||2);
-document.getElementById('sound-repeat-count').onchange=function(){S.settings.soundRepeat=parseInt(this.value)||2;save();};
+// =================== BOOT ===================
+(async()=>{
+  load();
+  setDefTime();
+  renderAll();
+  renderSoundList();
+  document.getElementById('sound-repeat-count').value = String(S.settings.soundRepeat||2);
+  checkNotif();
+  swReady = await registerSW();
+  renderSWStatus();
+  setInterval(tick, 1000);
+  // Unlock AudioContext on first user interaction
+  document.addEventListener('touchstart', unlockAudio, {once:true});
+  document.addEventListener('click',      unlockAudio, {once:true});
+})();
 
 function renderAll(){
   renderCatChips();
@@ -558,447 +634,29 @@ function renderAll(){
   renderCatManage();
 }
 
-// ====== CLOCK ======
+function renderSWStatus(){
+  const el = document.getElementById('sw-status');
+  if(!el) return;
+  if(swReady){
+    el.innerHTML = '<div class="sw-bar ok">✅ 后台提醒已激活，关闭页面也能收到通知</div>';
+  } else {
+    el.innerHTML = '<div class="sw-bar warn">⚠️ 后台提醒未激活，请保持页面开着；iOS 需添加到主屏幕后使用</div>';
+  }
+}
+
+// =================== CLOCK ===================
 function tick(){
-  const n=new Date();
-  const el=document.getElementById('hdr-time');
-  if(el) el.textContent=n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const n = new Date();
+  const el = document.getElementById('hdr-time');
+  if(el) el.textContent = n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
   checkTriggers();
   renderRemindList();
   renderFarmList();
 }
 
-// ====== NOTIF ======
+// =================== NOTIF ===================
 function checkNotif(){
-  const p=typeof Notification!=='undefined'?Notification.permission:'denied';
-  const b=document.getElementById('notif-banner');
-  if(b) b.style.display=p!=='granted'?'flex':'none';
-  const t=document.getElementById('notif-txt');
-  if(t) t.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝（需浏览器设置允许）':'⚠️ 未开启';
-}
-async function reqNotif(){
-  if(typeof Notification==='undefined'){toast('当前浏览器不支持通知');return}
-  const p=await Notification.requestPermission();
-  checkNotif();
-  toast(p==='granted'?'🔔 通知已开启！':'请在浏览器设置中允许通知');
-}
-function notify(title,body){
-  if(S.settings.sound) playSound();
-  if(Notification.permission==='granted') new Notification(title,{body});
-  if(S.settings.titleAlert) flashTitle(title);
-}
-function flashTitle(msg){
-  let on=true,n=0;
-  const orig='FTools';
-  const iv=setInterval(()=>{document.title=on?'❗ '+msg:orig;on=!on;n++;if(n>20){clearInterval(iv);document.title=orig;}},500);
-}
-
-// ====== SOUND ======
-function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
-function playSound(){
-  const cnt=S.settings.soundRepeat||2;
-  const snd=S.settings.selectedSound;
-  if(snd==='custom'&&S.settings.customSoundData){
-    for(let i=0;i<cnt;i++) setTimeout(()=>new Audio(S.settings.customSoundData).play(),i*1200);
-    return;
-  }
-  for(let i=0;i<cnt;i++) setTimeout(()=>synthSound(snd),i*1000);
-}
-function synthSound(id){
-  try{
-    const ctx=getCtx();
-    if(id==='beep')    synth(ctx,[880,1100,880],100);
-    else if(id==='bell')   synth(ctx,[1318,1568,1760],80);
-    else if(id==='chime')  synth(ctx,[523,659,784,1046],110);
-    else if(id==='pop')    synthPop(ctx);
-    else if(id==='marimba') synth(ctx,[784,1047,1319,1047,784],90,'sine');
-    else if(id==='ding')   synth(ctx,[1046,1319],150,'sine');
-    else if(id==='alert')  synth(ctx,[440,880,440,880,440],80,'square');
-    else synth(ctx,[880,1100,880],100);
-  }catch(e){}
-}
-function synth(ctx,freqs,dur=100,type='sine'){
-  freqs.forEach((f,i)=>{
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.type=type;o.connect(g);g.connect(ctx.destination);
-    o.frequency.value=f;
-    const t=ctx.currentTime+i*dur/1000;
-    g.gain.setValueAtTime(.3,t);g.gain.exponentialRampToValueAtTime(.001,t+dur/950);
-    o.start(t);o.stop(t+dur/1000);
-  });
-}
-function synthPop(ctx){
-  const b=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate);
-  const d=b.getChannelData(0);
-  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*.018));
-  const s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);s.start();
-}
-function renderSoundList(){
-  const el=document.getElementById('sound-list');
-  if(!el)return;
-  el.innerHTML=SOUNDS.map(s=>`
-    <div class="sound-item ${S.settings.selectedSound===s.id?'sel':''}" onclick="pickSound('${s.id}')">
-      ${s.label}<span class="sound-play" onclick="event.stopPropagation();previewSound('${s.id}')">▶</span>
-    </div>`).join('');
-}
-function pickSound(id){
-  if(id==='custom'&&!S.settings.customSoundData){toast('请先上传自定义铃声');return}
-  S.settings.selectedSound=id;save();renderSoundList();
-}
-function previewSound(id){const t=S.settings.selectedSound;S.settings.selectedSound=id;synthSound(id);S.settings.selectedSound=t;}
-function uploadSound(){
-  const f=document.getElementById('sound-file').files[0];
-  if(!f)return;
-  if(f.size>5*1024*1024){toast('文件不超过5MB');return}
-  const r=new FileReader();
-  r.onload=e=>{S.settings.customSoundData=e.target.result;S.settings.selectedSound='custom';save();renderSoundList();toast('✅ 铃声已上传');};
-  r.readAsDataURL(f);
-}
-
-// ====== TRIGGERS ======
-function checkTriggers(){
-  const now=Date.now();
-  S.reminders.forEach(r=>{
-    if(r.done&&r.repeat==='none')return;
-    const at=r.triggerAt-(r.advance||0)*60000;
-    if(now>=at&&!notified.has(r.id)){
-      notified.add(r.id);
-      const cat=r.cat==='farm'?{icon:'🌾'}:(S.cats.find(c=>c.id===r.cat)||{icon:'📌'});
-      notify(cat.icon+' '+r.title,r.note||'');
-      if(r.repeat&&r.repeat!=='none')scheduleNext(r);
-    }
-  });
-  save();
-}
-function scheduleNext(r){
-  const now=Date.now(),t=r.triggerAt;
-  let next;
-  if(r.repeat==='daily')   next=t+86400000;
-  else if(r.repeat==='weekly') next=t+604800000;
-  else if(r.repeat==='hourly') next=t+3600000;
-  else if(r.repeat==='30min')  next=t+1800000;
-  else if(r.repeat==='custom') next=t+(r.interval||60)*60000;
-  else if(r.repeat==='weekdays'){let d=new Date(t);do{d=new Date(d.getTime()+86400000)}while(d.getDay()===0||d.getDay()===6);next=d.getTime();}
-  if(next&&next>now){r.triggerAt=next;notified.delete(r.id);}
-}
-
-// ====== CROPS ======
-function getCrops(){return [...ALL_CROPS,...S.userCrops];}
-function getCropsByCat(cat){return getCrops().filter(c=>c.cat===cat);}
-function renderCropCatTabs(){
-  const el=document.getElementById('crop-cat-tabs');
-  if(!el)return;
-  const allCats=[...CROP_CATS,...[...new Set(S.userCrops.map(c=>c.cat).filter(c=>!CROP_CATS.includes(c)))]];
-  el.innerHTML=allCats.map(c=>`<div class="crop-cat-tab ${selCropCat===c?'active':''}" onclick="pickCropCat('${c}')">${c}</div>`).join('');
-}
-function pickCropCat(cat){selCropCat=cat;selCropIdx=0;renderCropCatTabs();renderCropCarousel();}
-function renderCropCarousel(){
-  const el=document.getElementById('crop-carousel');
-  if(!el)return;
-  const crops=getCropsByCat(selCropCat);
-  el.innerHTML=crops.map((c,i)=>`
-    <div class="crop-card ${selCropIdx===i?'sel':''}" onclick="pickCrop(${i})">
-      <button class="crop-edit-btn" onclick="event.stopPropagation();openCropEdit(${i})">✏️</button>
-      <span class="crop-icon">${c.icon}</span>
-      <div class="crop-name">${c.name}</div>
-      <div class="crop-dur">${fmtMin(c.min)}</div>
-      ${c.price?`<div class="crop-price-lbl">💰${c.price}</div>`:''}
-    </div>`).join('')+`
-    <div class="crop-add-card" onclick="focusCustom()"><span style="font-size:22px">➕</span>自定义</div>`;
-}
-function pickCrop(i){selCropIdx=i;renderCropCarousel();}
-function focusCustom(){document.getElementById('cc-name').focus();}
-
-function openCropEdit(i){
-  const crops=getCropsByCat(selCropCat);
-  const c=crops[i];
-  // find global index
-  const allIdx=getCrops().findIndex(x=>x.name===c.name&&x.cat===c.cat);
-  document.getElementById('edit-idx').value=allIdx;
-  document.getElementById('edit-icon').value=c.icon;
-  document.getElementById('edit-name').value=c.name;
-  document.getElementById('edit-time').value=fmtMin(c.min);
-  document.getElementById('edit-price').value=c.price||'';
-  document.getElementById('crop-modal').classList.add('open');
-}
-function closeCropModal(e){if(e.target.id==='crop-modal')closeCropModalBtn();}
-function closeCropModalBtn(){document.getElementById('crop-modal').classList.remove('open');}
-function saveCropEdit(){
-  const i=parseInt(document.getElementById('edit-idx').value);
-  const min=parseTime(document.getElementById('edit-time').value);
-  if(!min){toast('时间格式有误');return}
-  const allCrops=getCrops();
-  const c=allCrops[i];
-  const patch={icon:document.getElementById('edit-icon').value||c.icon,name:document.getElementById('edit-name').value||c.name,min,price:document.getElementById('edit-price').value.trim(),cat:c.cat};
-  if(i<ALL_CROPS.length){
-    // store as user override by adding to userCrops with same name
-    const ui=S.userCrops.findIndex(x=>x.name===c.name&&x.cat===c.cat);
-    if(ui>=0) S.userCrops[ui]=patch; else S.userCrops.push(patch);
-  } else {
-    S.userCrops[i-ALL_CROPS.length]=patch;
-  }
-  save();renderCropCarousel();closeCropModalBtn();toast('✅ 已保存');
-}
-
-function setCC(v){document.getElementById('cc-time').value=v;}
-function addFarmTask(){
-  const owner=selPerson==='自己'?'自己':selFriend;
-  if(selPerson==='好友'&&!selFriend){toast('请选择好友');return}
-
-  const tVal=document.getElementById('farm-plant-at').value;
-  const planted=tVal?new Date(tVal).getTime():Date.now();
-
-  // Check custom
-  const cName=document.getElementById('cc-name').value.trim();
-  const cTimeStr=document.getElementById('cc-time').value.trim();
-  let cropName,cropMin,cropPrice='';
-
-  if(cName&&cTimeStr){
-    cropMin=parseTime(cTimeStr);
-    if(!cropMin){toast('时间格式有误');return}
-    cropName=cName;cropPrice=document.getElementById('cc-price').value.trim();
-    S.userCrops.push({icon:'🌿',name:cropName,cat:'特产',min:cropMin,price:cropPrice});
-    save();renderCropCatTabs();renderCropCarousel();
-    document.getElementById('cc-name').value='';
-    document.getElementById('cc-time').value='';
-    document.getElementById('cc-price').value='';
-  } else {
-    const crops=getCropsByCat(selCropCat);
-    const c=crops[selCropIdx];
-    if(!c){toast('请选择作物');return}
-    cropName=c.name;cropMin=c.min;cropPrice=c.price||'';
-  }
-
-  const r={
-    id:Date.now()+'_'+rnd(),cat:'farm',
-    title:owner==='自己'?'我的'+cropName:owner+'的'+cropName,
-    note:(owner==='自己'?'自己的菜熟了！':'去偷 '+owner+' 的菜！')+(cropPrice?' 💰'+cropPrice:''),
-    triggerAt:planted+cropMin*60000,plantedAt:planted,
-    repeat:'none',advance:0,done:false,
-  };
-  S.reminders.push(r);save();
-  toast('🌱 '+r.title+' '+fmtMin(cropMin)+'后成熟');
-  // reset person
-  document.querySelectorAll('.person-opt').forEach(e=>e.classList.remove('sel'));
-  document.querySelector('.person-opt[data-v="自己"]').classList.add('sel');
-  selPerson='自己';selFriend='';
-  document.getElementById('friend-area').style.display='none';
-  document.getElementById('farm-plant-at').value='';
-  renderFriendChips();renderFarmList();
-}
-
-// ====== PERSON / FRIEND ======
-function pickPerson(el){
-  document.querySelectorAll('.person-opt').forEach(e=>e.classList.remove('sel'));
-  el.classList.add('sel');selPerson=el.dataset.v;
-  document.getElementById('friend-area').style.display=selPerson==='好友'?'block':'none';
-}
-function renderFriendChips(){
-  const el=document.getElementById('friend-chips');
-  if(!el)return;
-  el.innerHTML=S.friends.map(f=>`<div class="friend-chip ${selFriend===f?'sel':''}" onclick="pickFriend('${f}')">${f}</div>`).join('');
-}
-function pickFriend(n){selFriend=n;renderFriendChips();}
-function addFriend(){
-  const v=document.getElementById('new-friend').value.trim();
-  if(!v)return;
-  if(!S.friends.includes(v)) S.friends.push(v);
-  selFriend=v;document.getElementById('new-friend').value='';
-  save();renderFriendChips();
-}
-
-// ====== CATS ======
-function renderCatChips(){
-  const el=document.getElementById('cat-chips');
-  if(!el)return;
-  el.innerHTML=S.cats.map(c=>`
-    <div class="cat-chip ${selCat===c.id?'sel':''}" style="color:${c.color}" onclick="pickCat('${c.id}')">
-      ${c.icon} ${c.label}</div>`).join('')+
-    `<div class="cat-chip" onclick="goTab('settings')" style="color:var(--text2);border-style:dashed">＋</div>`;
-}
-function pickCat(id){selCat=id;renderCatChips();}
-function renderCatManage(){
-  const el=document.getElementById('cat-manage');
-  if(!el)return;
-  el.innerHTML=S.cats.map((c,i)=>`
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
-      <span>${c.icon}</span><span style="flex:1;font-size:13px">${c.label}</span>
-      <button class="btn btn-danger btn-sm" onclick="removeCat(${i})" ${i<DEFAULT_CATS.length?'disabled style="opacity:.3"':''}>删除</button>
-    </div>`).join('');
-}
-function addCat(){
-  const icon=document.getElementById('nc-icon').value.trim()||'📌';
-  const label=document.getElementById('nc-label').value.trim();
-  if(!label){toast('请填写分类名称');return}
-  const cols=['#ff5a5a','#4cc9f0','#ff9f4a','#c084fc','#3dba6f','#ffd460','#fb923c'];
-  S.cats.push({id:'cat_'+Date.now(),label,icon,color:cols[S.cats.length%cols.length]});
-  document.getElementById('nc-icon').value='';
-  document.getElementById('nc-label').value='';
-  save();renderCatChips();renderCatManage();toast('✅ 分类已添加');
-}
-function removeCat(i){
-  if(i<DEFAULT_CATS.length){toast('默认分类不可删除');return}
-  S.cats.splice(i,1);save();renderCatChips();renderCatManage();
-}
-
-// ====== REMINDER ======
-document.getElementById('r-repeat').addEventListener('change',function(){
-  document.getElementById('r-interval-row').style.display=this.value==='custom'?'flex':'none';
-});
-function addReminder(){
-  const title=document.getElementById('r-title').value.trim();
-  const tVal=document.getElementById('r-time').value;
-  if(!title){toast('请填写标题');return}
-  if(!tVal){toast('请选择时间');return}
-  const r={
-    id:Date.now()+'_'+rnd(),cat:selCat,title,
-    note:document.getElementById('r-note').value.trim(),
-    triggerAt:new Date(tVal).getTime(),
-    plantedAt:Date.now(),
-    repeat:document.getElementById('r-repeat').value,
-    interval:parseInt(document.getElementById('r-interval').value)||60,
-    advance:parseInt(document.getElementById('r-advance').value)||0,
-    done:false,
-  };
-  S.reminders.push(r);save();
-  toast('✅ 提醒已保存！');
-  document.getElementById('r-title').value='';
-  document.getElementById('r-note').value='';
-  setDefTime();goTab('remind');
-}
-
-// ====== RENDER LISTS ======
-function renderRemindList(){
-  const now=Date.now(),el=document.getElementById('remind-list');
-  if(!el)return;
-  const items=S.reminders.filter(r=>r.cat!=='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
-  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">⏰</div>还没有提醒，去"添加"创建吧</div>';return}
-  const active=items.filter(r=>r.triggerAt>=now||r.repeat!=='none');
-  const done=items.filter(r=>r.triggerAt<now&&r.repeat==='none');
-  let h='';
-  if(active.length) h+='<div class="sec-label">进行中</div>'+active.map(r=>itemHtml(r,now)).join('');
-  if(done.length)   h+='<div class="sec-label">已到期</div>'+done.map(r=>itemHtml(r,now)).join('');
-  el.innerHTML=h;
-}
-function renderFarmList(){
-  const now=Date.now(),el=document.getElementById('farm-list');
-  if(!el)return;
-  const items=S.reminders.filter(r=>r.cat==='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
-  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">🌾</div>还没有农场提醒</div>';return}
-  el.innerHTML='<div class="sec-label">我的农场</div>'+items.map(r=>itemHtml(r,now)).join('');
-}
-function itemHtml(r,now){
-  const cat=r.cat==='farm'?{icon:'🌾',color:S.settings?'var(--green)':'#3dba6f'}:(S.cats.find(c=>c.id===r.cat)||{icon:'📌',color:'#6a9a6a'});
-  const rem=r.triggerAt-now;
-  const mature=rem<=0,soon=rem>0&&rem<600000;
-  const pct=r.plantedAt?Math.min(100,Math.max(0,(now-r.plantedAt)/(r.triggerAt-r.plantedAt)*100)):mature?100:0;
-  const barCol=mature?'var(--yellow)':cat.color||'var(--green)';
-  return `<div class="item ${mature?'mature':soon?'soon':''}" style="--item-color:${cat.color||'var(--green)'}">
-    <div class="item-row">
-      <div class="item-body">
-        <div class="item-toprow">
-          <span class="item-emoji">${cat.icon}</span>
-          <span class="item-title">${r.title}</span>
-        </div>
-        ${r.note?`<div class="item-meta">${r.note}</div>`:''}
-        <div class="item-meta">🕐 ${new Date(r.triggerAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-        ${r.repeat&&r.repeat!=='none'?`<div class="item-meta">🔄 ${REPEAT_LBL[r.repeat]||''}</div>`:''}
-        <div class="item-cd ${mature?'done':''}">${mature?'⚡ 立刻行动！':fmtCD(rem)}</div>
-        <div class="progress"><div class="progress-bar" style="width:${pct}%;background:${barCol}"></div></div>
-      </div>
-      <button class="del-btn" onclick="delItem('${r.id}')">🗑</button>
-    </div>
-  </div>`;
-}
-function delItem(id){S.reminders=S.reminders.filter(r=>r.id!==id);notified.delete(id);save();}
-
-// ====== SETTINGS ======
-function togS(key){S.settings[key]=!S.settings[key];save();
-  const map={sound:'tog-sound',titleAlert:'tog-title'};
-  document.getElementById(map[key]).className='toggle'+(S.settings[key]?' on':'');
-}
-function clearDone(){
-  if(!confirm('清除所有已到期提醒？'))return;
-  const now=Date.now();
-  S.reminders=S.reminders.filter(r=>r.triggerAt>=now||r.repeat!=='none');
-  save();toast('✅ 已清除');
-}
-function clearAll(){
-  if(!confirm('确定清除全部数据？不可恢复！'))return;
-  S.reminders=[];save();toast('✅ 已清除');
-}
-
-// ====== EXPORT / IMPORT (解决更新后数据丢失) ======
-function exportData(){
-  const data=JSON.stringify({reminders:S.reminders,friends:S.friends,cats:S.cats.slice(DEFAULT_CATS.length),userCrops:S.userCrops,settings:S.settings},null,2);
-  const blob=new Blob([data],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download='ftools_backup_'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();URL.revokeObjectURL(url);
-  const el=document.getElementById('export-preview');
-  el.style.display='block';el.textContent=data.slice(0,300)+'...';
-  toast('📤 数据已导出！请保存好文件');
-}
-function triggerImport(){document.getElementById('import-file').click();}
-function importData(){
-  const f=document.getElementById('import-file').files[0];
-  if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{
-    try{
-      const d=JSON.parse(e.target.result);
-      if(d.reminders) S.reminders=[...S.reminders,...d.reminders.filter(nr=>!S.reminders.find(er=>er.id===nr.id))];
-      if(d.friends)   S.friends=[...new Set([...S.friends,...d.friends])];
-      if(d.cats)      S.cats=[...DEFAULT_CATS,...d.cats];
-      if(d.userCrops) S.userCrops=[...S.userCrops,...d.userCrops];
-      if(d.settings)  S.settings={...S.settings,...d.settings,customSoundData:S.settings.customSoundData};
-      save();renderAll();renderSoundList();
-      toast('✅ 数据导入成功！共'+S.reminders.length+'条提醒');
-    }catch(x){toast('导入失败，请检查文件格式');}
-  };
-  r.readAsText(f);
-}
-
-// ====== HELPERS ======
-function parseTime(s){
-  if(!s)return 0;
-  s=s.trim().toLowerCase().replace('小时','h').replace('分钟','m').replace('分','m').replace('时','h').replace('天','d');
-  const dm=s.match(/(\d+\.?\d*)d/i);if(dm)return Math.round(parseFloat(dm[1])*1440);
-  const hm=s.match(/(\d+\.?\d*)h(?:(\d+\.?\d*)m?)?/i);if(hm)return Math.round(parseFloat(hm[1])*60+(parseFloat(hm[2])||0));
-  const mm=s.match(/^(\d+\.?\d*)m?$/i);if(mm)return Math.round(parseFloat(mm[1]));
-  return 0;
-}
-function fmtMin(m){
-  if(m<60)return m+'分钟';
-  if(m%60===0)return m/60+'小时';
-  return Math.floor(m/60)+'小时'+m%60+'分';
-}
-function fmtCD(ms){
-  if(ms<=0)return '已到期';
-  const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
-  if(h>0)return h+'小时'+m+'分'+sc+'秒';
-  if(m>0)return m+'分'+sc+'秒';
-  return sc+'秒';
-}
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),2600);
-}
-function goTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  document.getElementById('page-'+name).classList.add('active');
-}
-function setDefTime(){
-  const d=new Date(Date.now()+3600000);
-  const f=d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':'+p2(d.getMinutes());
-  const el=document.getElementById('r-time');if(el)el.value=f;
-}
-function p2(n){return String(n).padStart(2,'0')}
-function rnd(){return Math.random().toString(36).slice(2,6)}
-</script>
-</body>
-</html>
+  const p = typeof Notification!=='undefined' ? Notification.permission : 'denied';
+  const b = document.getElementById('notif-banner');
+  if(b) b.style.display = p!=='granted' ? 'flex' : 'none';
+  const t = document.getElementById('notif-txt
