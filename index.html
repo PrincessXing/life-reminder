@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#4CAF50"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="生活提醒"/>
+<title>🔔 生活提醒工具</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f0f4f0;min-height:100vh}
+  :root{--green:#43a047;--green2:#66bb6a;--red:#e53935;--yellow:#fdd835;--blue:#1e88e5;--purple:#8e24aa;--orange:#fb8c00;--card:#fff;--shadow:0 2px 12px rgba(0,0,0,0.08)}
+
+  /* Header */
+  .hdr{background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;padding:16px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+  .hdr h1{margin:0;font-size:18px;font-weight:700;letter-spacing:1px}
+  .hdr p{margin:2px 0 0;font-size:12px;opacity:.85}
+
+  /* Tabs */
+  .tabs{display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);position:sticky;top:60px;z-index:99}
+  .tab{flex:1;padding:12px 4px;text-align:center;font-size:13px;font-weight:600;color:#888;cursor:pointer;border-bottom:3px solid transparent;transition:.2s}
+  .tab.active{color:var(--green);border-bottom-color:var(--green)}
+  .tab span{display:block;font-size:18px;margin-bottom:2px}
+
+  /* Content */
+  .page{display:none;padding:16px;max-width:520px;margin:0 auto}
+  .page.active{display:block}
+
+  /* Cards */
+  .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+  .card-title{font-size:14px;font-weight:700;color:#333;margin:0 0 12px;display:flex;align-items:center;gap:6px}
+
+  /* Form elements */
+  .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+  .form-row label{font-size:12px;color:#888}
+  input,select,textarea{width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;transition:.2s;background:#fafafa}
+  input:focus,select:focus,textarea:focus{border-color:var(--green);background:#fff}
+  textarea{resize:vertical;min-height:70px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+  /* Buttons */
+  .btn{border:none;border-radius:10px;padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+  .btn:active{transform:scale(.97)}
+  .btn-green{background:linear-gradient(90deg,var(--green2),var(--green));color:#fff;width:100%}
+  .btn-red{background:#ffebee;color:var(--red);padding:6px 10px;font-size:12px;border-radius:8px}
+  .btn-icon{background:none;border:none;cursor:pointer;font-size:18px;padding:4px}
+
+  /* Category chips */
+  .cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .cat{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid transparent;transition:.15s}
+  .cat.sel{border-color:currentColor}
+
+  /* Reminder items */
+  .item{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;position:relative;border-left:4px solid #ccc}
+  .item.mature{background:linear-gradient(135deg,#fffde7,#fff9c4);border-left-color:var(--yellow);animation:pulse 1.5s infinite}
+  .item.soon{border-left-color:#ff7043}
+  .item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .item-info{flex:1}
+  .item-title{font-size:15px;font-weight:700;color:#222;margin-bottom:3px}
+  .item-sub{font-size:12px;color:#888;margin-bottom:6px}
+  .item-countdown{font-size:13px;font-weight:700}
+  .item-countdown.done{color:var(--red);font-size:14px}
+  .progress{height:5px;background:#eee;border-radius:3px;overflow:hidden;margin-top:8px}
+  .progress-bar{height:100%;border-radius:3px;transition:width 1s linear}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;margin-right:4px}
+
+  /* Repeat badge */
+  .repeat-info{font-size:11px;color:#aaa;margin-top:4px}
+
+  /* Notification banner */
+  .notif-bar{background:#fff8e1;border:1px solid #ffcc02;border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .notif-bar.ok{background:#e8f5e9;border-color:#66bb6a;color:#2e7d32}
+  .notif-bar span{font-size:13px}
+  .notif-bar .btn{padding:6px 14px;font-size:13px;background:var(--yellow);border-radius:8px;color:#333}
+
+  /* Toast */
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* Empty state */
+  .empty{text-align:center;padding:40px 20px;color:#bbb;font-size:14px}
+  .empty div{font-size:40px;margin-bottom:8px}
+
+  /* Section separator */
+  .sec-label{font-size:11px;color:#aaa;font-weight:700;letter-spacing:1px;margin:16px 0 8px;padding-left:4px}
+
+  /* Alarm indicator */
+  .alarm-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px}
+  .alarm-dot.off{background:#ccc}
+
+  @keyframes pulse{0%,100%{box-shadow:0 2px 12px rgba(253,216,53,.3)}50%{box-shadow:0 2px 20px rgba(253,216,53,.7)}}
+
+  /* Bottom nav safe area */
+  .page{padding-bottom:80px}
+
+  /* Settings */
+  .settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0}
+  .settings-row:last-child{border:none}
+  .settings-label{font-size:14px;color:#333}
+  .settings-sub{font-size:12px;color:#aaa;margin-top:2px}
+  .toggle{width:44px;height:24px;background:#ccc;border-radius:12px;position:relative;cursor:pointer;transition:.3s}
+  .toggle.on{background:var(--green)}
+  .toggle::after{content:'';width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+  .toggle.on::after{left:22px}
+
+  /* Crop quick add */
+  .crop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+  .crop-btn{background:#f5f5f5;border:none;border-radius:10px;padding:8px 4px;font-size:12px;cursor:pointer;text-align:center;transition:.15s}
+  .crop-btn:active{background:#e0f2f1}
+  .crop-btn span{display:block;font-size:20px;margin-bottom:2px}
+
+  @media(max-width:360px){.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🔔 生活提醒工具</h1>
+  <p id="hdr-time">加载中...</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('remind')" id="tab-remind"><span>⏰</span>提醒</div>
+  <div class="tab" onclick="switchTab('farm')" id="tab-farm"><span>🌾</span>农场</div>
+  <div class="tab" onclick="switchTab('add')" id="tab-add"><span>➕</span>添加</div>
+  <div class="tab" onclick="switchTab('settings')" id="tab-settings"><span>⚙️</span>设置</div>
+</div>
+
+<!-- 提醒列表页 -->
+<div class="page active" id="page-remind">
+  <div id="notif-banner" class="notif-bar" style="display:none">
+    <span>🔔 开启通知，到时间自动弹提醒</span>
+    <button class="btn" onclick="reqNotif()">开启</button>
+  </div>
+  <div id="remind-list"></div>
+</div>
+
+<!-- 农场页 -->
+<div class="page" id="page-farm">
+  <div class="card">
+    <div class="card-title">🌱 快速添加农场作物</div>
+    <div class="form-row"><label>好友昵称（填"自己"表示自己的地）</label>
+      <input id="farm-owner" placeholder="如：小明 / 自己"/>
+    </div>
+    <div class="crop-grid" id="crop-grid"></div>
+    <div class="form-row"><label>或自定义作物</label>
+      <div class="row2">
+        <input id="farm-custom-name" placeholder="作物名称"/>
+        <input id="farm-custom-min" type="number" placeholder="成熟分钟数" min="1"/>
+      </div>
+    </div>
+    <div class="form-row"><label>种植时间（留空=现在）</label>
+      <input id="farm-time" type="datetime-local"/>
+    </div>
+    <button class="btn btn-green" onclick="addFarm()">🌱 添加偷菜提醒</button>
+  </div>
+  <div id="farm-list"></div>
+</div>
+
+<!-- 添加提醒页 -->
+<div class="page" id="page-add">
+  <div class="card">
+    <div class="card-title">📝 新建提醒</div>
+    <!-- Category -->
+    <div class="form-row"><label>分类</label>
+      <div class="cats" id="cat-chips"></div>
+    </div>
+    <div class="form-row"><label>标题</label>
+      <input id="r-title" placeholder="提醒内容，如：喝水、吃药、开会..."/>
+    </div>
+    <div class="form-row"><label>备注（可选）</label>
+      <textarea id="r-note" placeholder="详细说明..."></textarea>
+    </div>
+    <div class="form-row"><label>提醒时间</label>
+      <input id="r-time" type="datetime-local"/>
+    </div>
+    <div class="form-row"><label>重复</label>
+      <select id="r-repeat">
+        <option value="none">不重复</option>
+        <option value="daily">每天</option>
+        <option value="weekdays">每个工作日</option>
+        <option value="weekly">每周</option>
+        <option value="hourly">每小时</option>
+        <option value="30min">每30分钟</option>
+        <option value="custom">自定义间隔</option>
+      </select>
+    </div>
+    <div class="form-row" id="custom-interval-row" style="display:none">
+      <label>间隔（分钟）</label>
+      <input id="r-interval" type="number" min="1" value="60"/>
+    </div>
+    <div class="form-row"><label>提前提醒</label>
+      <select id="r-advance">
+        <option value="0">准时</option>
+        <option value="5">提前5分钟</option>
+        <option value="10">提前10分钟</option>
+        <option value="15">提前15分钟</option>
+        <option value="30">提前30分钟</option>
+        <option value="60">提前1小时</option>
+      </select>
+    </div>
+    <button class="btn btn-green" onclick="addReminder()">✅ 保存提醒</button>
+  </div>
+</div>
+
+<!-- 设置页 -->
+<div class="page" id="page-settings">
+  <div class="card">
+    <div class="card-title">⚙️ 通知设置</div>
+    <div class="settings-row">
+      <div><div class="settings-label">浏览器通知</div><div class="settings-sub" id="notif-status-text">未开启</div></div>
+      <button class="btn btn-green" style="width:auto;padding:8px 16px" onclick="reqNotif()">开启</button>
+    </div>
+    <div class="settings-row">
+      <div><div class="settings-label">声音提醒</div><div class="settings-sub">到期时播放提示音</div></div>
+      <div class="toggle on" id="toggle-sound" onclick="toggleSound()"></div>
+    </div>
+    <div class="settings-row">
+      <div><div class="settings-label">页面标题提醒</div><div class="settings-sub">有到期提醒时标题显示❗</div></div>
+      <div class="toggle on" id="toggle-title" onclick="toggleTitleAlert()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🗑️ 数据管理</div>
+    <div class="settings-row">
+      <div><div class="settings-label">清除已完成提醒</div><div class="settings-sub">删除所有已到期的提醒</div></div>
+      <button class="btn btn-red" onclick="clearDone()">清除</button>
+    </div>
+    <div class="settings-row">
+      <div><div class="settings-label">清除所有数据</div><div class="settings-sub">删除全部提醒和设置</div></div>
+      <button class="btn btn-red" onclick="clearAll()">全部清除</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">ℹ️ 使用说明</div>
+    <p style="font-size:13px;color:#666;line-height:1.7;margin:0">
+      📌 <b>手机使用：</b>浏览器打开本页面，点"添加到主屏幕"可像App一样使用<br>
+      🔔 <b>通知提醒：</b>需要开启浏览器通知权限，并保持页面在后台运行<br>
+      💾 <b>数据存储：</b>所有数据保存在本地浏览器，不会上传<br>
+      🌾 <b>农场偷菜：</b>切换到"农场"标签快速添加作物提醒
+    </p>
+  </div>
+  <div style="text-align:center;font-size:12px;color:#ccc;padding:8px">生活提醒工具 v2.0</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== Data =====
+const CATS = [
+  {id:'farm',   label:'农场偷菜', icon:'🌾', color:'#43a047'},
+  {id:'health', label:'健康',     icon:'💊', color:'#e53935'},
+  {id:'work',   label:'工作',     icon:'💼', color:'#1e88e5'},
+  {id:'life',   label:'生活',     icon:'🏠', color:'#fb8c00'},
+  {id:'study',  label:'学习',     icon:'📚', color:'#8e24aa'},
+  {id:'food',   label:'饮食',     icon:'🍽️', color:'#00897b'},
+  {id:'sport',  label:'运动',     icon:'🏃', color:'#f4511e'},
+  {id:'other',  label:'其他',     icon:'📌', color:'#546e7a'},
+];
+
+const CROPS = [
+  {name:'萝卜',  icon:'🥕', min:5},
+  {name:'白菜',  icon:'🥬', min:10},
+  {name:'土豆',  icon:'🥔', min:30},
+  {name:'西红柿',icon:'🍅', min:60},
+  {name:'玉米',  icon:'🌽', min:120},
+  {name:'南瓜',  icon:'🎃', min:240},
+  {name:'草莓',  icon:'🍓', min:360},
+  {name:'西瓜',  icon:'🍉', min:480},
+];
+
+const REPEAT_LABELS = {none:'不重复',daily:'每天',weekdays:'每个工作日',weekly:'每周',hourly:'每小时','30min':'每30分钟',custom:'自定义间隔'};
+
+let state = {
+  reminders: [],
+  settings: {sound:true, titleAlert:true}
+};
+let selCat = 'life';
+let notified = new Set();
+let titleAlertActive = false;
+
+// ===== Storage =====
+function save(){localStorage.setItem('lr_state', JSON.stringify(state))}
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem('lr_state')||'{}');
+    if(d.reminders) state.reminders = d.reminders;
+    if(d.settings)  state.settings  = {...state.settings, ...d.settings};
+  }catch(e){}
+}
+
+// ===== Init =====
+load();
+initCats();
+initCropGrid();
+initSettings();
+render();
+setInterval(tick, 1000);
+checkNotifPerm();
+
+// ===== Time =====
+function tick(){
+  const now = new Date();
+  document.getElementById('hdr-time').textContent = now.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  checkTriggers();
+  render();
+}
+
+// ===== Notification =====
+function checkNotifPerm(){
+  const p = typeof Notification !== 'undefined' ? Notification.permission : 'denied';
+  const b = document.getElementById('notif-banner');
+  if(p !== 'granted'){b.style.display='flex'}
+  else{b.style.display='none'}
+  document.getElementById('notif-status-text').textContent = p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝':'未开启';
+}
+async function reqNotif(){
+  if(typeof Notification==='undefined'){showToast('当前浏览器不支持通知');return}
+  const p = await Notification.requestPermission();
+  checkNotifPerm();
+  if(p==='granted') showToast('🔔 通知已开启！');
+  else showToast('请在浏览器设置中允许通知');
+}
+
+function notify(title, body){
+  if(state.settings.sound) playBeep();
+  if(Notification.permission==='granted'){
+    new Notification(title, {body, icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y="52" font-size="52">🔔</text></svg>'});
+  }
+  if(state.settings.titleAlert) flashTitle(title);
+}
+
+function playBeep(){
+  try{
+    const ctx = new(window.AudioContext||window.webkitAudioContext)();
+    [0,100,200].forEach(t=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value=880; g.gain.setValueAtTime(.3,ctx.currentTime+t/1000);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t/1000+.2);
+      o.start(ctx.currentTime+t/1000); o.stop(ctx.currentTime+t/1000+.2);
+    });
+  }catch(e){}
+}
+
+function flashTitle(msg){
+  titleAlertActive = true;
+  let on=true, n=0;
+  const orig = '🔔 生活提醒工具';
+  const iv = setInterval(()=>{
+    document.title = on ? '❗ '+msg : orig;
+    on=!on; n++;
+    if(n>10){clearInterval(iv);document.title=orig;titleAlertActive=false}
+  },600);
+}
+
+// ===== Triggers =====
+function checkTriggers(){
+  const now = Date.now();
+  state.reminders.forEach(r=>{
+    if(r.done && r.repeat==='none') return;
+    const trigAt = r.triggerAt - (r.advance||0)*60000;
+    if(now >= trigAt && !notified.has(r.id)){
+      notified.add(r.id);
+      const cat = CATS.find(c=>c.id===r.cat)||CATS[7];
+      notify(cat.icon+' '+r.title, r.note||'');
+      if(r.repeat && r.repeat!=='none') scheduleNext(r);
+    }
+  });
+  save();
+}
+
+function scheduleNext(r){
+  const now = Date.now();
+  let next;
+  if(r.repeat==='daily')    next = r.triggerAt + 86400000;
+  else if(r.repeat==='weekly') next = r.triggerAt + 7*86400000;
+  else if(r.repeat==='hourly') next = r.triggerAt + 3600000;
+  else if(r.repeat==='30min') next = r.triggerAt + 1800000;
+  else if(r.repeat==='custom') next = r.triggerAt + (r.interval||60)*60000;
+  else if(r.repeat==='weekdays'){
+    let d = new Date(r.triggerAt);
+    do{ d = new Date(d.getTime()+86400000) }while(d.getDay()===0||d.getDay()===6);
+    next = d.getTime();
+  }
+  if(next && next > now){
+    r.triggerAt = next;
+    notified.delete(r.id);
+  }
+}
+
+// ===== UI Init =====
+function initCats(){
+  const wrap = document.getElementById('cat-chips');
+  wrap.innerHTML = '';
+  CATS.forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'cat'+(c.id===selCat?' sel':'');
+    el.style.background = c.id===selCat ? c.color+'22':'#f5f5f5';
+    el.style.color = c.color;
+    el.textContent = c.icon+' '+c.label;
+    el.onclick = ()=>{ selCat=c.id; initCats(); };
+    wrap.appendChild(el);
+  });
+}
+
+function initCropGrid(){
+  const wrap = document.getElementById('crop-grid');
+  wrap.innerHTML = '';
+  CROPS.forEach(c=>{
+    const el = document.createElement('button');
+    el.className = 'crop-btn';
+    el.innerHTML = `<span>${c.icon}</span>${c.name}<br><small style="color:#aaa">${c.min<60?c.min+'分':c.min/60+'小时'}</small>`;
+    el.onclick = ()=> quickAddCrop(c);
+    wrap.appendChild(el);
+  });
+}
+
+function initSettings(){
+  document.getElementById('toggle-sound').className = 'toggle'+(state.settings.sound?' on':'');
+  document.getElementById('toggle-title').className = 'toggle'+(state.settings.titleAlert?' on':'');
+}
+
+// ===== Tab switching =====
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
+  if(name==='remind'||name==='farm') render();
+}
+
+// ===== Render =====
+function render(){
+  renderRemindList();
+  renderFarmList();
+}
+
+function renderRemindList(){
+  const now = Date.now();
+  const el = document.getElementById('remind-list');
+  const items = state.reminders.filter(r=>r.cat!=='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
+  if(!items.length){ el.innerHTML='<div class="empty"><div>⏰</div>还没有提醒，去"添加"创建吧</div>'; return; }
+
+  const active=items.filter(r=>r.triggerAt>=now||r.repeat!=='none');
+  const done=items.filter(r=>r.triggerAt<now&&r.repeat==='none');
+
+  let html='';
+  if(active.length){ html+='<div class="sec-label">进行中</div>'+active.map(r=>itemHtml(r,now)).join(''); }
+  if(done.length){   html+='<div class="sec-label">已到期</div>'+done.map(r=>itemHtml(r,now)).join(''); }
+  el.innerHTML = html;
+}
+
+function renderFarmList(){
+  const now = Date.now();
+  const el = document.getElementById('farm-list');
+  const items = state.reminders.filter(r=>r.cat==='farm').sort((a,b)=>a.triggerAt-b.triggerAt);
+  if(!items.length){ el.innerHTML='<div class="empty"><div>🌾</div>还没有农场提醒</div>'; return; }
+  el.innerHTML = items.map(r=>itemHtml(r,now)).join('');
+}
+
+function itemHtml(r, now){
+  const cat = CATS.find(c=>c.id===r.cat)||CATS[7];
+  const remaining = r.triggerAt - now;
+  const mature = remaining <= 0;
+  const soon = remaining > 0 && remaining < 600000; // <10min
+  const pct = r.plantedAt ? Math.min(100,Math.max(0,(now-r.plantedAt)/(r.triggerAt-r.plantedAt)*100)) : (mature?100:0);
+  const cls = mature?'mature':soon?'soon':'';
+
+  return `<div class="item ${cls}" style="border-left-color:${cat.color}">
+    <div class="item-top">
+      <div class="item-info">
+        <div class="item-title">${cat.icon} ${r.title}</div>
+        ${r.note?`<div class="item-sub">${r.note}</div>`:''}
+        <div class="item-sub">🕐 ${new Date(r.triggerAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        ${r.repeat&&r.repeat!=='none'?`<div class="repeat-info">🔄 ${REPEAT_LABELS[r.repeat]||'自定义'}</div>`:''}
+        <div class="item-countdown ${mature?'done':''}">${mature?'⚡ 立即去做！':formatCountdown(remaining)}</div>
+        <div class="progress"><div class="progress-bar" style="width:${pct}%;background:${mature?'#fdd835':cat.color}"></div></div>
+      </div>
+      <button class="btn-icon" onclick="removeItem('${r.id}')">🗑️</button>
+    </div>
+  </div>`;
+}
+
+// ===== Add Reminder =====
+document.getElementById('r-repeat').addEventListener('change',function(){
+  document.getElementById('custom-interval-row').style.display = this.value==='custom'?'flex':'none';
+});
+
+function addReminder(){
+  const title = document.getElementById('r-title').value.trim();
+  const timeVal = document.getElementById('r-time').value;
+  if(!title){ showToast('请填写提醒标题'); return; }
+  if(!timeVal){ showToast('请选择提醒时间'); return; }
+
+  const r = {
+    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    cat: selCat,
+    title,
+    note: document.getElementById('r-note').value.trim(),
+    triggerAt: new Date(timeVal).getTime(),
+    plantedAt: Date.now(),
+    repeat: document.getElementById('r-repeat').value,
+    interval: parseInt(document.getElementById('r-interval').value)||60,
+    advance: parseInt(document.getElementById('r-advance').value)||0,
+    done: false,
+  };
+  r.triggerAt -= r.advance*60000; // adjust for advance
+
+  state.reminders.push(r);
+  save();
+  showToast('✅ 提醒已保存！');
+  document.getElementById('r-title').value='';
+  document.getElementById('r-note').value='';
+  document.getElementById('r-time').value='';
+  switchTab('remind');
+}
+
+// ===== Add Farm =====
+function quickAddCrop(crop){
+  const owner = document.getElementById('farm-owner').value.trim();
+  if(!owner){ showToast('请填写好友昵称'); return; }
+  const timeVal = document.getElementById('farm-time').value;
+  const planted = timeVal ? new Date(timeVal).getTime() : Date.now();
+  const triggerAt = planted + crop.min*60000;
+  const r = {
+    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    cat:'farm',
+    title: owner+'的'+crop.name,
+    note: owner==='自己'||owner==='我'?'该偷别人的了！':'去偷菜！',
+    triggerAt, plantedAt:planted,
+    repeat:'none', advance:0, done:false,
+  };
+  state.reminders.push(r);
+  save();
+  showToast(`🌱 已添加 ${owner} 的${crop.name}提醒（${crop.min<60?crop.min+'分钟':crop.min/60+'小时'}后成熟）`);
+  render();
+}
+
+function addFarm(){
+  const owner = document.getElementById('farm-owner').value.trim();
+  const name  = document.getElementById('farm-custom-name').value.trim();
+  const minVal = parseInt(document.getElementById('farm-custom-min').value)||0;
+  if(!owner){ showToast('请填写好友昵称'); return; }
+  if(!name || !minVal){ showToast('请填写作物名称和时间'); return; }
+  const timeVal = document.getElementById('farm-time').value;
+  const planted = timeVal ? new Date(timeVal).getTime() : Date.now();
+  const r = {
+    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    cat:'farm', title:owner+'的'+name, note:'去偷菜！',
+    triggerAt:planted+minVal*60000, plantedAt:planted,
+    repeat:'none', advance:0, done:false,
+  };
+  state.reminders.push(r);
+  save();
+  showToast(`🌱 已添加 ${owner} 的${name}提醒`);
+  document.getElementById('farm-custom-name').value='';
+  document.getElementById('farm-custom-min').value='';
+  render();
+}
+
+// ===== Remove =====
+function removeItem(id){
+  state.reminders = state.reminders.filter(r=>r.id!==id);
+  notified.delete(id);
+  save(); render();
+}
+
+// ===== Settings =====
+function toggleSound(){
+  state.settings.sound = !state.settings.sound;
+  initSettings(); save();
+  showToast(state.settings.sound?'🔊 声音已开启':'🔇 声音已关闭');
+}
+function toggleTitleAlert(){
+  state.settings.titleAlert = !state.settings.titleAlert;
+  initSettings(); save();
+}
+function clearDone(){
+  if(!confirm('清除所有已到期的提醒？')) return;
+  const now=Date.now();
+  state.reminders = state.reminders.filter(r=>r.triggerAt>=now||r.repeat!=='none');
+  save(); render(); showToast('✅ 已清除');
+}
+function clearAll(){
+  if(!confirm('确定要清除所有数据？此操作不可恢复！')) return;
+  state.reminders=[];
+  save(); render(); showToast('✅ 已全部清除');
+}
+
+// ===== Helpers =====
+function formatCountdown(ms){
+  if(ms<=0) return '已到期';
+  const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+  if(h>0) return h+'小时'+m+'分'+sec+'秒';
+  if(m>0) return m+'分'+sec+'秒';
+  return sec+'秒';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// Set default time to now+1h
+(function setDefaultTime(){
+  const d=new Date(Date.now()+3600000);
+  const fmt=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());
+  document.getElementById('r-time').value=fmt;
+  document.getElementById('farm-time').value='';
+  function p(n){return String(n).padStart(2,'0')}
+})();
+</script>
+</body>
+</html>
