@@ -257,9 +257,19 @@ textarea{resize:vertical;min-height:65px}
 <div class="pg" id="pg-s">
   <div class="card">
     <div class="ct">通知</div>
+    <div id="ios-hint" style="display:none;background:rgba(76,201,240,.1);border:1px solid rgba(76,201,240,.3);border-radius:12px;padding:12px;margin-bottom:10px;font-size:12px;line-height:1.8;color:var(--tx)">
+      📲 <b>iOS 开启通知步骤：</b><br>
+      1. 点底部 <b>分享</b> 按钮（方框带箭头）<br>
+      2. 选择 <b>添加到主屏幕</b><br>
+      3. 从主屏幕图标打开 → 进设置开启通知<br>
+      <span style="color:var(--tx2)">iOS 16.4+ 支持，需系统版本 ≥ 16.4</span>
+    </div>
     <div class="srow">
       <div><div class="slb">浏览器通知</div><div class="ssb" id="ntxt">检测中...</div></div>
       <button class="btn btnp" style="width:auto;padding:8px 14px;font-size:12px" onclick="reqNotif()">开启</button>
+    </div>
+    <div class="srow">
+      <div><div class="slb">后台服务</div><div class="ssb" id="sw-stat">检测中...</div></div>
     </div>
     <div class="srow">
       <div><div class="slb">声音提醒</div><div class="ssb">到期播放铃声</div></div>
@@ -426,7 +436,18 @@ function load(){
   try{
     const d=JSON.parse(localStorage.getItem(KEY)||'{}');
     if(d.rem)     S.rem=d.rem;
-    if(d.cats)    S.cats=d.cats;
+    if(d.cats){
+      // 迁移旧格式：DCAT默认项始终用最新硬编码，只附加用户自建分类
+      const userCats=d.cats
+        .filter(c=>!DCAT.find(dc=>dc.id===c.id))
+        .map(c=>({
+          id:c.id,
+          l:c.l||c.label||c.name||'分类',
+          e:c.e||c.emoji||c.icon||'📌',
+          col:c.col||c.color||'#6a9a6a'
+        }));
+      S.cats=[...JSON.parse(JSON.stringify(DCAT)),...userCats];
+    }
     if(d.ucrop)   S.ucrop=d.ucrop;
     if(d.friends) S.friends=d.friends;
     if(d.cfg)     S.cfg={...S.cfg,...d.cfg};
@@ -458,14 +479,26 @@ function tick(){
 }
 
 // ===== 通知 =====
+function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent);}
+function isPWA(){return window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;}
 function checkNotif(){
-  const p=typeof Notification!=='undefined'?Notification.permission:'denied';
   const nb=document.getElementById('nbar');
-  if(nb) nb.style.display=p!=='granted'?'flex':'none';
   const nt=document.getElementById('ntxt');
-  if(nt) nt.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝（浏览器设置中允许）':'⚠️ 未开启';
+  if(isIOS()&&!isPWA()){
+    if(nb) nb.style.display='none';
+    if(nt) nt.textContent='📲 iOS需添加到主屏幕后开启';
+    return;
+  }
+  const p=typeof Notification!=='undefined'?Notification.permission:'denied';
+  if(nb) nb.style.display=p!=='granted'?'flex':'none';
+  if(nt) nt.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝（在浏览器设置中允许）':'⚠️ 未开启';
 }
 async function reqNotif(){
+  if(isIOS()&&!isPWA()){
+    toast('iOS请先：Safari → 分享 → 添加到主屏幕');
+    document.getElementById('ios-hint')&&(document.getElementById('ios-hint').style.display='block');
+    return;
+  }
   if(typeof Notification==='undefined'){toast('此浏览器不支持通知');return}
   const p=await Notification.requestPermission();
   checkNotif();
