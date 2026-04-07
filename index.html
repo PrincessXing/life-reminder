@@ -134,6 +134,9 @@ textarea{resize:vertical;min-height:65px;font-size:14px}
   </div>
 </div>
 
+<div id="sw-hint" style="display:none;background:rgba(255,212,96,.12);border-bottom:1px solid rgba(255,212,96,.3);padding:9px 16px;font-size:12px;color:var(--yel);gap:8px;align-items:center;flex-wrap:wrap">
+  ⚠️ 当前通过 <b>file://</b> 直接打开，后台通知不可用。双击运行 <b>start.sh</b>，再访问 <b>http://localhost:8080</b> 即可启用后台提醒。
+</div>
 <div class="tabs">
   <div class="tab on"  id="tab-r" onclick="goTab('r')"><i>⏰</i>提醒</div>
   <div class="tab"     id="tab-f" onclick="goTab('f')"><i>🌾</i>农场</div>
@@ -241,6 +244,9 @@ textarea{resize:vertical;min-height:65px;font-size:14px}
     <div class="srow">
       <div><div class="slb">浏览器通知</div><div class="ssb" id="ntxt">检测中...</div></div>
       <button class="btn btnp" style="width:auto;padding:8px 14px;font-size:12px" onclick="reqNotif()">开启</button>
+    </div>
+    <div class="srow">
+      <div><div class="slb">后台通知（Service Worker）</div><div class="ssb" id="sw-stat">检测中...</div></div>
     </div>
     <div class="srow">
       <div><div class="slb">声音提醒</div><div class="ssb">到期播放铃声</div></div>
@@ -394,10 +400,15 @@ let S={
 };
 let selCat='life', selCC='蔬菜', selCI=0, selP='自己', selF='';
 let ntf=new Set(), actx=null, audioReady=false;
+let swReg=null, swTick=0;
 
 // ===== 存储 =====
 const KEY='ft_v4';
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}swSync();}
+function swSync(){
+  if(!navigator.serviceWorker||!navigator.serviceWorker.controller) return;
+  navigator.serviceWorker.controller.postMessage({type:'SYNC',rem:S.rem,fired:[...ntf]});
+}
 function load(){
   try{
     const d=JSON.parse(localStorage.getItem(KEY)||'{}');
@@ -437,6 +448,9 @@ function tick(){
   checkTrig();
   renderRList();
   renderFList();
+  // 每 60 秒向 SW 同步一次（保持 SW 存活 + 数据一致）
+  swTick++;
+  if(swTick%60===0) swSync();
 }
 
 // ===== 通知 =====
@@ -860,6 +874,41 @@ function goTab(k){
   document.getElementById('tab-'+k).classList.add('on');
   document.getElementById('pg-'+k).classList.add('on');
 }
+
+// ===== Service Worker =====
+(function(){
+  const stat=document.getElementById('sw-stat');
+  const hint=document.getElementById('sw-hint');
+  if(!('serviceWorker' in navigator)){
+    if(stat){stat.textContent='❌ 浏览器不支持';stat.style.color='var(--red)';}
+    return;
+  }
+  const secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(!secure){
+    if(hint) hint.style.display='flex';
+    if(stat){stat.textContent='⚠️ 需通过 localhost 访问';stat.style.color='var(--yel)';}
+    return;
+  }
+  navigator.serviceWorker.register('./sw.js').then(reg=>{
+    swReg=reg;
+    if(stat){stat.textContent='✅ 已启用（关闭标签页也能收到提醒）';stat.style.color='var(--g)';}
+    // 注册 Periodic Background Sync（已安装为 PWA 时有效，最低间隔约15分钟）
+    if('periodicSync' in reg){
+      reg.periodicSync.register('ft-check',{minInterval:15*60*1000}).catch(()=>{});
+    }
+    // SW 就绪后立即同步一次数据
+    navigator.serviceWorker.ready.then(r=>{
+      if(r.active) r.active.postMessage({type:'SYNC',rem:S.rem,fired:[...ntf]});
+    });
+  }).catch(err=>{
+    if(stat){stat.textContent='❌ 注册失败：'+err.message;stat.style.color='var(--red)';}
+    console.warn('SW registration failed:',err);
+  });
+  // 监听 SW 消息
+  navigator.serviceWorker.addEventListener('message',ev=>{
+    // SW 已同步，无需额外处理
+  });
+})();
 </script>
 </body>
 </html>
