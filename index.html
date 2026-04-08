@@ -371,12 +371,17 @@ function syncWorker(){
   if(!url||!S.cfg.barkKey||!S.cfg.userId)return;
   try{
     const remData=S.rem.map(r=>({id:r.id,cat:r.cat,title:r.title,note:r.note||'',at:r.at,pa:r.pa,rep:r.rep,intv:r.intv||60,adv:r.adv||0,done:r.done||false}));
-    const d=encodeURIComponent(JSON.stringify(remData));
-    const k=encodeURIComponent(S.cfg.barkKey);
-    const sv=encodeURIComponent(S.cfg.barkSrv||'https://api.day.app');
-    const u=encodeURIComponent(S.cfg.userId);
-    const img=new Image();
-    img.src=url+'/sync?u='+u+'&k='+k+'&s='+sv+'&d='+d+'&_='+Date.now();
+    fetch(url+'/reminders',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      mode:'no-cors',
+      body:JSON.stringify({
+        userId:S.cfg.userId,
+        barkKey:S.cfg.barkKey,
+        barkServer:S.cfg.barkSrv||'https://api.day.app',
+        reminders:remData
+      })
+    }).catch(()=>{});
   }catch(e){}
 }
 
