@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="FTools"/>
 <link rel="apple-touch-icon" href="icon.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="icon.png"/>
 <title>FTools</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
@@ -28,7 +27,7 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,'SF Pro Disp
 .hdr{background:var(--bg2);padding:env(safe-area-inset-top,0) 18px 0;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
 .hdr-in{display:flex;align-items:center;justify-content:space-between;padding:12px 0 10px}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-ico{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 0 14px rgba(61,186,111,.4)}
+.logo-ico{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff}
 .logo h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
 .hdr-time{font-size:11px;color:var(--tx2)}
 .tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:61px;z-index:99}
@@ -52,14 +51,10 @@ textarea{resize:vertical;min-height:65px}
 .btnp{background:linear-gradient(135deg,var(--g3),var(--g));color:#fff;width:100%;font-weight:800;box-shadow:0 4px 14px rgba(61,186,111,.3)}
 .btnd{background:rgba(255,90,90,.1);color:var(--red);padding:7px 14px;font-size:12px;border-radius:10px;border:1px solid rgba(255,90,90,.25)}
 .btns{padding:6px 12px;font-size:12px;border-radius:8px}
-.nbar{background:linear-gradient(135deg,rgba(255,212,96,.12),rgba(255,159,74,.1));border:1px solid rgba(255,212,96,.3);border-radius:14px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.nbar span{font-size:13px}
-.nbar .btn{padding:6px 14px;font-size:12px;background:var(--yel);color:#333;font-weight:700;width:auto;border-radius:8px}
-/* Bark 状态条 */
-.bark-bar{border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:12px;border:1px solid;display:flex;align-items:center;gap:8px}
-.bark-bar.ok{background:rgba(61,186,111,.08);border-color:rgba(61,186,111,.3);color:var(--g)}
-.bark-bar.warn{background:rgba(255,212,96,.08);border-color:rgba(255,212,96,.3);color:var(--yel)}
-/* 作物轮播 */
+.sbar{border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:12px;border:1px solid;line-height:1.5}
+.sbar.ok{background:rgba(61,186,111,.08);border-color:rgba(61,186,111,.3);color:var(--g)}
+.sbar.warn{background:rgba(255,212,96,.08);border-color:rgba(255,212,96,.3);color:var(--yel)}
+.sbar.err{background:rgba(255,90,90,.08);border-color:rgba(255,90,90,.3);color:var(--red)}
 .cc-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .cc-wrap::-webkit-scrollbar{display:none}
 .cc-row{display:flex;gap:9px;width:max-content;padding-right:16px}
@@ -71,11 +66,10 @@ textarea{resize:vertical;min-height:65px}
 .cc .cp{font-size:11px;color:var(--yel);margin-top:2px}
 .cc .ce{position:absolute;top:5px;right:5px;font-size:11px;opacity:.4;background:none;border:none;cursor:pointer;padding:2px}
 .cc-add{scroll-snap-align:start;background:transparent;border:1.5px dashed var(--bd);border-radius:16px;padding:12px 10px;width:108px;flex-shrink:0;cursor:pointer;text-align:center;color:var(--tx2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px}
-.cctabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;scrollbar-width:none;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.cctabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;scrollbar-width:none;padding-bottom:2px}
 .cctabs::-webkit-scrollbar{display:none}
 .cctab{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--bd);color:var(--tx2);cursor:pointer;background:var(--bg2)}
 .cctab.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.1)}
-/* 弹窗 */
 .mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;justify-content:center}
 .mover.on{display:flex}
 .modal{background:var(--bg3);border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:480px;border-top:1px solid var(--bd);animation:su .28s ease}
@@ -86,11 +80,10 @@ textarea{resize:vertical;min-height:65px}
 .popt{flex:1;padding:9px;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:.2s}
 .popt.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.1)}
 .fchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.fchip{padding:5px 12px;border-radius:20px;font-size:12px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);cursor:pointer;transition:.2s}
+.fchip{padding:5px 12px;border-radius:20px;font-size:12px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);cursor:pointer}
 .fchip.on{border-color:var(--g);color:var(--g)}
 .tscs{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
 .tsc{padding:5px 10px;border-radius:8px;font-size:12px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx2);cursor:pointer}
-.tsc:active{border-color:var(--g);color:var(--g)}
 .item{background:var(--card);border-radius:var(--r);padding:14px;border:1px solid var(--bd);margin-bottom:9px;position:relative;overflow:hidden}
 .item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--g)}
 .item.mat{border-color:rgba(255,212,96,.4);background:linear-gradient(135deg,rgba(255,212,96,.07),rgba(255,159,74,.04))}
@@ -109,7 +102,7 @@ textarea{resize:vertical;min-height:65px}
 .progb{height:100%;border-radius:2px;transition:width 1s linear}
 .delbtn{background:rgba(255,90,90,.1);border:none;color:var(--red);font-size:15px;width:30px;height:30px;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .cats{display:flex;flex-wrap:wrap;gap:6px}
-.cchip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);color:var(--tx2);background:var(--bg2);transition:.2s}
+.cchip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);color:var(--tx2);background:var(--bg2)}
 .cchip.on{border-color:currentColor}
 .sl{font-size:10px;color:var(--tx2);font-weight:700;letter-spacing:1.5px;margin:14px 0 7px 3px;text-transform:uppercase}
 .empty{text-align:center;padding:44px 20px;color:var(--tx2)}
@@ -123,32 +116,21 @@ textarea{resize:vertical;min-height:65px}
 .tog::after{content:'';width:19px;height:19px;background:#fff;border-radius:50%;position:absolute;top:2px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .tog.on::after{left:24px}
 .slist{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
-.si{padding:7px 13px;border-radius:10px;font-size:12px;background:var(--bg2);border:1.5px solid var(--bd);color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:5px;transition:.2s}
+.si{padding:7px 13px;border-radius:10px;font-size:12px;background:var(--bg2);border:1.5px solid var(--bd);color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:5px}
 .si.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.1)}
 .exparea{background:var(--bg2);border-radius:10px;padding:10px;font-size:11px;color:var(--tx2);word-break:break-all;max-height:80px;overflow-y:auto;border:1px solid var(--bd);margin-top:8px}
-/* Bark key 输入 */
-.bark-key-row{display:flex;gap:8px;align-items:flex-end}
-.bark-key-row input{flex:1}
-.bark-key-row .btn{width:auto;padding:10px 14px;font-size:13px}
-/* 推送日志 */
-.push-log{margin-top:8px;max-height:120px;overflow-y:auto;font-size:11px;color:var(--tx2);line-height:1.7}
-.push-log-item{padding:3px 0;border-bottom:1px solid var(--bd)}
-.push-log-item.ok{color:var(--g)}
-.push-log-item.err{color:var(--red)}
 .toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg3);color:var(--tx);padding:10px 20px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap;border:1px solid var(--bd);box-shadow:var(--sh)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:360px){.r2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <div class="hdr">
   <div class="hdr-in">
     <div class="logo"><div class="logo-ico">F</div><h1>FTools</h1></div>
     <div class="hdr-time" id="htime"></div>
   </div>
 </div>
-
 <div class="tabs">
   <div class="tab on"  id="tab-r" onclick="goTab('r')"><i>⏰</i>提醒</div>
   <div class="tab"     id="tab-f" onclick="goTab('f')"><i>🌾</i>农场</div>
@@ -156,17 +138,13 @@ textarea{resize:vertical;min-height:65px}
   <div class="tab"     id="tab-s" onclick="goTab('s')"><i>⚙️</i>设置</div>
 </div>
 
-<!-- 提醒页 -->
+<!-- 提醒 -->
 <div class="pg on" id="pg-r">
-  <div id="nbar" class="nbar" style="display:none">
-    <span>🔔 开启通知接收到期提醒</span>
-    <button class="btn" onclick="reqNotif()">开启</button>
-  </div>
-  <div id="barkbar" style="display:none"></div>
+  <div id="workerbar" style="display:none"></div>
   <div id="rlist"></div>
 </div>
 
-<!-- 农场页 -->
+<!-- 农场 -->
 <div class="pg" id="pg-f">
   <div class="card">
     <div class="ct">偷谁的菜</div>
@@ -214,7 +192,7 @@ textarea{resize:vertical;min-height:65px}
   <div id="flist"></div>
 </div>
 
-<!-- 添加页 -->
+<!-- 添加 -->
 <div class="pg" id="pg-a">
   <div class="card">
     <div class="ct">分类</div>
@@ -256,53 +234,41 @@ textarea{resize:vertical;min-height:65px}
   </div>
 </div>
 
-<!-- 设置页 -->
+<!-- 设置 -->
 <div class="pg" id="pg-s">
-
-  <!-- Bark 配置卡片 -->
-  <div class="card" style="border-color:rgba(61,186,111,.4)">
-    <div class="ct" style="color:var(--g)">🔔 Bark 推送配置</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">
-      Bark 可在手机锁屏、App关闭时仍推送通知。<br>
-      先在 App Store 安装 <b style="color:var(--tx)">Bark</b>，打开后复制你的 Key（链接中 api.day.app/ 后面那段）填入下方。
+  <div class="card" style="border-color:rgba(61,186,111,.5)">
+    <div class="ct" style="color:var(--g)">🚀 后台推送配置（核心）</div>
+    <p style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:14px">
+      部署 Cloudflare Worker 后，填入地址和 Bark Key，<b style="color:var(--tx)">手机锁屏、关掉页面，照样准时收到通知</b>。<br>
+      Worker 每分钟自动检查，到时间直接推送给你的 Bark。
     </p>
     <div class="fr">
-      <label>Bark Key（从 Bark App 中复制）</label>
-      <div class="bark-key-row">
-        <input id="barkKey" placeholder="例：AbCdEfGhIjKlMnOpQrStUv" type="text"/>
-        <button class="btn btnp" onclick="testBark()">测试</button>
-      </div>
+      <label>Worker 地址（部署后填入）</label>
+      <input id="workerUrl" placeholder="https://ftools.你的名字.workers.dev"/>
     </div>
     <div class="fr">
-      <label>服务器地址（默认官方，可不改）</label>
-      <input id="barkServer" placeholder="https://api.day.app" type="url"/>
+      <label>Bark Key（从 Bark App 复制）</label>
+      <input id="barkKey" placeholder="例：AbCdEfGhIjKlMnOp"/>
     </div>
-    <div class="srow" style="padding-top:8px">
-      <div><div class="slb">启用 Bark 推送</div><div class="ssb">到期时自动推送到手机</div></div>
-      <div class="tog" id="tog-bark" onclick="togSet('bark')"></div>
+    <div class="fr">
+      <label>Bark 服务器（默认官方，可不改）</label>
+      <input id="barkSrv" placeholder="https://api.day.app"/>
     </div>
-    <div class="srow">
-      <div><div class="slb">提前推送时间</div><div class="ssb">在到期前多久发 Bark 通知</div></div>
-      <select id="barkAdv" onchange="S.cfg.barkAdv=+this.value;save()" style="width:auto;padding:6px 10px;font-size:12px">
-        <option value="0">准时</option>
-        <option value="1">提前1分钟</option>
-        <option value="3">提前3分钟</option>
-        <option value="5">提前5分钟</option>
-        <option value="10">提前10分钟</option>
-      </select>
+    <div style="display:flex;gap:8px">
+      <button class="btn btnp" style="flex:1" onclick="saveCfg()">💾 保存配置</button>
+      <button class="btn" style="flex:1;background:var(--bg2);border:1px solid var(--bd);color:var(--tx)" onclick="testWorker()">🧪 测试连接</button>
     </div>
-    <button class="btn btnp" style="margin-top:8px" onclick="saveBarkCfg()">💾 保存 Bark 配置</button>
-    <div id="push-log" class="push-log" style="display:none"></div>
+    <div id="cfgbar" style="display:none;margin-top:10px"></div>
   </div>
 
   <div class="card">
-    <div class="ct">通知</div>
+    <div class="ct">页面通知（备用）</div>
     <div class="srow">
       <div><div class="slb">浏览器通知</div><div class="ssb" id="ntxt">检测中...</div></div>
       <button class="btn btnp" style="width:auto;padding:8px 14px;font-size:12px" onclick="reqNotif()">开启</button>
     </div>
     <div class="srow">
-      <div><div class="slb">页面声音提醒</div><div class="ssb">页面开着时到期播放铃声</div></div>
+      <div><div class="slb">页面声音</div><div class="ssb">页面开着时到期播放铃声</div></div>
       <div class="tog on" id="tog-sound" onclick="togSet('sound')"></div>
     </div>
     <div class="srow">
@@ -312,18 +278,18 @@ textarea{resize:vertical;min-height:65px}
   </div>
 
   <div class="card">
-    <div class="ct">铃声选择 <span style="font-size:10px;font-weight:400;text-transform:none">点 ▶ 试听</span></div>
+    <div class="ct">铃声 <span style="font-size:10px;font-weight:400;text-transform:none">点 ▶ 试听</span></div>
     <div class="slist" id="sndlist"></div>
-    <div class="fr" style="margin-top:12px">
-      <label>上传自定义铃声（MP3/WAV/OGG，≤5MB）</label>
+    <div class="fr" style="margin-top:10px">
+      <label>上传自定义铃声（MP3/WAV，≤5MB）</label>
       <input type="file" id="sndfile" accept="audio/*" onchange="uploadSnd()" style="font-size:14px;padding:8px"/>
     </div>
     <div class="fr">
       <label>重复播放次数</label>
       <select id="sndcnt" onchange="S.cfg.sndCnt=+this.value;save()">
-        <option value="1">播放 1 次</option>
-        <option value="2">播放 2 次</option>
-        <option value="3">播放 3 次</option>
+        <option value="1">1 次</option>
+        <option value="2">2 次</option>
+        <option value="3">3 次</option>
       </select>
     </div>
   </div>
@@ -339,11 +305,10 @@ textarea{resize:vertical;min-height:65px}
   </div>
 
   <div class="card">
-    <div class="ct">数据备份 / 迁移</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:10px">更新代码前先导出，新版部署后导入恢复全部提醒</p>
+    <div class="ct">数据备份</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btnp" style="flex:1;min-width:100px" onclick="exportD()">📤 导出数据</button>
-      <button class="btn" style="flex:1;min-width:100px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx)" onclick="document.getElementById('impfile').click()">📥 导入数据</button>
+      <button class="btn btnp" style="flex:1;min-width:100px" onclick="exportD()">📤 导出</button>
+      <button class="btn" style="flex:1;min-width:100px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx)" onclick="document.getElementById('impfile').click()">📥 导入</button>
     </div>
     <input type="file" id="impfile" accept=".json" style="display:none" onchange="importD()"/>
     <div id="expview" class="exparea" style="display:none"></div>
@@ -356,16 +321,17 @@ textarea{resize:vertical;min-height:65px}
   </div>
 
   <div class="card">
-    <div class="ct">使用说明</div>
-    <p style="font-size:12px;color:var(--tx2);line-height:1.9">
-      🔔 <b style="color:var(--tx)">Bark 推送</b>（推荐）：锁屏也能收到通知，无需页面开着<br>
-      📌 Safari → 分享 → <b style="color:var(--tx)">添加到主屏幕</b> → 像App一样使用<br>
-      💾 换设备/更新前请先「导出数据」备份<br>
-      ⏱ 时间格式：<b style="color:var(--g)">1h30m</b>、<b style="color:var(--g)">90</b>、<b style="color:var(--g)">2h</b>、<b style="color:var(--g)">1d</b><br>
-      🌗 自动跟随系统深色/浅色模式
+    <div class="ct">部署教程</div>
+    <p style="font-size:12px;color:var(--tx2);line-height:2">
+      1. 注册 <b style="color:var(--tx)">cloudflare.com</b>（免费）<br>
+      2. 进入 Workers & Pages → 创建 Worker<br>
+      3. 把 <b style="color:var(--tx)">worker.js</b> 内容粘贴进去，点部署<br>
+      4. 进入 Worker 设置 → KV → 新建命名空间 <b style="color:var(--g)">REMINDERS</b> → 绑定<br>
+      5. 进入 Worker 设置 → 触发器 → 添加 Cron：<b style="color:var(--g)">* * * * *</b>（每分钟）<br>
+      6. 复制 Worker 地址填到上方，保存即可 🎉
     </p>
   </div>
-  <div style="text-align:center;font-size:11px;color:var(--tx2);padding:8px;opacity:.4">FTools v3 + Bark</div>
+  <div style="text-align:center;font-size:11px;color:var(--tx2);padding:8px;opacity:.4">FTools + Cloudflare Worker + Bark</div>
 </div>
 
 <!-- 编辑作物弹窗 -->
@@ -384,111 +350,166 @@ textarea{resize:vertical;min-height:65px}
     <button class="btn btnp" onclick="saveCE()">保存</button>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== 作物库 =====
 const CCAT=['蔬菜','水果','粮食','花卉','药材','特产'];
 const ALLC=[
-  {e:'🌱',n:'牧草',   c:'蔬菜',m:8},  {e:'🥕',n:'白萝卜',c:'蔬菜',m:10},
-  {e:'🥕',n:'胡萝卜',c:'蔬菜',m:13}, {e:'🥬',n:'大白菜',c:'蔬菜',m:14},
-  {e:'🌽',n:'玉米',  c:'蔬菜',m:14}, {e:'🥔',n:'土豆',  c:'蔬菜',m:15},
-  {e:'🍆',n:'茄子',  c:'蔬菜',m:16}, {e:'🟢',n:'豌豆',  c:'蔬菜',m:18},
-  {e:'💚',n:'艾草',  c:'蔬菜',m:18}, {e:'🌶️',n:'辣椒', c:'蔬菜',m:20},
-  {e:'🌿',n:'薄荷',  c:'蔬菜',m:20}, {e:'🎃',n:'南瓜',  c:'蔬菜',m:22},
-  {e:'🍄',n:'蘑菇',  c:'蔬菜',m:24}, {e:'🧅',n:'洋葱',  c:'蔬菜',m:24},
-  {e:'🌿',n:'芦荟',  c:'蔬菜',m:30}, {e:'🧄',n:'大蒜',  c:'蔬菜',m:16},
-  {e:'🍠',n:'红薯',  c:'蔬菜',m:22}, {e:'🎋',n:'竹笋',  c:'蔬菜',m:12},
-  {e:'🫘',n:'大豆',  c:'蔬菜',m:20}, {e:'🥦',n:'西兰花',c:'蔬菜',m:18},
-  {e:'🍅',n:'番茄',  c:'水果',m:17}, {e:'🍓',n:'草莓',  c:'水果',m:35},
-  {e:'🍉',n:'西瓜',  c:'水果',m:41}, {e:'🍌',n:'香蕉',  c:'水果',m:45},
-  {e:'🍑',n:'桃子',  c:'水果',m:60}, {e:'🍊',n:'橙子',  c:'水果',m:69},
-  {e:'🍇',n:'葡萄',  c:'水果',m:86}, {e:'🍎',n:'苹果',  c:'水果',m:30},
-  {e:'🍏',n:'石榴',  c:'水果',m:96}, {e:'🍋',n:'柚子',  c:'水果',m:113},
-  {e:'🍍',n:'菠萝',  c:'水果',m:116},{e:'🥥',n:'椰子',  c:'水果',m:124},
-  {e:'🥝',n:'猕猴桃',c:'水果',m:106},{e:'🍈',n:'木瓜',  c:'水果',m:120},
-  {e:'🍈',n:'杨桃',  c:'水果',m:120},{e:'🍋',n:'柠檬',  c:'水果',m:96},
-  {e:'🍒',n:'樱桃',  c:'水果',m:72}, {e:'🫐',n:'蓝莓',  c:'水果',m:48},
-  {e:'🍑',n:'荔枝',  c:'水果',m:96}, {e:'🍑',n:'龙眼',  c:'水果',m:86},
-  {e:'🍈',n:'火龙果',c:'水果',m:40}, {e:'🍐',n:'梨',    c:'水果',m:72},
-  {e:'🌾',n:'小麦',  c:'粮食',m:14}, {e:'🌾',n:'水稻',  c:'粮食',m:14},
-  {e:'🎋',n:'甘蔗',  c:'粮食',m:45}, {e:'🟡',n:'葫芦',  c:'粮食',m:139},
-  {e:'🌰',n:'栗子',  c:'粮食',m:120},{e:'🟠',n:'金桔',  c:'粮食',m:86},
-  {e:'🟠',n:'红枣',  c:'粮食',m:16}, {e:'🫚',n:'花生',  c:'粮食',m:30},
-  {e:'🌹',n:'红玫瑰',c:'花卉',m:18}, {e:'🌷',n:'郁金香',c:'花卉',m:52},
-  {e:'🌸',n:'樱花',  c:'花卉',m:44}, {e:'🌻',n:'向日葵',c:'花卉',m:36},
-  {e:'💜',n:'薰衣草',c:'花卉',m:61}, {e:'🌼',n:'雏菊',  c:'花卉',m:17},
-  {e:'🌺',n:'荷花',  c:'花卉',m:44}, {e:'🌸',n:'牡丹',  c:'花卉',m:44},
-  {e:'🌸',n:'马蹄莲',c:'花卉',m:64}, {e:'💜',n:'曼珠沙华',c:'花卉',m:48},
-  {e:'🌺',n:'非洲菊',c:'花卉',m:21}, {e:'💐',n:'百合',  c:'花卉',m:56},
-  {e:'🌿',n:'虫草',  c:'药材',m:64}, {e:'🟤',n:'灵芝',  c:'药材',m:60},
-  {e:'🔴',n:'藏红花',c:'药材',m:56}, {e:'⬜',n:'雪莲',  c:'药材',m:56},
-  {e:'🌿',n:'何首乌',c:'药材',m:56}, {e:'🟡',n:'人参',  c:'药材',m:480},
-  {e:'🌿',n:'黄芪',  c:'药材',m:72}, {e:'🌿',n:'冬凌草',c:'药材',m:36},
-  {e:'🌿',n:'萱草',  c:'药材',m:24}, {e:'🌰',n:'莲藕',  c:'特产',m:60},
-  {e:'🟡',n:'沙棘',  c:'特产',m:48},
+  {e:'🌱',n:'牧草',c:'蔬菜',m:8},{e:'🥕',n:'白萝卜',c:'蔬菜',m:10},
+  {e:'🥕',n:'胡萝卜',c:'蔬菜',m:13},{e:'🥬',n:'大白菜',c:'蔬菜',m:14},
+  {e:'🌽',n:'玉米',c:'蔬菜',m:14},{e:'🥔',n:'土豆',c:'蔬菜',m:15},
+  {e:'🍆',n:'茄子',c:'蔬菜',m:16},{e:'🧄',n:'大蒜',c:'蔬菜',m:16},
+  {e:'🟢',n:'豌豆',c:'蔬菜',m:18},{e:'💚',n:'艾草',c:'蔬菜',m:18},
+  {e:'🥦',n:'西兰花',c:'蔬菜',m:18},{e:'🌶️',n:'辣椒',c:'蔬菜',m:20},
+  {e:'🌿',n:'薄荷',c:'蔬菜',m:20},{e:'🫘',n:'大豆',c:'蔬菜',m:20},
+  {e:'🍠',n:'红薯',c:'蔬菜',m:22},{e:'🎃',n:'南瓜',c:'蔬菜',m:22},
+  {e:'🍄',n:'蘑菇',c:'蔬菜',m:24},{e:'🧅',n:'洋葱',c:'蔬菜',m:24},
+  {e:'🌿',n:'芦荟',c:'蔬菜',m:30},{e:'🎋',n:'竹笋',c:'蔬菜',m:12},
+  {e:'🍅',n:'番茄',c:'水果',m:17},{e:'🌼',n:'雏菊',c:'花卉',m:17},
+  {e:'🍓',n:'草莓',c:'水果',m:35},{e:'🍉',n:'西瓜',c:'水果',m:41},
+  {e:'🍌',n:'香蕉',c:'水果',m:45},{e:'🍑',n:'桃子',c:'水果',m:60},
+  {e:'🍊',n:'橙子',c:'水果',m:69},{e:'🍇',n:'葡萄',c:'水果',m:86},
+  {e:'🍎',n:'苹果',c:'水果',m:30},{e:'🍏',n:'石榴',c:'水果',m:96},
+  {e:'🍋',n:'柚子',c:'水果',m:113},{e:'🍍',n:'菠萝',c:'水果',m:116},
+  {e:'🥥',n:'椰子',c:'水果',m:124},{e:'🥝',n:'猕猴桃',c:'水果',m:106},
+  {e:'🍈',n:'木瓜',c:'水果',m:120},{e:'🍈',n:'杨桃',c:'水果',m:120},
+  {e:'🍋',n:'柠檬',c:'水果',m:96},{e:'🍒',n:'樱桃',c:'水果',m:72},
+  {e:'🫐',n:'蓝莓',c:'水果',m:48},{e:'🍑',n:'荔枝',c:'水果',m:96},
+  {e:'🍑',n:'龙眼',c:'水果',m:86},{e:'🍈',n:'火龙果',c:'水果',m:40},
+  {e:'🍐',n:'梨',c:'水果',m:72},{e:'🌾',n:'小麦',c:'粮食',m:14},
+  {e:'🌾',n:'水稻',c:'粮食',m:14},{e:'🎋',n:'甘蔗',c:'粮食',m:45},
+  {e:'🟡',n:'葫芦',c:'粮食',m:139},{e:'🌰',n:'栗子',c:'粮食',m:120},
+  {e:'🟠',n:'金桔',c:'粮食',m:86},{e:'🟠',n:'红枣',c:'粮食',m:16},
+  {e:'🫚',n:'花生',c:'粮食',m:30},{e:'🌹',n:'红玫瑰',c:'花卉',m:18},
+  {e:'🌷',n:'郁金香',c:'花卉',m:52},{e:'🌸',n:'樱花',c:'花卉',m:44},
+  {e:'🌻',n:'向日葵',c:'花卉',m:36},{e:'💜',n:'薰衣草',c:'花卉',m:61},
+  {e:'🌺',n:'荷花',c:'花卉',m:44},{e:'🌸',n:'牡丹',c:'花卉',m:44},
+  {e:'🌸',n:'马蹄莲',c:'花卉',m:64},{e:'💜',n:'曼珠沙华',c:'花卉',m:48},
+  {e:'🌺',n:'非洲菊',c:'花卉',m:21},{e:'💐',n:'百合',c:'花卉',m:56},
+  {e:'🌿',n:'虫草',c:'药材',m:64},{e:'🟤',n:'灵芝',c:'药材',m:60},
+  {e:'🔴',n:'藏红花',c:'药材',m:56},{e:'⬜',n:'雪莲',c:'药材',m:56},
+  {e:'🌿',n:'何首乌',c:'药材',m:56},{e:'🟡',n:'人参',c:'药材',m:480},
+  {e:'🌿',n:'黄芪',c:'药材',m:72},{e:'🌿',n:'冬凌草',c:'药材',m:36},
+  {e:'🌿',n:'萱草',c:'药材',m:24},{e:'🌰',n:'莲藕',c:'特产',m:60},
+  {e:'🟡',n:'沙棘',c:'特产',m:48},
 ];
 const DCAT=[
   {id:'health',l:'健康',e:'💊',col:'#ff5a5a'},
-  {id:'work',  l:'工作',e:'💼',col:'#4cc9f0'},
-  {id:'life',  l:'生活',e:'🏠',col:'#ff9f4a'},
-  {id:'study', l:'学习',e:'📚',col:'#c084fc'},
-  {id:'food',  l:'饮食',e:'🍽️',col:'#3dba6f'},
-  {id:'sport', l:'运动',e:'🏃',col:'#fb923c'},
-  {id:'other', l:'其他',e:'📌',col:'#6a9a6a'},
+  {id:'work',l:'工作',e:'💼',col:'#4cc9f0'},
+  {id:'life',l:'生活',e:'🏠',col:'#ff9f4a'},
+  {id:'study',l:'学习',e:'📚',col:'#c084fc'},
+  {id:'food',l:'饮食',e:'🍽️',col:'#3dba6f'},
+  {id:'sport',l:'运动',e:'🏃',col:'#fb923c'},
+  {id:'other',l:'其他',e:'📌',col:'#6a9a6a'},
 ];
 const SNDS=[
-  {id:'bell',   l:'清脆铃声'},
-  {id:'chime',  l:'钟声'},
-  {id:'marimba',l:'木琴'},
-  {id:'ding',   l:'叮咚'},
-  {id:'beep',   l:'提示音'},
-  {id:'pop',    l:'气泡音'},
-  {id:'alert',  l:'警报'},
-  {id:'custom', l:'自定义'},
+  {id:'bell',l:'清脆铃声'},{id:'chime',l:'钟声'},{id:'marimba',l:'木琴'},
+  {id:'ding',l:'叮咚'},{id:'beep',l:'提示音'},{id:'pop',l:'气泡音'},
+  {id:'alert',l:'警报'},{id:'custom',l:'自定义'},
 ];
 const RLBL={none:'不重复',daily:'每天',weekdays:'工作日',weekly:'每周',hourly:'每小时','30min':'每30分',custom:'自定义'};
 
-// ===== 状态 =====
 let S={
-  rem:[], cats:JSON.parse(JSON.stringify(DCAT)),
-  ucrop:[], friends:[],
-  cfg:{
-    sound:true, titleAlert:true, snd:'bell', sndData:null, sndCnt:2,
-    bark:false, barkKey:'', barkServer:'https://api.day.app', barkAdv:0
-  }
+  rem:[],cats:JSON.parse(JSON.stringify(DCAT)),ucrop:[],friends:[],
+  cfg:{sound:true,titleAlert:true,snd:'bell',sndData:null,sndCnt:2,
+       workerUrl:'',barkKey:'',barkSrv:'https://api.day.app',
+       userId:''} // userId 用于区分不同用户
 };
-let selCat='life', selCC='蔬菜', selCI=0, selP='自己', selF='';
-let ntf=new Set(), barkSent=new Set(), actx=null;
+let selCat='life',selCC='蔬菜',selCI=0,selP='自己',selF='';
+let ntf=new Set(),actx=null;
 
-// ===== 存储 =====
 const KEY='ft_v3';
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+  syncWorker(); // 每次保存都同步到 Worker
+}
 function load(){
   try{
     const d=JSON.parse(localStorage.getItem(KEY)||'{}');
-    if(d.rem)     S.rem=d.rem;
-    if(d.cats)    S.cats=d.cats;
-    if(d.ucrop)   S.ucrop=d.ucrop;
-    if(d.friends) S.friends=d.friends;
-    if(d.cfg)     S.cfg={...S.cfg,...d.cfg};
+    if(d.rem)S.rem=d.rem;
+    if(d.cats)S.cats=d.cats;
+    if(d.ucrop)S.ucrop=d.ucrop;
+    if(d.friends)S.friends=d.friends;
+    if(d.cfg)S.cfg={...S.cfg,...d.cfg};
+    // 生成固定 userId
+    if(!S.cfg.userId)S.cfg.userId='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   }catch(e){}
+}
+
+// ===== Worker 同步 =====
+async function syncWorker(){
+  const url=(S.cfg.workerUrl||'').trim().replace(/\/$/,'');
+  if(!url||!S.cfg.barkKey) return;
+  try{
+    await fetch(url+'/reminders',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        userId:S.cfg.userId,
+        barkKey:S.cfg.barkKey,
+        barkServer:S.cfg.barkSrv||'https://api.day.app',
+        reminders:S.rem
+      })
+    });
+  }catch(e){} // 静默失败，不影响本地使用
+}
+
+async function testWorker(){
+  const url=(document.getElementById('workerUrl').value||'').trim().replace(/\/$/,'');
+  const key=(document.getElementById('barkKey').value||'').trim();
+  const bar=document.getElementById('cfgbar');
+  if(!url){showCfgBar('请先填写 Worker 地址','warn');return}
+  if(!key){showCfgBar('请先填写 Bark Key','warn');return}
+  showCfgBar('连接测试中...','warn');
+  try{
+    const r=await fetch(url+'/ping');
+    const d=await r.json();
+    if(d.ok){
+      showCfgBar('✅ Worker 连接成功！现在保存配置即可','ok');
+    } else {
+      showCfgBar('❌ Worker 响应异常，请检查部署','err');
+    }
+  }catch(e){
+    showCfgBar('❌ 无法连接 Worker：'+e.message,'err');
+  }
+}
+function showCfgBar(msg,type){
+  const el=document.getElementById('cfgbar');
+  el.style.display='block';
+  el.innerHTML=`<div class="sbar ${type}">${msg}</div>`;
+}
+
+function saveCfg(){
+  S.cfg.workerUrl=document.getElementById('workerUrl').value.trim();
+  S.cfg.barkKey=document.getElementById('barkKey').value.trim();
+  S.cfg.barkSrv=document.getElementById('barkSrv').value.trim()||'https://api.day.app';
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+  syncWorker();
+  renderWorkerBar();
+  toast('✅ 配置已保存，Worker 将自动推送');
+}
+
+function renderWorkerBar(){
+  const el=document.getElementById('workerbar');
+  if(!el)return;
+  el.style.display='block';
+  if(S.cfg.workerUrl&&S.cfg.barkKey){
+    el.innerHTML='<div class="sbar ok">🚀 后台推送已启用 — 关闭页面、锁屏均可收到 Bark 通知</div>';
+  }else{
+    el.innerHTML='<div class="sbar warn">⚠️ 后台推送未配置 — 去「设置」填写 Worker 地址和 Bark Key</div>';
+  }
 }
 
 // ===== 启动 =====
 load();
-renderAll();
-renderSndList();
+renderAll();renderSndList();
 document.getElementById('sndcnt').value=String(S.cfg.sndCnt||2);
 document.getElementById('tog-sound').className='tog'+(S.cfg.sound?' on':'');
 document.getElementById('tog-title').className='tog'+(S.cfg.titleAlert?' on':'');
-document.getElementById('tog-bark').className='tog'+(S.cfg.bark?' on':'');
+document.getElementById('workerUrl').value=S.cfg.workerUrl||'';
 document.getElementById('barkKey').value=S.cfg.barkKey||'';
-document.getElementById('barkServer').value=S.cfg.barkServer||'https://api.day.app';
-document.getElementById('barkAdv').value=String(S.cfg.barkAdv||0);
-checkNotif();
-renderBarkBar();
+document.getElementById('barkSrv').value=S.cfg.barkSrv||'https://api.day.app';
+checkNotif();renderWorkerBar();
 setInterval(tick,1000);
 
 function renderAll(){
@@ -496,227 +517,103 @@ function renderAll(){
   renderFChips();renderRList();renderFList();renderCatMng();
 }
 
-// ===== Bark 状态条 =====
-function renderBarkBar(){
-  const el=document.getElementById('barkbar');
-  if(!el) return;
-  if(S.cfg.bark && S.cfg.barkKey){
-    el.style.display='block';
-    el.innerHTML='<div class="bark-bar ok">🔔 Bark 推送已启用，锁屏也能收到通知</div>';
-  } else {
-    el.style.display='block';
-    el.innerHTML='<div class="bark-bar warn">⚠️ Bark 未配置 — 去「设置」填写 Bark Key 后可锁屏收通知</div>';
-  }
-}
-
-// ===== 时钟 =====
 function tick(){
   const n=new Date(),el=document.getElementById('htime');
-  if(el) el.textContent=n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  checkTrig();
-  renderRList();
-  renderFList();
+  if(el)el.textContent=n.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  checkTrig();renderRList();renderFList();
 }
 
-// ===== 通知 =====
 function checkNotif(){
   const p=typeof Notification!=='undefined'?Notification.permission:'denied';
-  const nb=document.getElementById('nbar');
-  if(nb) nb.style.display=p!=='granted'?'flex':'none';
+  const nb=document.getElementById('nbar');if(nb)nb.style.display=p!=='granted'?'flex':'none';
   const nt=document.getElementById('ntxt');
-  if(nt) nt.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝（浏览器设置中允许）':'⚠️ 未开启';
+  if(nt)nt.textContent=p==='granted'?'✅ 已开启':p==='denied'?'❌ 已拒绝':'⚠️ 未开启';
 }
 async function reqNotif(){
   if(typeof Notification==='undefined'){toast('此浏览器不支持通知');return}
-  const p=await Notification.requestPermission();
-  checkNotif();
-  toast(p==='granted'?'🔔 通知已开启！':'请在浏览器设置中允许通知权限');
+  const p=await Notification.requestPermission();checkNotif();
+  toast(p==='granted'?'🔔 已开启':'请在浏览器设置中允许');
 }
 function notify(title,body){
-  if(S.cfg.sound) playSound();
-  if(Notification.permission==='granted'){
-    try{new Notification(title,{body,icon:'./icon.png'})}catch(e){}
-  }
-  if(S.cfg.titleAlert) flashTitle(title);
+  if(S.cfg.sound)playSound();
+  if(Notification.permission==='granted'){try{new Notification(title,{body,icon:'./icon.png'})}catch(e){}}
+  if(S.cfg.titleAlert)flashTitle(title);
 }
 function flashTitle(msg){
   let on=true,n=0;
-  const iv=setInterval(()=>{
-    document.title=on?'❗ '+msg:'FTools';on=!on;n++;
-    if(n>20){clearInterval(iv);document.title='FTools';}
-  },500);
+  const iv=setInterval(()=>{document.title=on?'❗ '+msg:'FTools';on=!on;n++;if(n>20){clearInterval(iv);document.title='FTools';}},500);
 }
 
-// ===== Bark 推送 =====
-async function pushBark(title, body, opts={}){
-  const key=(S.cfg.barkKey||'').trim();
-  const srv=(S.cfg.barkServer||'https://api.day.app').replace(/\/$/,'');
-  if(!key) return false;
-  const sound = opts.sound || 'minuet';
-  const url = `${srv}/${encodeURIComponent(key)}/${encodeURIComponent(title)}/${encodeURIComponent(body)}?sound=${sound}&group=FTools&isArchive=1`;
-  try{
-    const r = await fetch(url, {method:'GET', mode:'no-cors'});
-    addPushLog(`✅ ${new Date().toLocaleTimeString('zh-CN')} 已推送：${title}`, true);
-    return true;
-  }catch(e){
-    // no-cors 模式下即使成功也会报错，尝试用 Image 方式
-    try{
-      await new Promise((res,rej)=>{
-        const img=new Image();
-        img.onload=img.onerror=res;
-        img.src=url+'&_='+Date.now();
-        setTimeout(res,3000);
-      });
-      addPushLog(`✅ ${new Date().toLocaleTimeString('zh-CN')} 已推送：${title}`, true);
-      return true;
-    }catch(e2){
-      addPushLog(`❌ ${new Date().toLocaleTimeString('zh-CN')} 推送失败：${e2.message}`, false);
-      return false;
-    }
-  }
-}
-
-function addPushLog(msg, ok){
-  const el=document.getElementById('push-log');
-  if(!el) return;
-  el.style.display='block';
-  const div=document.createElement('div');
-  div.className='push-log-item '+(ok?'ok':'err');
-  div.textContent=msg;
-  el.insertBefore(div, el.firstChild);
-  // 最多保留20条
-  while(el.children.length>20) el.removeChild(el.lastChild);
-}
-
-async function testBark(){
-  const key=document.getElementById('barkKey').value.trim();
-  if(!key){toast('请先填写 Bark Key');return}
-  // 临时保存用于测试
-  const tmpKey=S.cfg.barkKey; S.cfg.barkKey=key;
-  toast('正在发送测试推送...');
-  const ok=await pushBark('🔔 FTools 测试','Bark 推送配置成功！锁屏也能收到通知了');
-  S.cfg.barkKey=tmpKey;
-  toast(ok?'✅ 测试推送已发出，查看手机！':'❌ 推送失败，请检查 Key 是否正确');
-}
-
-function saveBarkCfg(){
-  S.cfg.barkKey=document.getElementById('barkKey').value.trim();
-  S.cfg.barkServer=document.getElementById('barkServer').value.trim()||'https://api.day.app';
-  S.cfg.barkAdv=+document.getElementById('barkAdv').value||0;
-  save();
-  renderBarkBar();
-  toast('✅ Bark 配置已保存');
-}
-
-// ===== 触发检查 =====
 function checkTrig(){
   const now=Date.now();
   S.rem.forEach(r=>{
-    if(r.done&&r.rep==='none') return;
-
-    // 页面内通知（准时）
+    if(r.done&&r.rep==='none')return;
     const at=r.at-(r.adv||0)*60000;
     if(now>=at&&!ntf.has(r.id)){
       ntf.add(r.id);
       const cat=r.cat==='farm'?{e:'🌾'}:(S.cats.find(c=>c.id===r.cat)||{e:'📌'});
-      notify(cat.e+' '+r.title, r.note||'时间到了！');
-      if(r.rep&&r.rep!=='none') schedNext(r,now);
-    }
-
-    // Bark 推送（提前 barkAdv 分钟）
-    const barkAt = r.at - (S.cfg.barkAdv||0)*60000;
-    const barkId = r.id+'_bark';
-    if(S.cfg.bark && S.cfg.barkKey && now>=barkAt && now<barkAt+60000 && !barkSent.has(barkId)){
-      barkSent.add(barkId);
-      const cat=r.cat==='farm'?{e:'🌾'}:(S.cats.find(c=>c.id===r.cat)||{e:'📌'});
-      const body = r.note ? r.note : (r.cat==='farm'?'快去收菜/偷菜！':'时间到了！');
-      pushBark(cat.e+' '+r.title, body);
+      notify(cat.e+' '+r.title,r.note||'时间到了！');
+      if(r.rep&&r.rep!=='none')schedNext(r,now);
     }
   });
-  save();
 }
-
 function schedNext(r,now){
   const t=r.at;let nx;
-  if(r.rep==='daily')    nx=t+86400000;
-  else if(r.rep==='weekly')  nx=t+604800000;
-  else if(r.rep==='hourly')  nx=t+3600000;
-  else if(r.rep==='30min')   nx=t+1800000;
-  else if(r.rep==='custom')  nx=t+(r.intv||60)*60000;
+  if(r.rep==='daily')nx=t+86400000;
+  else if(r.rep==='weekly')nx=t+604800000;
+  else if(r.rep==='hourly')nx=t+3600000;
+  else if(r.rep==='30min')nx=t+1800000;
+  else if(r.rep==='custom')nx=t+(r.intv||60)*60000;
   else if(r.rep==='weekdays'){let d=new Date(t);do{d=new Date(d.getTime()+86400000)}while(d.getDay()===0||d.getDay()===6);nx=d.getTime();}
-  if(nx&&nx>now){r.at=nx;ntf.delete(r.id);barkSent.delete(r.id+'_bark');}
+  if(nx&&nx>now){r.at=nx;ntf.delete(r.id);}
 }
 
-// ===== 音频 =====
-function getCtx(){
-  if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
-  if(actx.state==='suspended') actx.resume();
-  return actx;
-}
+function getCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();return actx;}
 function playSound(){
-  const id=S.cfg.snd, cnt=S.cfg.sndCnt||2;
-  if(id==='custom'&&S.cfg.sndData){
-    for(let i=0;i<cnt;i++) setTimeout(()=>{try{new Audio(S.cfg.sndData).play().catch(()=>{})}catch(e){}},i*1300);
-    return;
-  }
-  for(let i=0;i<cnt;i++) setTimeout(()=>synthSnd(id),i*1100);
+  const id=S.cfg.snd,cnt=S.cfg.sndCnt||2;
+  if(id==='custom'&&S.cfg.sndData){for(let i=0;i<cnt;i++)setTimeout(()=>{try{new Audio(S.cfg.sndData).play().catch(()=>{})}catch(e){}},i*1300);return;}
+  for(let i=0;i<cnt;i++)setTimeout(()=>synthSnd(id),i*1100);
 }
 function synthSnd(id){
   try{
     const ctx=getCtx();
-    if(id==='bell')         synth(ctx,[1318,1568,1760],85);
-    else if(id==='chime')   synth(ctx,[523,659,784,1046],115);
-    else if(id==='marimba') synth(ctx,[784,1047,1319,1047,784],95);
-    else if(id==='ding')    synth(ctx,[1046,1319],160);
-    else if(id==='beep')    synth(ctx,[880,1100,880],100);
-    else if(id==='pop')     synthPop(ctx);
-    else if(id==='alert')   synth(ctx,[440,880,440,880],80,'square');
+    if(id==='bell')synth(ctx,[1318,1568,1760],85);
+    else if(id==='chime')synth(ctx,[523,659,784,1046],115);
+    else if(id==='marimba')synth(ctx,[784,1047,1319,1047,784],95);
+    else if(id==='ding')synth(ctx,[1046,1319],160);
+    else if(id==='beep')synth(ctx,[880,1100,880],100);
+    else if(id==='pop')synthPop(ctx);
+    else if(id==='alert')synth(ctx,[440,880,440,880],80,'square');
     else synth(ctx,[1318,1568,1760],85);
   }catch(e){}
 }
 function synth(ctx,freqs,dur=100,type='sine'){
   freqs.forEach((f,i)=>{
     const o=ctx.createOscillator(),g=ctx.createGain();
-    o.type=type;o.connect(g);g.connect(ctx.destination);
-    o.frequency.value=f;
+    o.type=type;o.connect(g);g.connect(ctx.destination);o.frequency.value=f;
     const t=ctx.currentTime+i*(dur/1000);
-    g.gain.setValueAtTime(0.25,t);
-    g.gain.exponentialRampToValueAtTime(0.001,t+dur/950);
+    g.gain.setValueAtTime(0.25,t);g.gain.exponentialRampToValueAtTime(0.001,t+dur/950);
     o.start(t);o.stop(t+dur/1000+0.05);
   });
 }
 function synthPop(ctx){
   const b=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate);
   const d=b.getChannelData(0);
-  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*.018));
+  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*.018));
   const s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);s.start();
 }
 function renderSndList(){
   const el=document.getElementById('sndlist');if(!el)return;
-  el.innerHTML=SNDS.map(s=>`
-    <div class="si ${S.cfg.snd===s.id?'on':''}" onclick="pickSnd('${s.id}')">
-      ${s.l}<span style="font-size:10px;opacity:.55;margin-left:3px" onclick="event.stopPropagation();previewSnd('${s.id}')">▶</span>
-    </div>`).join('');
+  el.innerHTML=SNDS.map(s=>`<div class="si ${S.cfg.snd===s.id?'on':''}" onclick="pickSnd('${s.id}')">${s.l}<span style="font-size:10px;opacity:.55;margin-left:3px" onclick="event.stopPropagation();previewSnd('${s.id}')">▶</span></div>`).join('');
 }
-function pickSnd(id){
-  if(id==='custom'&&!S.cfg.sndData){toast('请先上传自定义铃声');return}
-  S.cfg.snd=id;save();renderSndList();
-  toast('已选：'+SNDS.find(s=>s.id===id)?.l);
-  synthSnd(id);
-}
-function previewSnd(id){
-  if(id==='custom'&&S.cfg.sndData){try{new Audio(S.cfg.sndData).play().catch(()=>{})}catch(e){}return}
-  synthSnd(id);
-}
+function pickSnd(id){if(id==='custom'&&!S.cfg.sndData){toast('请先上传铃声');return}S.cfg.snd=id;save();renderSndList();toast('已选：'+SNDS.find(s=>s.id===id)?.l);synthSnd(id);}
+function previewSnd(id){if(id==='custom'&&S.cfg.sndData){try{new Audio(S.cfg.sndData).play().catch(()=>{})}catch(e){}return}synthSnd(id);}
 function uploadSnd(){
   const f=document.getElementById('sndfile').files[0];if(!f)return;
   if(f.size>5*1024*1024){toast('文件不超过5MB');return}
-  const r=new FileReader();
-  r.onload=e=>{S.cfg.sndData=e.target.result;S.cfg.snd='custom';save();renderSndList();toast('✅ 铃声已上传并选中')};
-  r.readAsDataURL(f);
+  const r=new FileReader();r.onload=e=>{S.cfg.sndData=e.target.result;S.cfg.snd='custom';save();renderSndList();toast('✅ 铃声已上传')};r.readAsDataURL(f);
 }
 
-// ===== 作物 =====
 function allC(){return[...ALLC,...S.ucrop];}
 function catC(c){return allC().filter(x=>x.c===c);}
 function renderCCTabs(){
@@ -728,168 +625,102 @@ function pickCC(c){selCC=c;selCI=0;renderCCTabs();renderCCRow();}
 function renderCCRow(){
   const el=document.getElementById('ccrow');if(!el)return;
   const crops=catC(selCC);
-  el.innerHTML=crops.map((c,i)=>`
-    <div class="cc ${selCI===i?'sel':''}" onclick="selCrop(${i})">
-      <button class="ce" onclick="event.stopPropagation();openCE(${i})">✏️</button>
-      <span class="ci">${c.e}</span>
-      <div class="cn">${c.n}</div>
-      <div class="cd">${fmtM(c.m)}</div>
-      ${c.p?`<div class="cp">💰${c.p}</div>`:''}
-    </div>`).join('')+`<div class="cc-add" onclick="document.getElementById('ccn').focus()"><span style="font-size:22px">➕</span>自定义</div>`;
+  el.innerHTML=crops.map((c,i)=>`<div class="cc ${selCI===i?'sel':''}" onclick="selCrop(${i})"><button class="ce" onclick="event.stopPropagation();openCE(${i})">✏️</button><span class="ci">${c.e}</span><div class="cn">${c.n}</div><div class="cd">${fmtM(c.m)}</div>${c.p?`<div class="cp">💰${c.p}</div>`:''}</div>`).join('')+`<div class="cc-add" onclick="document.getElementById('ccn').focus()"><span style="font-size:22px">➕</span>自定义</div>`;
 }
 function selCrop(i){selCI=i;renderCCRow();}
 function openCE(i){
-  const c=catC(selCC)[i];
-  const ai=allC().findIndex(x=>x.n===c.n&&x.c===c.c);
-  document.getElementById('eidx').value=ai;
-  document.getElementById('eico').value=c.e;
-  document.getElementById('enm').value=c.n;
-  document.getElementById('etm').value=fmtM(c.m);
-  document.getElementById('epr').value=c.p||'';
-  document.getElementById('cmodal').classList.add('on');
+  const c=catC(selCC)[i],ai=allC().findIndex(x=>x.n===c.n&&x.c===c.c);
+  document.getElementById('eidx').value=ai;document.getElementById('eico').value=c.e;
+  document.getElementById('enm').value=c.n;document.getElementById('etm').value=fmtM(c.m);
+  document.getElementById('epr').value=c.p||'';document.getElementById('cmodal').classList.add('on');
 }
 function closeCM(){document.getElementById('cmodal').classList.remove('on');}
 function saveCE(){
-  const i=+document.getElementById('eidx').value;
-  const m=parseT(document.getElementById('etm').value);
+  const i=+document.getElementById('eidx').value,m=parseT(document.getElementById('etm').value);
   if(!m){toast('时间格式有误');return}
   const c=allC()[i];
   const p={e:document.getElementById('eico').value||c.e,n:document.getElementById('enm').value||c.n,c:c.c,m,p:document.getElementById('epr').value.trim()};
-  if(i<ALLC.length){
-    const ui=S.ucrop.findIndex(x=>x.n===c.n&&x.c===c.c);
-    if(ui>=0)S.ucrop[ui]=p;else S.ucrop.push(p);
-  }else{S.ucrop[i-ALLC.length]=p;}
+  if(i<ALLC.length){const ui=S.ucrop.findIndex(x=>x.n===c.n&&x.c===c.c);if(ui>=0)S.ucrop[ui]=p;else S.ucrop.push(p);}
+  else S.ucrop[i-ALLC.length]=p;
   save();renderCCRow();closeCM();toast('✅ 已保存');
 }
 function setCCT(v){document.getElementById('cct').value=v;}
 
 function addFarm(){
   const owner=selP==='自己'?'自己':selF;
-  if(selP==='好友'&&!selF){toast('请选择或添加好友');return}
+  if(selP==='好友'&&!selF){toast('请选择好友');return}
   const tv=document.getElementById('fpat').value;
   const planted=tv?new Date(tv).getTime():Date.now();
-  const cn=document.getElementById('ccn').value.trim();
-  const ct=document.getElementById('cct').value.trim();
+  const cn=document.getElementById('ccn').value.trim(),ct=document.getElementById('cct').value.trim();
   let nm,mn,pr='';
   if(cn&&ct){
     mn=parseT(ct);if(!mn){toast('时间格式有误');return}
     nm=cn;pr=document.getElementById('ccp').value.trim();
     S.ucrop.push({e:'🌿',n:nm,c:'特产',m:mn,p:pr});
     save();renderCCTabs();renderCCRow();
-    document.getElementById('ccn').value='';
-    document.getElementById('cct').value='';
-    document.getElementById('ccp').value='';
+    document.getElementById('ccn').value='';document.getElementById('cct').value='';document.getElementById('ccp').value='';
   }else{
-    const crops=catC(selCC);const cr=crops[selCI];
+    const crops=catC(selCC),cr=crops[selCI];
     if(!cr){toast('请选择作物');return}
     nm=cr.n;mn=cr.m;pr=cr.p||'';
   }
-  const r={
-    id:Date.now()+'_'+rnd(),cat:'farm',
-    title:owner==='自己'?'我的'+nm:owner+'的'+nm,
+  const r={id:Date.now()+'_'+rnd(),cat:'farm',title:owner==='自己'?'我的'+nm:owner+'的'+nm,
     note:(owner==='自己'?'自己的菜熟了！快去收！':'去偷 '+owner+' 的'+nm+'！')+(pr?' 💰'+pr:''),
-    at:planted+mn*60000,pa:planted,rep:'none',adv:0,done:false,
-  };
+    at:planted+mn*60000,pa:planted,rep:'none',adv:0,done:false};
   S.rem.push(r);save();
-  toast('🌱 '+r.title+' '+fmtM(mn)+'后成熟');
-  // 如果 Bark 已配置，立即安排一条 Bark 推送（通过 checkTrig 轮询自动触发）
-  if(S.cfg.bark&&S.cfg.barkKey){
-    toast('🌱 '+r.title+' '+fmtM(mn)+'后成熟，Bark将自动提醒');
-  }
+  toast('🌱 '+r.title+' '+fmtM(mn)+'后成熟'+(S.cfg.workerUrl&&S.cfg.barkKey?' · Bark自动提醒':''));
   document.querySelectorAll('.popt').forEach(e=>e.classList.remove('on'));
   document.querySelector('.popt[data-v="自己"]').classList.add('on');
-  selP='自己';selF='';
-  document.getElementById('farea').style.display='none';
-  document.getElementById('fpat').value='';
+  selP='自己';selF='';document.getElementById('farea').style.display='none';document.getElementById('fpat').value='';
   renderFChips();renderFList();
 }
 
-// ===== 好友 =====
-function pickP(el){
-  document.querySelectorAll('.popt').forEach(e=>e.classList.remove('on'));
-  el.classList.add('on');selP=el.dataset.v;
-  document.getElementById('farea').style.display=selP==='好友'?'block':'none';
-}
-function renderFChips(){
-  const el=document.getElementById('fchips');if(!el)return;
-  el.innerHTML=S.friends.map(f=>`<div class="fchip ${selF===f?'on':''}" onclick="pickF('${f}')">${f}</div>`).join('');
-}
+function pickP(el){document.querySelectorAll('.popt').forEach(e=>e.classList.remove('on'));el.classList.add('on');selP=el.dataset.v;document.getElementById('farea').style.display=selP==='好友'?'block':'none';}
+function renderFChips(){const el=document.getElementById('fchips');if(!el)return;el.innerHTML=S.friends.map(f=>`<div class="fchip ${selF===f?'on':''}" onclick="pickF('${f}')">${f}</div>`).join('');}
 function pickF(n){selF=n;renderFChips();}
-function addFriend(){
-  const v=document.getElementById('nfriend').value.trim();if(!v)return;
-  if(!S.friends.includes(v))S.friends.push(v);
-  selF=v;document.getElementById('nfriend').value='';
-  save();renderFChips();
-}
+function addFriend(){const v=document.getElementById('nfriend').value.trim();if(!v)return;if(!S.friends.includes(v))S.friends.push(v);selF=v;document.getElementById('nfriend').value='';save();renderFChips();}
 
-// ===== 分类 =====
 function renderCatChips(){
   const el=document.getElementById('catchips');if(!el)return;
-  el.innerHTML=S.cats.map(c=>`
-    <div class="cchip ${selCat===c.id?'on':''}" style="color:${c.col}" onclick="pickCat('${c.id}')">${c.e} ${c.l}</div>
-  `).join('')+`<div class="cchip" onclick="goTab('s')" style="color:var(--tx2);border-style:dashed">＋</div>`;
+  el.innerHTML=S.cats.map(c=>`<div class="cchip ${selCat===c.id?'on':''}" style="color:${c.col}" onclick="pickCat('${c.id}')">${c.e} ${c.l}</div>`).join('')+`<div class="cchip" onclick="goTab('s')" style="color:var(--tx2);border-style:dashed">＋</div>`;
 }
 function pickCat(id){selCat=id;renderCatChips();}
 function renderCatMng(){
   const el=document.getElementById('catmng');if(!el)return;
-  el.innerHTML=S.cats.map((c,i)=>`
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)">
-      <span>${c.e}</span><span style="flex:1;font-size:13px">${c.l}</span>
-      <button class="btn btnd btns" onclick="rmCat(${i})" ${i<DCAT.length?'disabled style="opacity:.3"':''}>删除</button>
-    </div>`).join('');
+  el.innerHTML=S.cats.map((c,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)"><span>${c.e}</span><span style="flex:1;font-size:13px">${c.l}</span><button class="btn btnd btns" onclick="rmCat(${i})" ${i<DCAT.length?'disabled style="opacity:.3"':''}>删除</button></div>`).join('');
 }
 function addCat(){
-  const e=document.getElementById('nico').value.trim()||'📌';
-  const l=document.getElementById('nlbl').value.trim();
+  const e=document.getElementById('nico').value.trim()||'📌',l=document.getElementById('nlbl').value.trim();
   if(!l){toast('请填写分类名称');return}
   const cols=['#ff5a5a','#4cc9f0','#ff9f4a','#c084fc','#3dba6f','#ffd460','#fb923c'];
   S.cats.push({id:'c'+Date.now(),l,e,col:cols[S.cats.length%cols.length]});
-  document.getElementById('nico').value='';
-  document.getElementById('nlbl').value='';
+  document.getElementById('nico').value='';document.getElementById('nlbl').value='';
   save();renderCatChips();renderCatMng();toast('✅ 分类已添加');
 }
-function rmCat(i){
-  if(i<DCAT.length){toast('默认分类不可删除');return}
-  S.cats.splice(i,1);save();renderCatChips();renderCatMng();
-}
+function rmCat(i){if(i<DCAT.length){toast('默认分类不可删除');return}S.cats.splice(i,1);save();renderCatChips();renderCatMng();}
 
-// ===== 提醒 =====
-document.getElementById('rrep').addEventListener('change',function(){
-  document.getElementById('rintrow').style.display=this.value==='custom'?'flex':'none';
-});
+document.getElementById('rrep').addEventListener('change',function(){document.getElementById('rintrow').style.display=this.value==='custom'?'flex':'none';});
 function addReminder(){
-  const title=document.getElementById('rt').value.trim();
-  const tv=document.getElementById('rtime').value;
-  if(!title){toast('请填写标题');return}
-  if(!tv){toast('请选择时间');return}
-  const at=new Date(tv).getTime();
-  const r={
-    id:Date.now()+'_'+rnd(),cat:selCat,title,
-    note:document.getElementById('rn').value.trim(),
-    at,pa:Date.now(),
-    rep:document.getElementById('rrep').value,
-    intv:+document.getElementById('rint').value||60,
-    adv:+document.getElementById('radv').value||0,
-    done:false,
-  };
+  const title=document.getElementById('rt').value.trim(),tv=document.getElementById('rtime').value;
+  if(!title){toast('请填写标题');return}if(!tv){toast('请选择时间');return}
+  const r={id:Date.now()+'_'+rnd(),cat:selCat,title,note:document.getElementById('rn').value.trim(),
+    at:new Date(tv).getTime(),pa:Date.now(),rep:document.getElementById('rrep').value,
+    intv:+document.getElementById('rint').value||60,adv:+document.getElementById('radv').value||0,done:false};
   S.rem.push(r);save();
-  toast('✅ 提醒已保存！'+(S.cfg.bark&&S.cfg.barkKey?' Bark将自动推送':''));
-  document.getElementById('rt').value='';
-  document.getElementById('rn').value='';
-  document.getElementById('rtime').value='';
+  toast('✅ 已保存'+(S.cfg.workerUrl&&S.cfg.barkKey?' · Bark自动推送':''));
+  document.getElementById('rt').value='';document.getElementById('rn').value='';document.getElementById('rtime').value='';
   goTab('r');
 }
 
-// ===== 列表渲染 =====
 function renderRList(){
   const now=Date.now(),el=document.getElementById('rlist');if(!el)return;
   const items=S.rem.filter(r=>r.cat!=='farm').sort((a,b)=>a.at-b.at);
   if(!items.length){el.innerHTML='<div class="empty"><div class="eico">⏰</div>还没有提醒，去"添加"创建吧</div>';return}
   const act=items.filter(r=>r.at>=now||r.rep!=='none');
-  const dn =items.filter(r=>r.at<now&&r.rep==='none');
+  const dn=items.filter(r=>r.at<now&&r.rep==='none');
   let h='';
-  if(act.length) h+='<div class="sl">进行中</div>'+act.map(r=>itemH(r,now)).join('');
-  if(dn.length)  h+='<div class="sl">已到期</div>'+dn.map(r=>itemH(r,now)).join('');
+  if(act.length)h+='<div class="sl">进行中</div>'+act.map(r=>itemH(r,now)).join('');
+  if(dn.length)h+='<div class="sl">已到期</div>'+dn.map(r=>itemH(r,now)).join('');
   el.innerHTML=h;
 }
 function renderFList(){
@@ -900,55 +731,31 @@ function renderFList(){
 }
 function itemH(r,now){
   const cat=r.cat==='farm'?{e:'🌾',col:'var(--g)'}:(S.cats.find(c=>c.id===r.cat)||{e:'📌',col:'#6a9a6a'});
-  const rem=r.at-now;
-  const mat=rem<=0,soon=rem>0&&rem<600000;
+  const rem=r.at-now,mat=rem<=0,soon=rem>0&&rem<600000;
   const pct=r.pa?Math.min(100,Math.max(0,(now-r.pa)/(r.at-r.pa)*100)):mat?100:0;
-  // bark 图标
-  const barkBadge=S.cfg.bark&&S.cfg.barkKey?'<span title="Bark推送已开启" style="font-size:10px;opacity:.6;margin-left:4px">🔔</span>':'';
+  const badge=S.cfg.workerUrl&&S.cfg.barkKey?'<span style="font-size:10px;opacity:.5;margin-left:3px" title="Bark推送已配置">🔔</span>':'';
   return `<div class="item ${mat?'mat':soon?'soon':''}">
-    <div class="irow">
-      <div class="ibody">
-        <div class="itr"><span class="iemj">${cat.e}</span><span class="itit">${r.title}</span>${barkBadge}</div>
-        ${r.note?`<div class="imeta">${r.note}</div>`:''}
-        <div class="imeta">🕐 ${new Date(r.at).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-        ${r.rep&&r.rep!=='none'?`<div class="imeta">🔄 ${RLBL[r.rep]||''}</div>`:''}
-        <div class="icd ${mat?'done':''}">${mat?'⚡ 立刻行动！':fmtCD(rem)}</div>
-        <div class="prog"><div class="progb" style="width:${pct}%;background:${mat?'var(--yel)':cat.col}"></div></div>
-      </div>
-      <button class="delbtn" onclick="delR('${r.id}')">🗑</button>
-    </div>
+    <div class="irow"><div class="ibody">
+      <div class="itr"><span class="iemj">${cat.e}</span><span class="itit">${r.title}</span>${badge}</div>
+      ${r.note?`<div class="imeta">${r.note}</div>`:''}
+      <div class="imeta">🕐 ${new Date(r.at).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+      ${r.rep&&r.rep!=='none'?`<div class="imeta">🔄 ${RLBL[r.rep]||''}</div>`:''}
+      <div class="icd ${mat?'done':''}">${mat?'⚡ 立刻行动！':fmtCD(rem)}</div>
+      <div class="prog"><div class="progb" style="width:${pct}%;background:${mat?'var(--yel)':cat.col}"></div></div>
+    </div><button class="delbtn" onclick="delR('${r.id}')">🗑</button></div>
   </div>`;
 }
-function delR(id){S.rem=S.rem.filter(r=>r.id!==id);ntf.delete(id);barkSent.delete(id+'_bark');save();}
+function delR(id){S.rem=S.rem.filter(r=>r.id!==id);ntf.delete(id);save();}
 
-// ===== 设置 =====
-function togSet(key){
-  S.cfg[key]=!S.cfg[key];save();
-  const map={sound:'tog-sound',titleAlert:'tog-title',bark:'tog-bark'};
-  document.getElementById(map[key]).className='tog'+(S.cfg[key]?' on':'');
-  if(key==='bark') renderBarkBar();
-}
-function clearDone(){
-  if(!confirm('清除所有已到期提醒？'))return;
-  const now=Date.now();
-  S.rem=S.rem.filter(r=>r.at>=now||r.rep!=='none');
-  save();toast('✅ 已清除');
-}
-function clearAll(){
-  if(!confirm('确定清除全部数据？'))return;
-  S.rem=[];save();toast('✅ 已清除');
-}
+function togSet(key){S.cfg[key]=!S.cfg[key];save();const m={sound:'tog-sound',titleAlert:'tog-title'};document.getElementById(m[key]).className='tog'+(S.cfg[key]?' on':'');}
+function clearDone(){if(!confirm('清除已到期提醒？'))return;const now=Date.now();S.rem=S.rem.filter(r=>r.at>=now||r.rep!=='none');save();toast('✅ 已清除');}
+function clearAll(){if(!confirm('确定清除全部数据？'))return;S.rem=[];save();toast('✅ 已清除');}
 
-// ===== 导出/导入 =====
 function exportD(){
   const d=JSON.stringify({rem:S.rem,friends:S.friends,cats:S.cats.slice(DCAT.length),ucrop:S.ucrop,cfg:{...S.cfg,sndData:null}},null,2);
-  const blob=new Blob([d],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;
-  a.download='ftools_'+new Date().toISOString().slice(0,10)+'.json';a.click();
-  URL.revokeObjectURL(url);
-  const ev=document.getElementById('expview');ev.style.display='block';ev.textContent=d.slice(0,300)+'...';
-  toast('📤 数据已导出！');
+  const blob=new Blob([d],{type:'application/json'}),url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='ftools_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
+  const ev=document.getElementById('expview');ev.style.display='block';ev.textContent=d.slice(0,300)+'...';toast('📤 已导出！');
 }
 function importD(){
   const f=document.getElementById('impfile').files[0];if(!f)return;
@@ -956,52 +763,35 @@ function importD(){
   r.onload=e=>{
     try{
       const d=JSON.parse(e.target.result);
-      if(d.rem)     S.rem=[...S.rem,...d.rem.filter(x=>!S.rem.find(y=>y.id===x.id))];
-      if(d.friends) S.friends=[...new Set([...S.friends,...d.friends])];
-      if(d.cats)    S.cats=[...JSON.parse(JSON.stringify(DCAT)),...d.cats];
-      if(d.ucrop)   S.ucrop=[...S.ucrop,...d.ucrop];
-      if(d.cfg)     S.cfg={...S.cfg,...d.cfg};
+      if(d.rem)S.rem=[...S.rem,...d.rem.filter(x=>!S.rem.find(y=>y.id===x.id))];
+      if(d.friends)S.friends=[...new Set([...S.friends,...d.friends])];
+      if(d.cats)S.cats=[...JSON.parse(JSON.stringify(DCAT)),...d.cats];
+      if(d.ucrop)S.ucrop=[...S.ucrop,...d.ucrop];
+      if(d.cfg)S.cfg={...S.cfg,...d.cfg};
       save();renderAll();renderSndList();
+      document.getElementById('workerUrl').value=S.cfg.workerUrl||'';
       document.getElementById('barkKey').value=S.cfg.barkKey||'';
-      document.getElementById('barkServer').value=S.cfg.barkServer||'https://api.day.app';
-      document.getElementById('tog-bark').className='tog'+(S.cfg.bark?' on':'');
-      renderBarkBar();
-      toast('✅ 导入成功！共'+S.rem.length+'条提醒');
-    }catch(x){toast('导入失败，请检查文件格式')}
-  };
-  r.readAsText(f);
+      renderWorkerBar();toast('✅ 导入成功！共'+S.rem.length+'条提醒');
+    }catch(x){toast('导入失败')}
+  };r.readAsText(f);
 }
 
-// ===== 工具 =====
 function parseT(s){
   if(!s)return 0;
   s=s.trim().toLowerCase().replace('小时','h').replace('分钟','m').replace('分','m').replace('时','h').replace('天','d');
   const dm=s.match(/^(\d+\.?\d*)d$/i);if(dm)return Math.round(+dm[1]*1440);
   const hm=s.match(/^(\d+\.?\d*)h(\d+\.?\d*)?m?$/i);if(hm)return Math.round(+hm[1]*60+(+hm[2]||0));
-  const mm=s.match(/^(\d+\.?\d*)m?$/i);if(mm)return Math.round(+mm[1]);
-  return 0;
+  const mm=s.match(/^(\d+\.?\d*)m?$/i);if(mm)return Math.round(+mm[1]);return 0;
 }
 function fmtM(m){return m<60?m+'分钟':m%60===0?m/60+'小时':Math.floor(m/60)+'小时'+m%60+'分';}
 function fmtCD(ms){
   if(ms<=0)return '已到期';
   const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
-  if(h>0)return h+'小时'+m+'分'+sc+'秒';
-  if(m>0)return m+'分'+sc+'秒';
-  return sc+'秒';
+  if(h>0)return h+'小时'+m+'分'+sc+'秒';if(m>0)return m+'分'+sc+'秒';return sc+'秒';
 }
-function p2(n){return String(n).padStart(2,'0');}
 function rnd(){return Math.random().toString(36).slice(2,6);}
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('on');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600);
-}
-function goTab(k){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.getElementById('tab-'+k).classList.add('on');
-  document.getElementById('pg-'+k).classList.add('on');
-}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600);}
+function goTab(k){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById('tab-'+k).classList.add('on');document.getElementById('pg-'+k).classList.add('on');}
 </script>
 </body>
 </html>
