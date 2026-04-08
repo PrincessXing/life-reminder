@@ -361,7 +361,7 @@ function load(){
     const d=JSON.parse(localStorage.getItem(KEY)||'{}');
     if(d.rem)S.rem=d.rem; if(d.cats)S.cats=d.cats; if(d.ucrop)S.ucrop=d.ucrop;
     if(d.friends)S.friends=d.friends; if(d.cfg)S.cfg={...S.cfg,...d.cfg};
-    if(!S.cfg.userId)S.cfg.userId='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    if(!S.cfg.userId)S.cfg.userId='myuser';
   }catch(e){}
 }
 
