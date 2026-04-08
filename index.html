@@ -371,17 +371,15 @@ function syncWorker(){
   if(!url||!S.cfg.barkKey||!S.cfg.userId)return;
   try{
     const remData=S.rem.map(r=>({id:r.id,cat:r.cat,title:r.title,note:r.note||'',at:r.at,pa:r.pa,rep:r.rep,intv:r.intv||60,adv:r.adv||0,done:r.done||false}));
-    fetch(url+'/reminders',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      mode:'no-cors',
-      body:JSON.stringify({
-        userId:S.cfg.userId,
-        barkKey:S.cfg.barkKey,
-        barkServer:S.cfg.barkSrv||'https://api.day.app',
-        reminders:remData
-      })
-    }).catch(()=>{});
+    const d=encodeURIComponent(JSON.stringify(remData));
+    const k=encodeURIComponent(S.cfg.barkKey);
+    const sv=encodeURIComponent(S.cfg.barkSrv||'https://api.day.app');
+    const u=encodeURIComponent(S.cfg.userId);
+    const syncUrl=url+'/sync?u='+u+'&k='+k+'&s='+sv+'&d='+d+'&_='+Date.now();
+    // 用 iframe 加载，iOS Safari 不会拦截
+    let ifr=document.getElementById('_sync_ifr');
+    if(!ifr){ifr=document.createElement('iframe');ifr.id='_sync_ifr';ifr.style.cssText='display:none;width:0;height:0;border:0;';document.body.appendChild(ifr);}
+    ifr.src=syncUrl;
   }catch(e){}
 }
 
