@@ -1,1 +1,31 @@
+name: FTools 提醒推送
 
+on:
+  schedule:
+    - cron: '* * * * *'   # 每分钟执行一次
+  workflow_dispatch:        # 允许手动触发测试
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # 需要写权限更新 reminders.json
+
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 运行推送脚本
+        run: node notify.js
+        env:
+          GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
+
+      - name: 提交更新后的 reminders.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reminders.json
+          git diff --staged --quiet || git commit -m "update reminders"
+          git push
