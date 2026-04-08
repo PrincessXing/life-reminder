@@ -48,15 +48,25 @@ async function checkAndNotify() {
       fired.add(r.id);
       changed = true;
       const icon = r.cat === 'farm' ? '🌾' : '⏰';
+      const notifTitle = icon + ' ' + r.title;
+      const notifBody  = r.note || '时间到了！';
       try {
-        await self.registration.showNotification(icon + ' ' + r.title, {
-          body: r.note || '时间到了！',
+        await self.registration.showNotification(notifTitle, {
+          body: notifBody,
           icon: './icon.png',
           tag : r.id,
           requireInteraction: true,
           data: { scope: self.registration.scope }
         });
       } catch(e) { console.warn('SW notify:', e); }
+      // Bark 推送（即使 SW 通知权限不足也能触达）
+      const barkKey = await kget('barkKey');
+      if(barkKey) {
+        const base = barkKey.startsWith('http') ? barkKey.replace(/\/$/, '') : 'https://api.day.app/' + barkKey;
+        try {
+          await fetch(base + '/' + encodeURIComponent(notifTitle) + '/' + encodeURIComponent(notifBody) + '?sound=bell&group=FTools');
+        } catch(e) {}
+      }
 
       // Advance repeating reminder
       if (r.rep && r.rep !== 'none') {
@@ -111,7 +121,8 @@ self.addEventListener('message', ev => {
   if (type === 'SYNC') {
     ev.waitUntil((async () => {
       await kset('rem', rem || []);
-      if (fired) await kset('fired', fired); // merge page-side fired set
+      if (fired) await kset('fired', fired);
+      if (ev.data.barkKey !== undefined) await kset('barkKey', ev.data.barkKey || '');
       await checkAndNotify();
       ev.source?.postMessage({ type: 'SW_OK' });
     })());
