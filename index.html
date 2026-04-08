@@ -437,40 +437,59 @@ function load(){
 }
 
 // ===== Worker 同步 =====
-async function syncWorker(){
+// 用 Image 方式同步（绕过 iOS CORS 限制）
+function syncWorker(){
   const url=(S.cfg.workerUrl||'').trim().replace(/\/$/,'');
   if(!url||!S.cfg.barkKey) return;
+  // 用 fetch no-cors 发送，不等返回值
   try{
-    await fetch(url+'/reminders',{
+    const body=JSON.stringify({
+      userId:S.cfg.userId,
+      barkKey:S.cfg.barkKey,
+      barkServer:S.cfg.barkSrv||'https://api.day.app',
+      reminders:S.rem
+    });
+    fetch(url+'/reminders',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        userId:S.cfg.userId,
-        barkKey:S.cfg.barkKey,
-        barkServer:S.cfg.barkSrv||'https://api.day.app',
-        reminders:S.rem
-      })
+      body,
+      mode:'cors'
+    }).catch(()=>{
+      // cors 失败则用 no-cors（不能读响应但能发出去）
+      fetch(url+'/reminders',{
+        method:'POST',
+        headers:{'Content-Type':'text/plain'},
+        body,
+        mode:'no-cors'
+      }).catch(()=>{});
     });
-  }catch(e){} // 静默失败，不影响本地使用
+  }catch(e){}
 }
 
+// 测试连接：加超时，避免一直转圈
 async function testWorker(){
   const url=(document.getElementById('workerUrl').value||'').trim().replace(/\/$/,'');
   const key=(document.getElementById('barkKey').value||'').trim();
-  const bar=document.getElementById('cfgbar');
   if(!url){showCfgBar('请先填写 Worker 地址','warn');return}
   if(!key){showCfgBar('请先填写 Bark Key','warn');return}
-  showCfgBar('连接测试中...','warn');
+  showCfgBar('测试中（最多5秒）...','warn');
+  // 5秒超时
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),5000);
   try{
-    const r=await fetch(url+'/ping');
+    const r=await fetch(url+'/ping',{signal:ctrl.signal,mode:'cors'});
+    clearTimeout(tid);
     const d=await r.json();
-    if(d.ok){
-      showCfgBar('✅ Worker 连接成功！现在保存配置即可','ok');
-    } else {
-      showCfgBar('❌ Worker 响应异常，请检查部署','err');
-    }
+    if(d.ok) showCfgBar('✅ Worker 连接成功！保存配置即可','ok');
+    else showCfgBar('❌ Worker 响应异常','err');
   }catch(e){
-    showCfgBar('❌ 无法连接 Worker：'+e.message,'err');
+    clearTimeout(tid);
+    if(e.name==='AbortError'){
+      // 超时但 Worker 可能实际正常，直接认为成功
+      showCfgBar('⚠️ 连接超时，但 Worker 可能正常。建议直接保存配置后添加一条测试提醒，等1分钟看 Bark 是否收到推送','warn');
+    } else {
+      showCfgBar('❌ 连接失败：'+e.message,'err');
+    }
   }
 }
 function showCfgBar(msg,type){
