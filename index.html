@@ -271,6 +271,13 @@ textarea{resize:vertical;min-height:65px}
     <div class="srow">
       <div><div class="slb">后台服务</div><div class="ssb" id="sw-stat">检测中...</div></div>
     </div>
+    <div class="srow" style="flex-direction:column;align-items:flex-start;gap:7px;padding-bottom:14px">
+      <div><div class="slb">Bark 推送 🐾</div><div class="ssb">关掉页面也能收到通知，需安装 Bark App</div></div>
+      <input id="bark-key" placeholder="粘贴 Bark 设备码或完整推送 URL" style="font-size:13px;padding:8px 10px" oninput="S.cfg.barkKey=this.value.trim();save();syncSW()"/>
+      <div id="bark-test-row" style="display:flex;gap:8px;width:100%">
+        <button class="btn btns" style="background:var(--bg2);border:1px solid var(--bd);color:var(--tx);flex:1" onclick="testBark()">发送测试通知</button>
+      </div>
+    </div>
     <div class="srow">
       <div><div class="slb">声音提醒</div><div class="ssb">到期播放铃声</div></div>
       <div class="tog on" id="tog-sound" onclick="togSet('sound')"></div>
@@ -424,7 +431,7 @@ const RLBL={none:'不重复',daily:'每天',weekdays:'工作日',weekly:'每周'
 let S={
   rem:[], cats:JSON.parse(JSON.stringify(DCAT)),
   ucrop:[], friends:[],
-  cfg:{sound:true,titleAlert:true,snd:'bell',sndData:null,sndCnt:2}
+  cfg:{sound:true,titleAlert:true,snd:'bell',sndData:null,sndCnt:2,barkKey:''}
 };
 let selCat='life', selCC='蔬菜', selCI=0, selP='自己', selF='';
 let ntf=new Set(), actx=null;
@@ -461,6 +468,7 @@ renderSndList();
 document.getElementById('sndcnt').value=String(S.cfg.sndCnt||2);
 document.getElementById('tog-sound').className='tog'+(S.cfg.sound?' on':'');
 document.getElementById('tog-title').className='tog'+(S.cfg.titleAlert?' on':'');
+document.getElementById('bark-key').value=S.cfg.barkKey||'';
 checkNotif();
 setInterval(tick,1000);
 
@@ -506,10 +514,22 @@ async function reqNotif(){
 }
 function notify(title,body){
   if(S.cfg.sound) playSound();
-  if(Notification.permission==='granted'){
+  if(typeof Notification!=='undefined'&&Notification.permission==='granted'){
     try{new Notification(title,{body,icon:'./icon.png'})}catch(e){}
   }
   if(S.cfg.titleAlert) flashTitle(title);
+  barkPush(title,body);
+}
+function barkPush(title,body){
+  const k=S.cfg.barkKey;if(!k)return;
+  const base=k.startsWith('http')?k.replace(/\/$/,''):'https://api.day.app/'+k;
+  fetch(base+'/'+encodeURIComponent(title)+'/'+encodeURIComponent(body)+'?sound=bell&group=FTools').catch(()=>{});
+}
+function testBark(){
+  const k=S.cfg.barkKey;
+  if(!k){toast('请先填写 Bark 设备码');return;}
+  barkPush('FTools 测试','Bark 推送正常 🎉');
+  toast('已发送测试，请查看手机通知');
 }
 function flashTitle(msg){
   let on=true,n=0;
@@ -889,6 +909,30 @@ function goTab(k){
   document.getElementById('tab-'+k).classList.add('on');
   document.getElementById('pg-'+k).classList.add('on');
 }
+
+// ===== Service Worker =====
+let swReg=null;
+function syncSW(){
+  if(!swReg)return;
+  navigator.serviceWorker.ready.then(r=>{
+    if(r.active) r.active.postMessage({type:'SYNC',rem:S.rem,fired:[...ntf],barkKey:S.cfg.barkKey||''});
+  }).catch(()=>{});
+}
+(function(){
+  const stat=document.getElementById('sw-stat');
+  if(!('serviceWorker' in navigator)){if(stat)stat.textContent='❌ 浏览器不支持';return;}
+  const secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(!secure){if(stat)stat.textContent='⚠️ 需 HTTPS 访问';return;}
+  navigator.serviceWorker.register('./sw.js').then(reg=>{
+    swReg=reg;
+    if(stat)stat.textContent='✅ 已启用';
+    if('periodicSync' in reg) reg.periodicSync.register('ft-check',{minInterval:15*60*1000}).catch(()=>{});
+    syncSW();
+  }).catch(err=>{
+    if(stat)stat.textContent='❌ 注册失败';
+    console.warn('SW:',err);
+  });
+})();
 </script>
 </body>
 </html>
