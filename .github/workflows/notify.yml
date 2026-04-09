@@ -1,4 +1,4 @@
-name: FTools 提醒推送
+name: FTools-Notify
 
 on:
   schedule:
@@ -12,26 +12,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
     steps:
-      - name: 拉取代码
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 定时检查发送
+      - name: run-notify
         if: github.event_name != 'repository_dispatch'
         run: node notify.js
         env:
           GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
 
-      - name: 网页直接触发发送
+      - name: send-gc
         if: github.event_name == 'repository_dispatch'
         shell: python3 {0}
         run: |
           import json, urllib.request, os
-          payload = json.loads(os.environ['PAYLOAD'])
-          msg = payload.get('text', '提醒')
+          p = json.loads(os.environ['PAYLOAD'])
+          msg = p.get('text', 'reminder')
           data = json.dumps({'text': msg}).encode('utf-8')
           req = urllib.request.Request(
               os.environ['GC_WEBHOOK'],
@@ -40,16 +38,16 @@ jobs:
               method='POST'
           )
           urllib.request.urlopen(req)
-          print('sent:', msg[:80])
+          print('sent ok')
         env:
           GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
 
-      - name: 提交更新后的 reminders.json
+      - name: git-push
         if: github.event_name != 'repository_dispatch'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "bot"
+          git config user.email "bot@github.com"
           git add reminders.json
-          git diff --staged --quiet || git commit -m "update reminders"
+          git diff --staged --quiet || git commit -m "sync"
           git push
