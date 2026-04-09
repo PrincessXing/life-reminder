@@ -40,7 +40,7 @@ jobs:
               method='POST'
           )
           urllib.request.urlopen(req)
-          print('sent:', msg[:50])
+          print('sent:', msg[:80])
         env:
           GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
