@@ -1,15 +1,3 @@
 {
-  "reminders": [
-    {
-      "id": "1775703256054",
-      "cat": "life",
-      "title": "🧪 关闭网页测试",
-      "note": "收到这条消息说明关闭网页也能收到通知！",
-      "at": 1775703360000,
-      "adv": 0,
-      "rep": "none",
-      "done": false,
-      "_sent": false
-    }
-  ]
+  "reminders": []
 }
