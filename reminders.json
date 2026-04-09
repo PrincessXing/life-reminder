@@ -1,22 +1,11 @@
 {
   "reminders": [
     {
-      "id": "1775712404924",
-      "cat": "other",
-      "title": "测试",
-      "note": "",
-      "at": 1775712480000,
-      "adv": 0,
-      "rep": "none",
-      "done": false,
-      "_sent": false
-    },
-    {
-      "id": "1775718742505",
-      "cat": "other",
-      "title": "测试",
-      "note": "",
-      "at": 1775718780000,
+      "id": "e2e-test",
+      "cat": "life",
+      "title": "e2e test",
+      "note": "should arrive in 2min",
+      "at": 1775719299814,
       "adv": 0,
       "rep": "none",
       "done": false,
