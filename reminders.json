@@ -1,3 +1,15 @@
 {
-  "reminders": []
+  "reminders": [
+    {
+      "id": "1775712503210",
+      "cat": "other",
+      "title": "测试",
+      "note": "",
+      "at": 1775712540000,
+      "adv": 0,
+      "rep": "none",
+      "done": false,
+      "_sent": false
+    }
+  ]
 }
