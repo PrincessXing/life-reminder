@@ -1,22 +1,11 @@
 {
   "reminders": [
     {
-      "id": "1775702644757",
+      "id": "1775703741238",
       "cat": "other",
-      "title": "这是测试",
+      "title": "测定",
       "note": "",
-      "at": 1775702700000,
-      "adv": 0,
-      "rep": "none",
-      "done": false,
-      "_sent": false
-    },
-    {
-      "id": "1775702730457",
-      "cat": "other",
-      "title": "测试关闭网页",
-      "note": "",
-      "at": 1775702760000,
+      "at": 1775703780000,
       "adv": 0,
       "rep": "none",
       "done": false,
