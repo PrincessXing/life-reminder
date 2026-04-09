@@ -80,18 +80,15 @@ input[type=datetime-local]{color-scheme:dark}
   </div>
 </div>
 
-<!-- 提醒列表 -->
 <div class="pg on" id="pg0">
-  <div class="nbar">🚀 GitHub Actions 后台发送 — 无需VPN，任意网络均可收到通知</div>
+  <div class="nbar">☁️ 提醒由 GitHub Actions 后台发送 — 关闭网页也能收到通知</div>
   <div id="rlist"></div>
 </div>
 
-<!-- 农场 -->
 <div class="pg" id="pg1">
   <div class="card"><div class="ct">🌾 我的农场</div><p style="text-align:center;padding:30px 0;color:var(--tx2)">农场功能开发中...</p></div>
 </div>
 
-<!-- 添加提醒 -->
 <div class="pg" id="pg2">
   <div class="card">
     <div class="ct">分类</div>
@@ -119,15 +116,14 @@ input[type=datetime-local]{color-scheme:dark}
         <select id="radv"><option value="0">准时</option><option value="5">提前5分钟</option><option value="10">提前10分钟</option><option value="30">提前30分钟</option></select>
       </div>
     </div>
-    <button class="btn btn-g" onclick="addReminder()">✅ 保存提醒</button>
+    <button class="btn btn-g" id="saveBtn" onclick="addReminder()">✅ 保存提醒</button>
   </div>
 </div>
 
-<!-- 设置 -->
 <div class="pg" id="pg3">
   <div class="card">
     <div class="ct">🔑 GitHub Token</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">用于触发 GitHub Actions 发送通知。GitHub API 国内可直接访问，无需VPN。</p>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">保存提醒时用于同步到 GitHub，Actions 后台定时检查并发送通知。Token 只存在本机，不会上传。</p>
     <div class="fr"><label>Personal Access Token（repo 权限）</label><input id="cfgTok" type="password" placeholder="ghp_..."/></div>
     <button class="btn btn-s" onclick="testTok()">🔗 测试连接</button>
     <div id="tokStatus" style="font-size:12px;margin-top:8px;display:none"></div>
@@ -147,7 +143,6 @@ var REPO = 'PrincessXing/life-reminder';
 var R = JSON.parse(localStorage.getItem('R')||'[]');
 var CFG = JSON.parse(localStorage.getItem('CFG')||'{}');
 var selCat = 'life';
-var T = {};
 var CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
 
 function goTab(i){
@@ -164,7 +159,7 @@ function pickCat(el){
   selCat = el.dataset.cat;
 }
 
-function addReminder(){
+async function addReminder(){
   var title = document.getElementById('rt').value.trim();
   var tv = document.getElementById('rtime').value;
   if(!title){toast('请填写标题');return;}
@@ -172,52 +167,75 @@ function addReminder(){
   var at = new Date(tv).getTime();
   var adv = parseInt(document.getElementById('radv').value)||0;
   if(at - adv*60000 < Date.now()){toast('时间已过，请重新设置');return;}
-  var r = {id:Date.now()+'',cat:selCat,title:title,note:document.getElementById('rn').value.trim(),at:at,adv:adv,rep:document.getElementById('rrep').value,done:false,sent:false};
-  R.push(r); saveR(); schedTimer(r);
-  toast('✅ 已保存！时间到自动发通知');
+
+  var r = {
+    id: Date.now()+'',
+    cat: selCat,
+    title: title,
+    note: document.getElementById('rn').value.trim(),
+    at: at,
+    adv: adv,
+    rep: document.getElementById('rrep').value,
+    done: false,
+    _sent: false
+  };
+
+  // 禁用按钮防止重复点击
+  var btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = '同步中...';
+
+  R.push(r);
+  saveR();
+
+  // 同步到 GitHub reminders.json
+  var ok = await syncToGithub();
+
+  btn.disabled = false;
+  btn.textContent = '✅ 保存提醒';
+
+  if(ok){
+    toast('✅ 已保存！关闭网页也会准时收到通知');
+  } else {
+    toast('⚠️ 本地已保存，但未同步到GitHub（检查Token设置）');
+  }
+
   document.getElementById('rt').value='';
   document.getElementById('rn').value='';
   document.getElementById('rtime').value='';
-  goTab(0); renderList();
+  goTab(0);
+  renderList();
 }
 
-// 浏览器定时器（网页开着时）
-function schedTimer(r){
-  if(r.done||r.sent) return;
-  var delay = r.at - (r.adv||0)*60000 - Date.now();
-  if(delay < 0) return;
-  if(T[r.id]) clearTimeout(T[r.id]);
-  T[r.id] = setTimeout(function(){ fireReminder(r); }, delay);
-}
-
-// 时间到：通过 GitHub Actions 发通知（无需VPN）
-function fireReminder(r){
-  r.sent = true; saveR(); renderList();
-  var ico = CAT[r.cat]||'📌';
-  var msg = ico+' *'+r.title+'*'+(r.note?'\n'+r.note:'');
-  triggerActions(msg);
-  // 同时尝试浏览器通知
-  if(Notification && Notification.permission==='granted'){
-    new Notification(ico+' '+r.title, {body: r.note||'提醒时间到！'});
-  }
-}
-
-// 调用 GitHub repository_dispatch API（国内可访问）
-function triggerActions(msg){
+// 同步 reminders.json 到 GitHub
+async function syncToGithub(){
   var tok = CFG.tok;
-  if(!tok){ toast('⚠️ 请在设置里填写 GitHub Token'); return; }
-  fetch('https://api.github.com/repos/'+REPO+'/dispatches', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'token '+tok,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      event_type: 'send-reminder',
-      client_payload: { text: msg }
-    })
-  }).catch(function(){ toast('❌ 通知发送失败，检查网络或Token'); });
+  if(!tok) return false;
+  try {
+    // 获取当前文件 sha
+    var getR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json', {
+      headers: {'Authorization': 'token '+tok}
+    });
+    var getD = await getR.json();
+
+    // 构建新内容
+    var data = {
+      reminders: R.map(function(r){
+        return {id:r.id, cat:r.cat, title:r.title, note:r.note||'', at:r.at, adv:r.adv||0, rep:r.rep||'none', done:r.done, _sent:false};
+      })
+    };
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+    // 上传
+    var putR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json', {
+      method: 'PUT',
+      headers: {'Authorization': 'token '+tok, 'Content-Type': 'application/json'},
+      body: JSON.stringify({message: 'add reminder: '+R[R.length-1].title, content: content, sha: getD.sha})
+    });
+    return putR.ok;
+  } catch(e) {
+    return false;
+  }
 }
 
 function testTok(){
@@ -251,14 +269,15 @@ function renderList(){
     var ico = CAT[r.cat]||'📌';
     var dt = new Date(r.at);
     var ts = (dt.getMonth()+1)+'/'+dt.getDate()+' '+('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2);
-    var sent = r.sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
+    var adv = r.adv ? ' · 提前'+r.adv+'分钟' : '';
+    var sent = r._sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
     return '<div class="rcard'+(r.done?' done':'')+'">'+
       '<div class="rico">'+ico+'</div>'+
       '<div class="rbody">'+
       '<div class="rtitle">'+r.title+'</div>'+
       (r.note?'<div class="rnote">'+r.note+'</div>':'')+
       '<div class="rmeta"><span class="rtag">'+ico+' '+r.cat+'</span>'+
-      '<span class="rtime">⏰ '+ts+(r.adv?' · 提前'+r.adv+'分钟':'')+sent+'</span></div>'+
+      '<span class="rtime">⏰ '+ts+adv+sent+'</span></div>'+
       '<div class="rbtns">'+
       '<button class="rbtn ok" onclick="togDone(\''+r.id+'\')">'+(r.done?'↩️ 恢复':'✅ 完成')+'</button>'+
       '<button class="rbtn del" onclick="delR(\''+r.id+'\')">🗑️ 删除</button>'+
@@ -270,24 +289,34 @@ function togDone(id){
   var r=R.find(function(x){return x.id===id;});
   if(!r)return;
   r.done=!r.done;
-  if(!r.done){r.sent=false; schedTimer(r);}
-  else if(T[id]){clearTimeout(T[id]);delete T[id];}
-  saveR(); renderList();
+  saveR(); renderList(); syncToGithub();
 }
 function delR(id){
   R=R.filter(function(r){return r.id!==id;});
-  if(T[id]){clearTimeout(T[id]);delete T[id];}
-  saveR(); renderList();
+  saveR(); renderList(); syncToGithub();
 }
-function clearAll(){if(!confirm('确定清空？'))return;Object.keys(T).forEach(function(k){clearTimeout(T[k]);});T={};R=[];saveR();renderList();}
-function exportD(){var a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify({reminders:R},null,2));a.download='reminders.json';a.click();}
-function saveR(){localStorage.setItem('R',JSON.stringify(R));}
-function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},2500);}
-function tick(){var n=new Date();document.getElementById('htime').textContent=(n.getMonth()+1)+'/'+n.getDate()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+':'+('0'+n.getSeconds()).slice(-2);}
+function clearAll(){
+  if(!confirm('确定清空？'))return;
+  R=[]; saveR(); renderList(); syncToGithub();
+}
+function exportD(){
+  var a=document.createElement('a');
+  a.href='data:application/json,'+encodeURIComponent(JSON.stringify({reminders:R},null,2));
+  a.download='reminders.json'; a.click();
+}
+function saveR(){ localStorage.setItem('R', JSON.stringify(R)); }
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(function(){el.classList.remove('show');},3000);
+}
+function tick(){
+  var n=new Date();
+  document.getElementById('htime').textContent=
+    (n.getMonth()+1)+'/'+n.getDate()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+':'+('0'+n.getSeconds()).slice(-2);
+}
 setInterval(tick,1000); tick();
-if(Notification&&Notification.permission==='default') Notification.requestPermission();
 renderList();
-R.filter(function(r){return!r.done&&!r.sent;}).forEach(schedTimer);
 </script>
 </body>
 </html>
