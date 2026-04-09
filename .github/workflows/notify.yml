@@ -2,27 +2,40 @@ name: FTools 提醒推送
 
 on:
   schedule:
-    - cron: '* * * * *'   # 每分钟执行一次
-  workflow_dispatch:        # 允许手动触发测试
+    - cron: '* * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [send-reminder]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     permissions:
-      contents: write       # 需要写权限更新 reminders.json
-
+      contents: write
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 运行推送脚本
+      - name: 定时检查发送
+        if: github.event_name != 'repository_dispatch'
         run: node notify.js
         env:
           GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
 
-      - name: 提交更新后的 reminders.json
+      - name: 网页直接触发发送
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          curl -s -X POST "$GC_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD"
+        env:
+          GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
+          PAYLOAD: ${{ toJson(github.event.client_payload.message) }}
+
+      - name: 提交更新
+        if: github.event_name != 'repository_dispatch'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
