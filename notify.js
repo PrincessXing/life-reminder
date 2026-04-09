@@ -1,5 +1,4 @@
-// notify.js — 由 GitHub Actions 每分钟运行
-// 读取 reminders.json，时间到了发 Google Chat 消息
+// notify.js - GitHub Actions 每分钟运行，检查并发送提醒
 
 const fs = require('fs');
 const path = require('path');
@@ -15,13 +14,12 @@ const reminders = data.reminders || [];
 const now = Date.now();
 let changed = false;
 
-const CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
+const CAT = { life:'🌿', work:'💼', health:'❤️', study:'📚', food:'🍽️', sport:'🏃', farm:'🌾', other:'📌' };
 
 (async () => {
   for (const r of reminders) {
     if (r.done || r._sent) continue;
     const trigAt = r.at - (r.adv || 0) * 60000;
-    // 在触发时间的 90 秒窗口内发送
     if (now >= trigAt && now < trigAt + 90000) {
       r._sent = true;
       changed = true;
@@ -33,7 +31,7 @@ const CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️'
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text })
         });
-        console.log('发送成功:', r.title, res.status);
+        console.log('已发送:', r.title, '状态:', res.status);
       } catch (e) {
         console.log('发送失败:', e.message);
       }
@@ -44,6 +42,6 @@ const CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️'
     fs.writeFileSync(FILE, JSON.stringify({ reminders }, null, 2));
     console.log('reminders.json 已更新');
   } else {
-    console.log('暂无需要发送的提醒');
+    console.log('当前无需发送的提醒, now:', now);
   }
 })();
