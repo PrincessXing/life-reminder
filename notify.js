@@ -1,5 +1,5 @@
-// notify.js - 由 GitHub Actions 每分钟运行
-// 读取 reminders.json，到时间发 Google Chat 消息
+// notify.js — 由 GitHub Actions 每分钟运行
+// 读取 reminders.json，时间到了发 Google Chat 消息
 
 const fs = require('fs');
 const path = require('path');
@@ -15,15 +15,17 @@ const reminders = data.reminders || [];
 const now = Date.now();
 let changed = false;
 
+const CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
+
 (async () => {
   for (const r of reminders) {
-    if (r.done) continue;
+    if (r.done || r._sent) continue;
     const trigAt = r.at - (r.adv || 0) * 60000;
     // 在触发时间的 90 秒窗口内发送
-    if (now >= trigAt && now < trigAt + 90000 && !r._sent) {
+    if (now >= trigAt && now < trigAt + 90000) {
       r._sent = true;
       changed = true;
-      const emoji = r.cat === 'farm' ? '🌾' : '🔔';
+      const emoji = CAT[r.cat] || '📌';
       const text = `${emoji} *${r.title}*${r.note ? '\n' + r.note : ''}`;
       try {
         const res = await fetch(WEBHOOK, {
@@ -31,25 +33,17 @@ let changed = false;
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text })
         });
-        console.log('推送成功:', r.title, res.status);
+        console.log('发送成功:', r.title, res.status);
       } catch (e) {
-        console.error('推送失败:', e.message);
-      }
-      // 处理重复提醒
-      if (r.rep && r.rep !== 'none') {
-        r._sent = false;
-        if (r.rep === 'daily')    r.at += 86400000;
-        else if (r.rep === 'hourly')  r.at += 3600000;
-        else if (r.rep === '30min')   r.at += 1800000;
-        else if (r.rep === 'weekly')  r.at += 604800000;
-        else if (r.rep === 'custom')  r.at += (r.intv || 60) * 60000;
+        console.log('发送失败:', e.message);
       }
     }
   }
+
   if (changed) {
-    fs.writeFileSync(FILE, JSON.stringify(data, null, 2));
+    fs.writeFileSync(FILE, JSON.stringify({ reminders }, null, 2));
     console.log('reminders.json 已更新');
   } else {
-    console.log('无需推送');
+    console.log('暂无需要发送的提醒');
   }
 })();
