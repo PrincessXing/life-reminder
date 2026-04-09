@@ -1,11 +1,22 @@
 {
   "reminders": [
     {
-      "id": "fix-test",
-      "cat": "life",
-      "title": "fix test",
-      "note": "600s window",
-      "at": 1775717888734,
+      "id": "1775712404924",
+      "cat": "other",
+      "title": "测试",
+      "note": "",
+      "at": 1775712480000,
+      "adv": 0,
+      "rep": "none",
+      "done": false,
+      "_sent": false
+    },
+    {
+      "id": "1775718742505",
+      "cat": "other",
+      "title": "测试",
+      "note": "",
+      "at": 1775718780000,
       "adv": 0,
       "rep": "none",
       "done": false,
