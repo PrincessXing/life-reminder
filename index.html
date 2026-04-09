@@ -11,27 +11,27 @@
 <title>FTools</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-:root{--g:#3dba6f;--g2:#52d68a;--g3:#1a6e3a;--bg:#0d1a0f;--bg2:#142019;--bg3:#1c2e1f;--card:#1c2e1f;--red:#ff5a5a;--yel:#ffd460;--ora:#ff9f4a;--tx:#e8f5e8;--tx2:#6a9a6a;--bd:#2a4a2a;--sh:0 4px 24px rgba(0,0,0,.7)}
-@media(prefers-color-scheme:light){:root{--bg:#f0f7f0;--bg2:#e2f0e2;--bg3:#fff;--card:#fff;--tx:#1a2e1a;--tx2:#5a8a5a;--bd:#c8e0c8;--sh:0 4px 24px rgba(0,100,0,.1)}}
-body{background:var(--bg);padding:env(safe-area-inset-top) 0 18px 0;font-family:-apple-system,'SF Pro Display','PingFang SC',sans-serif;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+:root{--g:#3dba6f;--g2:#52d68a;--bg:#0d1a0f;--bg2:#142019;--card:#1c2e1f;--red:#ff5a5a;--tx:#e8f5e8;--tx2:#6a9a6a;--bd:#2a4a2a;--sh:0 4px 24px rgba(0,0,0,.7)}
+@media(prefers-color-scheme:light){:root{--bg:#f0f7f0;--bg2:#e2f0e2;--card:#fff;--tx:#1a2e1a;--tx2:#5a8a5a;--bd:#c8e0c8;--sh:0 4px 24px rgba(0,100,0,.1)}}
+body{background:var(--bg);padding:env(safe-area-inset-top) 0 18px 0;font-family:-apple-system,'PingFang SC',sans-serif;min-height:100vh;overflow-x:hidden}
 .hdr{background:var(--bg2);padding:env(safe-area-inset-top) 18px 0;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
 .hdr-in{display:flex;align-items:center;justify-content:space-between;padding:12px 0 10px}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-ico{width:36px;height:36px;background:linear-gradient(135deg,#2ea85a,#52d68a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff}
-.logo h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.logo h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .logo-time{font-size:11px;color:var(--tx2)}
 .tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:61px;z-index:99}
 .tab{flex:1;padding:9px 2px 7px;text-align:center;font-size:10px;font-weight:700;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s}
 .tab.on{color:var(--g);border-bottom-color:var(--g)}
 .tab i{font-size:19px;display:block;margin-bottom:1px;font-style:normal}
-.pg{display:none;padding:14px 14px 100px;max-width:560px;margin:0 auto}.pg.on{display:block}
+.pg{display:none;padding:14px 14px 100px;max-width:560px;margin:0 auto}
+.pg.on{display:block}
 .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--sh);margin-bottom:12px}
-.ct{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.ct{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:1px;display:flex;align-items:center;gap:6px;margin-bottom:12px}
 .ct:before{content:'';width:3px;height:13px;background:linear-gradient(var(--g),var(--g2));border-radius:2px;flex-shrink:0}
 .fr{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
 .fr label{font-size:12px;color:var(--tx2);font-weight:500}
-input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--rs,8px);padding:10px 13px;font-size:14px;color:var(--tx);font-family:inherit;outline:none}
+input,select,textarea{width:100%;background:var(--bg2);border:1.5px solid var(--bd);border-radius:8px;padding:10px 13px;font-size:14px;color:var(--tx);font-family:inherit;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--g)}
 select option{background:var(--bg2)}
 textarea{resize:vertical;min-height:70px}
@@ -40,47 +40,30 @@ input[type=datetime-local]{color-scheme:dark}
 .btn-g{background:linear-gradient(90deg,var(--g),var(--g2));color:#fff}
 .btn-g:active{opacity:.85}
 .btn-s{background:var(--bg2);color:var(--tx);border:1.5px solid var(--bd);margin-top:8px}
-.chip{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);transition:.15s;margin:3px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--bg2);color:var(--tx2);margin:3px}
 .chip.on{border-color:var(--g);color:var(--g);background:rgba(61,186,111,.12)}
 .chips{display:flex;flex-wrap:wrap;gap:2px;margin-top:8px}
-/* 提醒列表 */
-.rcard{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--sh);margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
+.rcard{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--sh);margin-bottom:10px;display:flex;gap:12px}
 .rcard.done{opacity:.45}
-.rico{font-size:26px;flex-shrink:0;margin-top:2px}
+.rico{font-size:26px;flex-shrink:0}
 .rbody{flex:1;min-width:0}
-.rtitle{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rtitle{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rnote{font-size:12px;color:var(--tx2);margin-bottom:6px}
-.rmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .rtag{font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(61,186,111,.15);color:var(--g);font-weight:600}
 .rtime{font-size:11px;color:var(--tx2)}
 .rbtns{display:flex;gap:6px;margin-top:8px}
 .rbtn{font-size:12px;padding:4px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);cursor:pointer}
 .rbtn.del{color:var(--red);border-color:var(--red)}
-.rbtn.done-btn{color:var(--g);border-color:var(--g)}
-/* 空状态 */
+.rbtn.ok{color:var(--g);border-color:var(--g)}
 .empty{text-align:center;padding:60px 20px;color:var(--tx2)}
 .empty-ico{font-size:48px;margin-bottom:12px}
-.empty p{font-size:14px}
-/* 通知栏 */
-.nbar{background:rgba(61,186,111,.1);border:1px solid rgba(61,186,111,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--g);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-/* 设置分组 */
-.sgrp{margin-bottom:16px}
-.sgrp-title{font-size:11px;font-weight:700;color:var(--tx2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;padding-left:2px}
-.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd)}
-.srow:last-child{border-bottom:none}
-.slbl{font-size:14px;color:var(--tx)}
-.sdesc{font-size:11px;color:var(--tx2);margin-top:2px}
-/* Toast */
+.nbar{background:rgba(61,186,111,.1);border:1px solid rgba(61,186,111,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--g);margin-bottom:12px}
 #toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
 #toast.show{opacity:1}
-/* 状态指示 */
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;margin-right:6px}
-.status-dot.ok{background:var(--g)}
-.status-dot.warn{background:var(--yel)}
 </style>
 </head>
 <body>
-
 <div class="hdr">
   <div class="hdr-in">
     <div class="logo">
@@ -90,31 +73,28 @@ input[type=datetime-local]{color-scheme:dark}
     <div class="logo-time" id="htime"></div>
   </div>
   <div class="tabs">
-    <div class="tab on" onclick="goTab(0)"><i>⏰</i>提醒</div>
-    <div class="tab" onclick="goTab(1)"><i>🌾</i>农场</div>
-    <div class="tab" onclick="goTab(2)"><i>➕</i>添加</div>
-    <div class="tab" onclick="goTab(3)"><i>⚙️</i>设置</div>
+    <div class="tab on" id="tab0" onclick="goTab(0)"><i>⏰</i>提醒</div>
+    <div class="tab" id="tab1" onclick="goTab(1)"><i>🌾</i>农场</div>
+    <div class="tab" id="tab2" onclick="goTab(2)"><i>➕</i>添加</div>
+    <div class="tab" id="tab3" onclick="goTab(3)"><i>⚙️</i>设置</div>
   </div>
 </div>
 
 <!-- 提醒列表 -->
-<div class="pg on" id="pg-r">
-  <div class="nbar" id="workerbar">🚀 浏览器定时已启用 — 网页开着会自动触发通知</div>
+<div class="pg on" id="pg0">
+  <div class="nbar">🚀 GitHub Actions 后台发送 — 无需VPN，任意网络均可收到通知</div>
   <div id="rlist"></div>
 </div>
 
 <!-- 农场 -->
-<div class="pg" id="pg-f">
-  <div class="card">
-    <div class="ct">🌾 我的农场</div>
-    <div style="text-align:center;padding:30px 0;color:var(--tx2);font-size:14px">农场功能开发中...</div>
-  </div>
+<div class="pg" id="pg1">
+  <div class="card"><div class="ct">🌾 我的农场</div><p style="text-align:center;padding:30px 0;color:var(--tx2)">农场功能开发中...</p></div>
 </div>
 
 <!-- 添加提醒 -->
-<div class="pg" id="pg-a">
+<div class="pg" id="pg2">
   <div class="card">
-    <div class="ct" style="margin-bottom:12px">分类</div>
+    <div class="ct">分类</div>
     <div class="chips" id="catchips">
       <div class="chip on" data-cat="life" onclick="pickCat(this)">🌿 生活</div>
       <div class="chip" data-cat="work" onclick="pickCat(this)">💼 工作</div>
@@ -126,389 +106,188 @@ input[type=datetime-local]{color-scheme:dark}
       <div class="chip" data-cat="other" onclick="pickCat(this)">📌 其他</div>
     </div>
   </div>
-
   <div class="card">
-    <div class="ct" style="margin-bottom:12px">提醒内容</div>
-    <div class="fr">
-      <label>标题 *</label>
-      <input id="rt" placeholder="喝水、吃药、开会..."/>
-    </div>
-    <div class="fr">
-      <label>备注（可选）</label>
-      <textarea id="rn" placeholder="详细说明..."></textarea>
-    </div>
-    <div class="fr">
-      <label>提醒时间 *</label>
-      <input type="datetime-local" id="rtime"/>
-    </div>
+    <div class="ct">提醒内容</div>
+    <div class="fr"><label>标题 *</label><input id="rt" placeholder="喝水、吃药、开会..."/></div>
+    <div class="fr"><label>备注（可选）</label><textarea id="rn" placeholder="详细说明..."></textarea></div>
+    <div class="fr"><label>提醒时间 *</label><input type="datetime-local" id="rtime"/></div>
     <div style="display:flex;gap:10px;margin-bottom:10px">
-      <div class="fr" style="flex:1">
-        <label>重复</label>
-        <select id="rrep">
-          <option value="none">不重复</option>
-          <option value="daily">每天</option>
-          <option value="weekly">每周</option>
-          <option value="workday">工作日</option>
-        </select>
+      <div class="fr" style="flex:1"><label>重复</label>
+        <select id="rrep"><option value="none">不重复</option><option value="daily">每天</option><option value="weekly">每周</option></select>
       </div>
-      <div class="fr" style="flex:1">
-        <label>提前提醒</label>
-        <select id="radv">
-          <option value="0">准时</option>
-          <option value="5">提前5分钟</option>
-          <option value="10">提前10分钟</option>
-          <option value="30">提前30分钟</option>
-          <option value="60">提前1小时</option>
-        </select>
+      <div class="fr" style="flex:1"><label>提前提醒</label>
+        <select id="radv"><option value="0">准时</option><option value="5">提前5分钟</option><option value="10">提前10分钟</option><option value="30">提前30分钟</option></select>
       </div>
     </div>
     <button class="btn btn-g" onclick="addReminder()">✅ 保存提醒</button>
   </div>
-
-  <div class="card" style="background:rgba(61,186,111,.06);border:1px solid rgba(61,186,111,.2)">
-    <div class="ct" style="margin-bottom:8px;font-size:11px">📡 推送方式</div>
-    <div style="font-size:12px;color:var(--tx2);line-height:1.8">
-      ✅ <b style="color:var(--tx)">浏览器推送</b> — 网页开着，时间到自动发通知<br>
-      ✅ <b style="color:var(--tx)">Google Chat</b> — 同步写入 GitHub，Actions 后台发消息<br>
-      <span style="color:var(--tx2);font-size:11px">（两种方式同时生效，双重保障）</span>
-    </div>
-  </div>
 </div>
 
 <!-- 设置 -->
-<div class="pg" id="pg-s">
-  <!-- Google Chat -->
+<div class="pg" id="pg3">
   <div class="card">
-    <div class="ct" style="margin-bottom:12px">💬 Google Chat 通知</div>
-    <div class="fr">
-      <label>Webhook URL</label>
-      <input id="gcWebhook" placeholder="https://chat.googleapis.com/v1/spaces/..."/>
-    </div>
-    <button class="btn btn-s" onclick="testGC()">🧪 测试发送</button>
-    <div id="gcStatus" style="font-size:12px;color:var(--tx2);margin-top:8px;display:none"></div>
+    <div class="ct">🔑 GitHub Token</div>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">用于触发 GitHub Actions 发送通知。GitHub API 国内可直接访问，无需VPN。</p>
+    <div class="fr"><label>Personal Access Token（repo 权限）</label><input id="cfgTok" type="password" placeholder="ghp_..."/></div>
+    <button class="btn btn-s" onclick="testTok()">🔗 测试连接</button>
+    <div id="tokStatus" style="font-size:12px;margin-top:8px;display:none"></div>
   </div>
-
-  <!-- GitHub 同步 -->
-  <div class="card">
-    <div class="ct" style="margin-bottom:4px">🐙 GitHub 同步</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">填写后，保存提醒时自动同步到仓库的 reminders.json，GitHub Actions 会在后台定时触发通知（即使网页关闭）</p>
-    <div class="fr">
-      <label>GitHub Token <span style="color:var(--tx2);font-weight:400">（需要 repo 写权限）</span></label>
-      <input id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxx"/>
-    </div>
-    <div class="fr">
-      <label>仓库</label>
-      <input id="ghRepo" placeholder="PrincessXing/life-reminder" value="PrincessXing/life-reminder"/>
-    </div>
-    <button class="btn btn-s" onclick="testGH()">🔗 测试连接</button>
-    <div id="ghStatus" style="font-size:12px;color:var(--tx2);margin-top:8px;display:none"></div>
-  </div>
-
-  <!-- 保存设置 -->
   <button class="btn btn-g" onclick="saveCfg()">💾 保存设置</button>
-
-  <!-- 危险操作 -->
-  <div class="card" style="margin-top:16px">
-    <div class="ct" style="margin-bottom:12px;color:var(--red)">⚠️ 数据操作</div>
-    <button class="btn btn-s" onclick="exportD()">📤 导出提醒数据</button>
-    <button class="btn btn-s" style="color:var(--red);border-color:var(--red);margin-top:8px" onclick="clearAll()">🗑️ 清空所有提醒</button>
+  <div class="card" style="margin-top:12px">
+    <div class="ct">⚠️ 数据操作</div>
+    <button class="btn btn-s" onclick="exportD()">📤 导出提醒</button>
+    <button class="btn btn-s" style="color:var(--red);border-color:var(--red);margin-top:8px" onclick="clearAll()">🗑️ 清空所有</button>
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-// ─── 状态 ───
-let reminders = JSON.parse(localStorage.getItem('reminders')||'[]');
-let cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
-let selCat = 'life';
-let timers = {};
+var REPO = 'PrincessXing/life-reminder';
+var R = JSON.parse(localStorage.getItem('R')||'[]');
+var CFG = JSON.parse(localStorage.getItem('CFG')||'{}');
+var selCat = 'life';
+var T = {};
+var CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
 
-// ─── 分类配置 ───
-const CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
-
-// ─── 时钟 ───
-function tick(){
-  const now = new Date();
-  document.getElementById('htime').textContent =
-    `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-}
-setInterval(tick,1000); tick();
-
-// ─── 标签页 ───
 function goTab(i){
-  document.querySelectorAll('.pg').forEach((p,j)=>p.classList.toggle('on',j===i));
-  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  for(var j=0;j<4;j++){
+    document.getElementById('pg'+j).className='pg'+(j===i?' on':'');
+    document.getElementById('tab'+j).className='tab'+(j===i?' on':'');
+  }
   if(i===3) loadCfg();
 }
 
-// ─── 分类选择 ───
 function pickCat(el){
-  document.querySelectorAll('#catchips .chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
+  document.querySelectorAll('#catchips .chip').forEach(function(c){c.className='chip';});
+  el.className='chip on';
   selCat = el.dataset.cat;
 }
 
-// ─── 添加提醒 ───
-async function addReminder(){
-  const title = document.getElementById('rt').value.trim();
-  const tv = document.getElementById('rtime').value;
-  if(!title){toast('请填写提醒标题');return;}
-  if(!tv){toast('请选择提醒时间');return;}
-
-  const at = new Date(tv).getTime();
-  const adv = parseInt(document.getElementById('radv').value)||0;
-  const trigAt = at - adv*60000;
-
-  if(trigAt < Date.now()){toast('提醒时间已过，请重新设置');return;}
-
-  const r = {
-    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
-    cat: selCat,
-    title,
-    note: document.getElementById('rn').value.trim(),
-    at,
-    adv,
-    rep: document.getElementById('rrep').value,
-    done: false,
-    _sent: false
-  };
-
-  reminders.push(r);
-  save();
-  schedTimer(r);
-
-  // 同步到 GitHub
-  const ghOk = await syncToGithub();
-
-  toast(ghOk ? '✅ 已保存并同步到 GitHub' : '✅ 已保存（未同步 GitHub，仅浏览器推送）');
-
-  // 重置表单
+function addReminder(){
+  var title = document.getElementById('rt').value.trim();
+  var tv = document.getElementById('rtime').value;
+  if(!title){toast('请填写标题');return;}
+  if(!tv){toast('请选择时间');return;}
+  var at = new Date(tv).getTime();
+  var adv = parseInt(document.getElementById('radv').value)||0;
+  if(at - adv*60000 < Date.now()){toast('时间已过，请重新设置');return;}
+  var r = {id:Date.now()+'',cat:selCat,title:title,note:document.getElementById('rn').value.trim(),at:at,adv:adv,rep:document.getElementById('rrep').value,done:false,sent:false};
+  R.push(r); saveR(); schedTimer(r);
+  toast('✅ 已保存！时间到自动发通知');
   document.getElementById('rt').value='';
   document.getElementById('rn').value='';
   document.getElementById('rtime').value='';
-  goTab(0);
-  renderRList();
+  goTab(0); renderList();
 }
 
-// ─── 浏览器定时器 ───
+// 浏览器定时器（网页开着时）
 function schedTimer(r){
-  if(r.done || r._sent) return;
-  const adv = r.adv||0;
-  const trigAt = r.at - adv*60000;
-  const delay = trigAt - Date.now();
+  if(r.done||r.sent) return;
+  var delay = r.at - (r.adv||0)*60000 - Date.now();
   if(delay < 0) return;
-  if(timers[r.id]) clearTimeout(timers[r.id]);
-  timers[r.id] = setTimeout(()=>fireReminder(r), delay);
+  if(T[r.id]) clearTimeout(T[r.id]);
+  T[r.id] = setTimeout(function(){ fireReminder(r); }, delay);
 }
 
+// 时间到：通过 GitHub Actions 发通知（无需VPN）
 function fireReminder(r){
-  r._sent = true;
-  save();
-  renderRList();
-  sendGCWebhook(r);
-  // 浏览器通知
-  if(Notification.permission==='granted'){
-    new Notification(`${CAT[r.cat]||'📌'} ${r.title}`, {
-      body: r.note || `提醒时间到了！`,
-      icon: '/life-reminder/icon.png'
-    });
+  r.sent = true; saveR(); renderList();
+  var ico = CAT[r.cat]||'📌';
+  var msg = ico+' *'+r.title+'*'+(r.note?'\n'+r.note:'');
+  triggerActions(msg);
+  // 同时尝试浏览器通知
+  if(Notification && Notification.permission==='granted'){
+    new Notification(ico+' '+r.title, {body: r.note||'提醒时间到！'});
   }
 }
 
-// ─── 发送 Google Chat ───
-async function sendGCWebhook(r){
-  const url = cfg.gcWebhook;
-  if(!url) return false;
-  const emoji = CAT[r.cat]||'📌';
-  const text = `${emoji} *${r.title}*${r.note?'\n'+r.note:''}`;
-  try{
-    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
-    return true;
-  }catch(e){return false;}
+// 调用 GitHub repository_dispatch API（国内可访问）
+function triggerActions(msg){
+  var tok = CFG.tok;
+  if(!tok){ toast('⚠️ 请在设置里填写 GitHub Token'); return; }
+  fetch('https://api.github.com/repos/'+REPO+'/dispatches', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'token '+tok,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      event_type: 'send-reminder',
+      client_payload: { text: msg }
+    })
+  }).catch(function(){ toast('❌ 通知发送失败，检查网络或Token'); });
 }
 
-// ─── 测试 Google Chat ───
-async function testGC(){
-  const url = document.getElementById('gcWebhook').value.trim();
-  if(!url){toast('请先填写 Webhook URL');return;}
-  const el = document.getElementById('gcStatus');
-  el.style.display='block';
-  el.textContent='发送中...';
-  try{
-    const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:'🎉 FTools 连接测试成功！提醒系统已就绪。'})});
-    el.textContent = r.ok ? '✅ 发送成功！请查看 Google Chat' : '❌ 发送失败，请检查 URL';
-    el.style.color = r.ok ? 'var(--g)' : 'var(--red)';
-  }catch(e){
-    el.textContent='❌ 请求失败（网络或 CORS 问题）';
-    el.style.color='var(--red)';
-  }
-}
-
-// ─── 测试 GitHub 连接 ───
-async function testGH(){
-  const token = document.getElementById('ghToken').value.trim();
-  const repo = document.getElementById('ghRepo').value.trim();
-  const el = document.getElementById('ghStatus');
-  if(!token||!repo){toast('请填写 Token 和仓库');return;}
+function testTok(){
+  var tok = document.getElementById('cfgTok').value.trim();
+  var el = document.getElementById('tokStatus');
+  if(!tok){toast('请填写Token');return;}
   el.style.display='block'; el.textContent='连接中...';
-  try{
-    const r = await fetch(`https://api.github.com/repos/${repo}`,{headers:{'Authorization':'token '+token}});
-    const d = await r.json();
-    if(r.ok){
-      el.textContent=`✅ 连接成功：${d.full_name}`;
-      el.style.color='var(--g)';
-    }else{
-      el.textContent=`❌ ${d.message||'认证失败'}`;
-      el.style.color='var(--red)';
-    }
-  }catch(e){
-    el.textContent='❌ 网络错误';
-    el.style.color='var(--red)';
-  }
+  fetch('https://api.github.com/repos/'+REPO, {headers:{'Authorization':'token '+tok}})
+    .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+    .then(function(x){
+      el.textContent = x.ok ? '✅ 连接成功！Token 有效' : '❌ '+(x.d.message||'失败');
+      el.style.color = x.ok ? 'var(--g)' : 'var(--red)';
+    }).catch(function(){ el.textContent='❌ 网络错误'; el.style.color='var(--red)'; });
 }
 
-// ─── 同步到 GitHub ───
-async function syncToGithub(){
-  const token = cfg.ghToken;
-  const repo = cfg.ghRepo||'PrincessXing/life-reminder';
-  if(!token) return false;
-  try{
-    // 先获取当前文件 sha
-    const getR = await fetch(`https://api.github.com/repos/${repo}/contents/reminders.json`,
-      {headers:{'Authorization':'token '+token}});
-    const getD = await getR.json();
-    const sha = getD.sha;
-
-    // 构建新内容
-    const data = {reminders: reminders.map(r=>({
-      id:r.id, cat:r.cat, title:r.title, note:r.note||'',
-      at:r.at, adv:r.adv||0, rep:r.rep||'none', done:r.done
-    }))};
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
-
-    // 提交
-    const putR = await fetch(`https://api.github.com/repos/${repo}/contents/reminders.json`,{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-      body:JSON.stringify({message:'update reminders',content,sha})
-    });
-    return putR.ok;
-  }catch(e){return false;}
-}
-
-// ─── 渲染提醒列表 ───
-function renderRList(){
-  const el = document.getElementById('rlist');
-  const active = reminders.filter(r=>!r.done);
-  const done = reminders.filter(r=>r.done);
-  const all = [...active, ...done];
-
-  if(!all.length){
-    el.innerHTML=`<div class="empty"><div class="empty-ico">⏰</div><p>还没有提醒，去"添加"创建吧</p></div>`;
-    return;
-  }
-
-  el.innerHTML = all.map(r=>{
-    const ico = CAT[r.cat]||'📌';
-    const dt = new Date(r.at);
-    const timeStr = `${dt.getMonth()+1}/${dt.getDate()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
-    const repLabel = {none:'',daily:'每天',weekly:'每周',workday:'工作日'}[r.rep]||'';
-    const sent = r._sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
-    return `<div class="rcard${r.done?' done':''}">
-      <div class="rico">${ico}</div>
-      <div class="rbody">
-        <div class="rtitle">${r.title}</div>
-        ${r.note?`<div class="rnote">${r.note}</div>`:''}
-        <div class="rmeta">
-          <span class="rtag">${ico} ${r.cat}</span>
-          <span class="rtime">⏰ ${timeStr}${repLabel?' · '+repLabel:''}${r.adv?` · 提前${r.adv}分钟`:''}</span>
-          ${sent}
-        </div>
-        <div class="rbtns">
-          <button class="rbtn done-btn" onclick="togDone('${r.id}')">${r.done?'↩️ 恢复':'✅ 完成'}</button>
-          <button class="rbtn del" onclick="delR('${r.id}')">🗑️ 删除</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ─── 操作 ───
-function togDone(id){
-  const r = reminders.find(r=>r.id===id);
-  if(!r) return;
-  r.done = !r.done;
-  if(!r.done){r._sent=false; schedTimer(r);}
-  else if(timers[id]){clearTimeout(timers[id]); delete timers[id];}
-  save(); renderRList(); syncToGithub();
-}
-
-function delR(id){
-  reminders = reminders.filter(r=>r.id!==id);
-  if(timers[id]){clearTimeout(timers[id]); delete timers[id];}
-  save(); renderRList(); syncToGithub();
-}
-
-function clearAll(){
-  if(!confirm('确定清空所有提醒？')) return;
-  Object.values(timers).forEach(clearTimeout);
-  timers={};
-  reminders=[];
-  save(); renderRList(); syncToGithub();
-}
-
-function exportD(){
-  const a = document.createElement('a');
-  a.href = 'data:application/json,'+encodeURIComponent(JSON.stringify({reminders},null,2));
-  a.download = 'reminders.json';
-  a.click();
-}
-
-// ─── 设置 ───
-function loadCfg(){
-  document.getElementById('gcWebhook').value = cfg.gcWebhook||'';
-  document.getElementById('ghToken').value = cfg.ghToken||'';
-  document.getElementById('ghRepo').value = cfg.ghRepo||'PrincessXing/life-reminder';
-}
-
+function loadCfg(){ document.getElementById('cfgTok').value = CFG.tok||''; }
 function saveCfg(){
-  cfg.gcWebhook = document.getElementById('gcWebhook').value.trim();
-  cfg.ghToken = document.getElementById('ghToken').value.trim();
-  cfg.ghRepo = document.getElementById('ghRepo').value.trim()||'PrincessXing/life-reminder';
-  localStorage.setItem('cfg', JSON.stringify(cfg));
+  CFG.tok = document.getElementById('cfgTok').value.trim();
+  localStorage.setItem('CFG', JSON.stringify(CFG));
   toast('✅ 设置已保存');
 }
 
-// ─── 持久化 ───
-function save(){
-  localStorage.setItem('reminders', JSON.stringify(reminders));
-}
-
-// ─── 通知权限 ───
-function reqNotif(){
-  if('Notification' in window && Notification.permission==='default'){
-    Notification.requestPermission().then(p=>{
-      document.getElementById('workerbar').textContent =
-        p==='granted' ? '🚀 浏览器通知已开启 — 时间到会弹出系统通知' : '⚠️ 未开启浏览器通知，仅 Google Chat 推送';
-    });
+function renderList(){
+  var el = document.getElementById('rlist');
+  var all = R.filter(function(r){return!r.done;}).concat(R.filter(function(r){return r.done;}));
+  if(!all.length){
+    el.innerHTML='<div class="empty"><div class="empty-ico">⏰</div><p>还没有提醒，去"添加"创建吧</p></div>';
+    return;
   }
+  el.innerHTML = all.map(function(r){
+    var ico = CAT[r.cat]||'📌';
+    var dt = new Date(r.at);
+    var ts = (dt.getMonth()+1)+'/'+dt.getDate()+' '+('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2);
+    var sent = r.sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
+    return '<div class="rcard'+(r.done?' done':'')+'">'+
+      '<div class="rico">'+ico+'</div>'+
+      '<div class="rbody">'+
+      '<div class="rtitle">'+r.title+'</div>'+
+      (r.note?'<div class="rnote">'+r.note+'</div>':'')+
+      '<div class="rmeta"><span class="rtag">'+ico+' '+r.cat+'</span>'+
+      '<span class="rtime">⏰ '+ts+(r.adv?' · 提前'+r.adv+'分钟':'')+sent+'</span></div>'+
+      '<div class="rbtns">'+
+      '<button class="rbtn ok" onclick="togDone(\''+r.id+'\')">'+(r.done?'↩️ 恢复':'✅ 完成')+'</button>'+
+      '<button class="rbtn del" onclick="delR(\''+r.id+'\')">🗑️ 删除</button>'+
+      '</div></div></div>';
+  }).join('');
 }
 
-// ─── Toast ───
-function toast(msg){
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 2500);
+function togDone(id){
+  var r=R.find(function(x){return x.id===id;});
+  if(!r)return;
+  r.done=!r.done;
+  if(!r.done){r.sent=false; schedTimer(r);}
+  else if(T[id]){clearTimeout(T[id]);delete T[id];}
+  saveR(); renderList();
 }
-
-// ─── 初始化 ───
-(function init(){
-  renderRList();
-  reqNotif();
-  // 恢复所有定时器
-  reminders.filter(r=>!r.done&&!r._sent).forEach(schedTimer);
-})();
+function delR(id){
+  R=R.filter(function(r){return r.id!==id;});
+  if(T[id]){clearTimeout(T[id]);delete T[id];}
+  saveR(); renderList();
+}
+function clearAll(){if(!confirm('确定清空？'))return;Object.keys(T).forEach(function(k){clearTimeout(T[k]);});T={};R=[];saveR();renderList();}
+function exportD(){var a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify({reminders:R},null,2));a.download='reminders.json';a.click();}
+function saveR(){localStorage.setItem('R',JSON.stringify(R));}
+function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},2500);}
+function tick(){var n=new Date();document.getElementById('htime').textContent=(n.getMonth()+1)+'/'+n.getDate()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+':'+('0'+n.getSeconds()).slice(-2);}
+setInterval(tick,1000); tick();
+if(Notification&&Notification.permission==='default') Notification.requestPermission();
+renderList();
+R.filter(function(r){return!r.done&&!r.sent;}).forEach(schedTimer);
 </script>
 </body>
 </html>
