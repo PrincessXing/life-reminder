@@ -1,3 +1,15 @@
 {
-  "reminders": []
+  "reminders": [
+    {
+      "id": "1775703915066",
+      "cat": "life",
+      "title": "这是测定",
+      "note": "",
+      "at": 1775703960000,
+      "adv": 0,
+      "rep": "none",
+      "done": false,
+      "_sent": false
+    }
+  ]
 }
