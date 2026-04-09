@@ -1,11 +1,11 @@
 {
   "reminders": [
     {
-      "id": "1775704632233",
-      "cat": "other",
-      "title": "测试",
-      "note": "",
-      "at": 1775704800000,
+      "id": "test001",
+      "cat": "life",
+      "title": "test reminder",
+      "note": "3min test",
+      "at": 1775705167583,
       "adv": 0,
       "rep": "none",
       "done": false,
