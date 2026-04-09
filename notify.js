@@ -20,7 +20,7 @@ const CAT = { life:'🌿', work:'💼', health:'❤️', study:'📚', food:'�
   for (const r of reminders) {
     if (r.done || r._sent) continue;
     const trigAt = r.at - (r.adv || 0) * 60000;
-    if (now >= trigAt && now < trigAt + 90000) {
+    if (now >= trigAt && now < trigAt + 600000) {
       r._sent = true;
       changed = true;
       const emoji = CAT[r.cat] || '📌';
