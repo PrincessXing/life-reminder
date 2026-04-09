@@ -27,21 +27,20 @@ jobs:
 
       - name: 网页直接触发发送
         if: github.event_name == 'repository_dispatch'
+        shell: python3 {0}
         run: |
-          python3 -c "
-import json, urllib.request, os
-payload = json.loads(os.environ['PAYLOAD'])
-msg = payload.get('text', '提醒')
-data = json.dumps({'text': msg}).encode('utf-8')
-req = urllib.request.Request(
-    os.environ['GC_WEBHOOK'],
-    data=data,
-    headers={'Content-Type': 'application/json'},
-    method='POST'
-)
-urllib.request.urlopen(req)
-print('sent:', msg[:50])
-"
+          import json, urllib.request, os
+          payload = json.loads(os.environ['PAYLOAD'])
+          msg = payload.get('text', '提醒')
+          data = json.dumps({'text': msg}).encode('utf-8')
+          req = urllib.request.Request(
+              os.environ['GC_WEBHOOK'],
+              data=data,
+              headers={'Content-Type': 'application/json'},
+              method='POST'
+          )
+          urllib.request.urlopen(req)
+          print('sent:', msg[:50])
         env:
           GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
