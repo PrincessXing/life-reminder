@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="FTools"/>
-<link rel="apple-touch-icon" href="icon.png"/>
 <title>FTools</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
@@ -61,9 +60,12 @@ input[type=datetime-local]{color-scheme:dark}
 .nbar{background:rgba(61,186,111,.1);border:1px solid rgba(61,186,111,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--g);margin-bottom:12px}
 #toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
 #toast.show{opacity:1}
+.spin{display:inline-block;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
+
 <div class="hdr">
   <div class="hdr-in">
     <div class="logo">
@@ -80,15 +82,18 @@ input[type=datetime-local]{color-scheme:dark}
   </div>
 </div>
 
+<!-- 提醒列表 -->
 <div class="pg on" id="pg0">
-  <div class="nbar">☁️ 提醒由 GitHub Actions 后台发送 — 关闭网页也能收到通知</div>
-  <div id="rlist"></div>
+  <div class="nbar">☁️ 提醒由 Cloudflare Workers 后台发送 — 关闭网页也能收到通知</div>
+  <div id="rlist"><div class="empty"><div class="empty-ico"><span class="spin">⏳</span></div><p>加载中...</p></div></div>
 </div>
 
+<!-- 农场 -->
 <div class="pg" id="pg1">
   <div class="card"><div class="ct">🌾 我的农场</div><p style="text-align:center;padding:30px 0;color:var(--tx2)">农场功能开发中...</p></div>
 </div>
 
+<!-- 添加提醒 -->
 <div class="pg" id="pg2">
   <div class="card">
     <div class="ct">分类</div>
@@ -110,217 +115,207 @@ input[type=datetime-local]{color-scheme:dark}
     <div class="fr"><label>提醒时间 *</label><input type="datetime-local" id="rtime"/></div>
     <div style="display:flex;gap:10px;margin-bottom:10px">
       <div class="fr" style="flex:1"><label>重复</label>
-        <select id="rrep"><option value="none">不重复</option><option value="daily">每天</option><option value="weekly">每周</option></select>
+        <select id="rrep">
+          <option value="none">不重复</option>
+          <option value="daily">每天</option>
+          <option value="weekly">每周</option>
+        </select>
       </div>
       <div class="fr" style="flex:1"><label>提前提醒</label>
-        <select id="radv"><option value="0">准时</option><option value="5">提前5分钟</option><option value="10">提前10分钟</option><option value="30">提前30分钟</option></select>
+        <select id="radv">
+          <option value="0">准时</option>
+          <option value="5">提前5分钟</option>
+          <option value="10">提前10分钟</option>
+          <option value="30">提前30分钟</option>
+        </select>
       </div>
     </div>
     <button class="btn btn-g" id="saveBtn" onclick="addReminder()">✅ 保存提醒</button>
   </div>
 </div>
 
+<!-- 设置 -->
 <div class="pg" id="pg3">
   <div class="card">
-    <div class="ct">🔑 GitHub Token</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">用于同步提醒到 GitHub，Actions 后台定时检查发送通知。Token 仅存本机。</p>
-    <div class="fr"><label>Personal Access Token（repo 权限）</label><input id="cfgTok" type="password" placeholder="ghp_..."/></div>
-    <button class="btn btn-s" onclick="testTok()">🔗 测试连接</button>
-    <div id="tokStatus" style="font-size:12px;margin-top:8px;display:none"></div>
+    <div class="ct">🔗 Worker 地址</div>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">填入你部署的 Cloudflare Worker URL，例如：<br>https://ftools.你的名字.workers.dev</p>
+    <div class="fr"><label>Worker URL</label><input id="cfgUrl" placeholder="https://ftools.xxx.workers.dev"/></div>
+    <button class="btn btn-s" onclick="testWorker()">🔗 测试连接</button>
+    <div id="urlStatus" style="font-size:12px;margin-top:8px;display:none"></div>
   </div>
   <button class="btn btn-g" onclick="saveCfg()">💾 保存设置</button>
   <div class="card" style="margin-top:12px">
     <div class="ct">⚠️ 数据操作</div>
     <button class="btn btn-s" onclick="exportD()">📤 导出提醒</button>
-    <button class="btn btn-s" style="color:var(--red);border-color:var(--red);margin-top:8px" onclick="clearAll()">🗑️ 清空所有</button>
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-var REPO = 'PrincessXing/life-reminder';
-var R = JSON.parse(localStorage.getItem('R')||'[]');
-var CFG = JSON.parse(localStorage.getItem('CFG')||'{}');
-var selCat = 'life';
 var CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
+var selCat = 'life';
+var CFG = JSON.parse(localStorage.getItem('FCFG')||'{}');
+var WORKER = CFG.url || '';
 
-// 正确的 base64 编码（支持中文）
-function toBase64(str) {
-  var bytes = new TextEncoder().encode(str);
-  var binary = '';
-  bytes.forEach(function(b){ binary += String.fromCharCode(b); });
-  return btoa(binary);
+function api(path, opt) {
+  if (!WORKER) { toast('⚠️ 请先在设置里填写 Worker URL'); return Promise.reject(); }
+  return fetch(WORKER + path, opt).then(function(r){ return r.json(); });
 }
 
-function goTab(i){
-  for(var j=0;j<4;j++){
-    document.getElementById('pg'+j).className='pg'+(j===i?' on':'');
-    document.getElementById('tab'+j).className='tab'+(j===i?' on':'');
+function goTab(i) {
+  for (var j = 0; j < 4; j++) {
+    document.getElementById('pg'+j).className = 'pg' + (j===i?' on':'');
+    document.getElementById('tab'+j).className = 'tab' + (j===i?' on':'');
   }
-  if(i===3) loadCfg();
+  if (i === 0) renderList();
 }
 
-function pickCat(el){
-  document.querySelectorAll('#catchips .chip').forEach(function(c){c.className='chip';});
-  el.className='chip on';
+function pickCat(el) {
+  document.querySelectorAll('#catchips .chip').forEach(function(c){ c.className='chip'; });
+  el.className = 'chip on';
   selCat = el.dataset.cat;
 }
 
-async function addReminder(){
+async function addReminder() {
   var title = document.getElementById('rt').value.trim();
   var tv = document.getElementById('rtime').value;
-  if(!title){toast('请填写标题');return;}
-  if(!tv){toast('请选择时间');return;}
-  var at = new Date(tv).getTime();
-  var adv = parseInt(document.getElementById('radv').value)||0;
-  if(at - adv*60000 < Date.now()){toast('时间已过，请重新设置');return;}
+  if (!title) { toast('请填写标题'); return; }
+  if (!tv) { toast('请选择时间'); return; }
 
-  var r = {
-    id: Date.now()+'',
-    cat: selCat,
-    title: title,
-    note: document.getElementById('rn').value.trim(),
-    at: at,
-    adv: adv,
-    rep: document.getElementById('rrep').value,
-    done: false,
-    _sent: false
-  };
+  var adv = parseInt(document.getElementById('radv').value) || 0;
+  var at = new Date(tv).getTime() - adv * 60000; // 提前量已经在这里计算进去
+
+  if (at < Date.now()) { toast('时间已过，请重新设置'); return; }
 
   var btn = document.getElementById('saveBtn');
-  btn.disabled = true;
-  btn.textContent = '同步中...';
+  btn.disabled = true; btn.textContent = '保存中...';
 
-  R.push(r);
-  saveR();
-
-  var ok = await syncToGithub();
-
-  btn.disabled = false;
-  btn.textContent = '✅ 保存提醒';
-
-  if(ok){
-    toast('✅ 已保存并同步！关闭网页也会收到通知');
-  } else {
-    toast('⚠️ 本地已保存，同步失败（检查Token设置）');
+  try {
+    var res = await api('/reminders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: title,
+        note: document.getElementById('rn').value.trim(),
+        at: at,
+        adv: adv,
+        rep: document.getElementById('rrep').value,
+        cat: selCat
+      })
+    });
+    if (res.ok) {
+      toast('✅ 保存成功！关闭网页也会收到通知');
+      document.getElementById('rt').value = '';
+      document.getElementById('rn').value = '';
+      document.getElementById('rtime').value = '';
+      goTab(0);
+    } else {
+      toast('❌ 保存失败：' + (res.error||'未知错误'));
+    }
+  } catch(e) {
+    toast('❌ 网络错误，请检查 Worker URL');
   }
 
-  document.getElementById('rt').value='';
-  document.getElementById('rn').value='';
-  document.getElementById('rtime').value='';
-  goTab(0);
+  btn.disabled = false; btn.textContent = '✅ 保存提醒';
+}
+
+async function renderList() {
+  var el = document.getElementById('rlist');
+  el.innerHTML = '<div class="empty"><div class="empty-ico"><span class="spin">⏳</span></div><p>加载中...</p></div>';
+  try {
+    var list = await api('/reminders');
+    if (!list || !list.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-ico">⏰</div><p>还没有提醒，去"添加"创建吧</p></div>';
+      return;
+    }
+    var sorted = list.filter(function(r){return!r.done;}).concat(list.filter(function(r){return r.done;}));
+    el.innerHTML = sorted.map(function(r) {
+      var ico = CAT[r.cat] || '📌';
+      var dt = new Date(r.at);
+      var ts = (dt.getMonth()+1)+'/'+dt.getDate()+' '+('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2);
+      var sentBadge = r.sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
+      return '<div class="rcard'+(r.done?' done':'')+'">'+
+        '<div class="rico">'+ico+'</div>'+
+        '<div class="rbody">'+
+        '<div class="rtitle">'+r.title+'</div>'+
+        (r.note?'<div class="rnote">'+r.note+'</div>':'')+
+        '<div class="rmeta"><span class="rtag">'+ico+' '+r.cat+'</span>'+
+        '<span class="rtime">⏰ '+ts+(r.adv?' · 提前'+r.adv+'分钟':'')+sentBadge+'</span></div>'+
+        '<div class="rbtns">'+
+        '<button class="rbtn ok" onclick="togDone(\''+r.id+'\')">'+(r.done?'↩️ 恢复':'✅ 完成')+'</button>'+
+        '<button class="rbtn del" onclick="delR(\''+r.id+'\')">🗑️ 删除</button>'+
+        '</div></div></div>';
+    }).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">⚠️</div><p>加载失败，请检查设置</p></div>';
+  }
+}
+
+async function togDone(id) {
+  await api('/reminders/done?id='+id, { method:'POST' });
   renderList();
 }
 
-async function syncToGithub(){
-  var tok = CFG.tok;
-  if(!tok) return false;
-  try {
-    var getR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json',{
-      headers: {'Authorization':'token '+tok}
-    });
-    var getD = await getR.json();
-
-    var data = {
-      reminders: R.map(function(r){
-        return {id:r.id, cat:r.cat, title:r.title, note:r.note||'', at:r.at, adv:r.adv||0, rep:r.rep||'none', done:r.done, _sent:false};
-      })
-    };
-
-    // 用 TextEncoder 正确处理中文
-    var json = JSON.stringify(data, null, 2);
-    var content = toBase64(json);
-
-    var putR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json',{
-      method: 'PUT',
-      headers: {'Authorization':'token '+tok, 'Content-Type':'application/json'},
-      body: JSON.stringify({message:'update reminders', content:content, sha:getD.sha})
-    });
-    return putR.ok;
-  } catch(e) {
-    console.log('sync error:', e);
-    return false;
-  }
+async function delR(id) {
+  if (!confirm('确定删除？')) return;
+  await api('/reminders?id='+id, { method:'DELETE' });
+  renderList();
 }
 
-function testTok(){
-  var tok = document.getElementById('cfgTok').value.trim();
-  var el = document.getElementById('tokStatus');
-  if(!tok){toast('请填写Token');return;}
-  el.style.display='block'; el.textContent='连接中...';
-  fetch('https://api.github.com/repos/'+REPO,{headers:{'Authorization':'token '+tok}})
-    .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+async function exportD() {
+  try {
+    var list = await api('/reminders');
+    var a = document.createElement('a');
+    a.href = 'data:application/json,'+encodeURIComponent(JSON.stringify({reminders:list},null,2));
+    a.download = 'reminders.json'; a.click();
+  } catch(e) { toast('导出失败'); }
+}
+
+function testWorker() {
+  var url = document.getElementById('cfgUrl').value.trim();
+  var el = document.getElementById('urlStatus');
+  if (!url) { toast('请填写 Worker URL'); return; }
+  el.style.display = 'block'; el.textContent = '连接中...';
+  fetch(url + '/reminders')
+    .then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
     .then(function(x){
-      el.textContent = x.ok ? '✅ 连接成功！' : '❌ '+(x.d.message||'失败');
+      el.textContent = x.ok ? '✅ 连接成功！' : '❌ 连接失败';
       el.style.color = x.ok ? 'var(--g)' : 'var(--red)';
     }).catch(function(){ el.textContent='❌ 网络错误'; el.style.color='var(--red)'; });
 }
 
-function loadCfg(){ document.getElementById('cfgTok').value = CFG.tok||''; }
-function saveCfg(){
-  CFG.tok = document.getElementById('cfgTok').value.trim();
-  localStorage.setItem('CFG', JSON.stringify(CFG));
+function saveCfg() {
+  CFG.url = document.getElementById('cfgUrl').value.trim();
+  WORKER = CFG.url;
+  localStorage.setItem('FCFG', JSON.stringify(CFG));
   toast('✅ 设置已保存');
 }
 
-function renderList(){
-  var el = document.getElementById('rlist');
-  var all = R.filter(function(r){return!r.done;}).concat(R.filter(function(r){return r.done;}));
-  if(!all.length){
-    el.innerHTML='<div class="empty"><div class="empty-ico">⏰</div><p>还没有提醒，去"添加"创建吧</p></div>';
-    return;
-  }
-  el.innerHTML = all.map(function(r){
-    var ico = CAT[r.cat]||'📌';
-    var dt = new Date(r.at);
-    var ts = (dt.getMonth()+1)+'/'+dt.getDate()+' '+('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2);
-    var sent = r._sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
-    return '<div class="rcard'+(r.done?' done':'')+'">'+
-      '<div class="rico">'+ico+'</div>'+
-      '<div class="rbody">'+
-      '<div class="rtitle">'+r.title+'</div>'+
-      (r.note?'<div class="rnote">'+r.note+'</div>':'')+
-      '<div class="rmeta"><span class="rtag">'+ico+' '+r.cat+'</span>'+
-      '<span class="rtime">⏰ '+ts+(r.adv?' · 提前'+r.adv+'分钟':'')+sent+'</span></div>'+
-      '<div class="rbtns">'+
-      '<button class="rbtn ok" onclick="togDone(\''+r.id+'\')">'+(r.done?'↩️ 恢复':'✅ 完成')+'</button>'+
-      '<button class="rbtn del" onclick="delR(\''+r.id+'\')">🗑️ 删除</button>'+
-      '</div></div></div>';
-  }).join('');
+function loadCfg() {
+  document.getElementById('cfgUrl').value = CFG.url || '';
 }
 
-function togDone(id){
-  var r=R.find(function(x){return x.id===id;});
-  if(!r)return;
-  r.done=!r.done;
-  saveR(); renderList(); syncToGithub();
+// 重写 goTab 以支持设置页加载
+var _goTab = goTab;
+goTab = function(i) {
+  _goTab(i);
+  if (i === 3) loadCfg();
+};
+
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 3000);
 }
-function delR(id){
-  R=R.filter(function(r){return r.id!==id;});
-  saveR(); renderList(); syncToGithub();
-}
-function clearAll(){
-  if(!confirm('确定清空？'))return;
-  R=[]; saveR(); renderList(); syncToGithub();
-}
-function exportD(){
-  var a=document.createElement('a');
-  a.href='data:application/json,'+encodeURIComponent(JSON.stringify({reminders:R},null,2));
-  a.download='reminders.json'; a.click();
-}
-function saveR(){ localStorage.setItem('R', JSON.stringify(R)); }
-function toast(msg){
-  var el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(function(){el.classList.remove('show');},3000);
-}
-function tick(){
-  var n=new Date();
-  document.getElementById('htime').textContent=
+
+function tick() {
+  var n = new Date();
+  document.getElementById('htime').textContent =
     (n.getMonth()+1)+'/'+n.getDate()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+':'+('0'+n.getSeconds()).slice(-2);
 }
-setInterval(tick,1000); tick();
+
+setInterval(tick, 1000); tick();
 renderList();
 </script>
 </body>
