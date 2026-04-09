@@ -123,7 +123,7 @@ input[type=datetime-local]{color-scheme:dark}
 <div class="pg" id="pg3">
   <div class="card">
     <div class="ct">🔑 GitHub Token</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">保存提醒时用于同步到 GitHub，Actions 后台定时检查并发送通知。Token 只存在本机，不会上传。</p>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.7">用于同步提醒到 GitHub，Actions 后台定时检查发送通知。Token 仅存本机。</p>
     <div class="fr"><label>Personal Access Token（repo 权限）</label><input id="cfgTok" type="password" placeholder="ghp_..."/></div>
     <button class="btn btn-s" onclick="testTok()">🔗 测试连接</button>
     <div id="tokStatus" style="font-size:12px;margin-top:8px;display:none"></div>
@@ -144,6 +144,14 @@ var R = JSON.parse(localStorage.getItem('R')||'[]');
 var CFG = JSON.parse(localStorage.getItem('CFG')||'{}');
 var selCat = 'life';
 var CAT = {life:'🌿',work:'💼',health:'❤️',study:'📚',food:'🍽️',sport:'🏃',farm:'🌾',other:'📌'};
+
+// 正确的 base64 编码（支持中文）
+function toBase64(str) {
+  var bytes = new TextEncoder().encode(str);
+  var binary = '';
+  bytes.forEach(function(b){ binary += String.fromCharCode(b); });
+  return btoa(binary);
+}
 
 function goTab(i){
   for(var j=0;j<4;j++){
@@ -180,7 +188,6 @@ async function addReminder(){
     _sent: false
   };
 
-  // 禁用按钮防止重复点击
   var btn = document.getElementById('saveBtn');
   btn.disabled = true;
   btn.textContent = '同步中...';
@@ -188,16 +195,15 @@ async function addReminder(){
   R.push(r);
   saveR();
 
-  // 同步到 GitHub reminders.json
   var ok = await syncToGithub();
 
   btn.disabled = false;
   btn.textContent = '✅ 保存提醒';
 
   if(ok){
-    toast('✅ 已保存！关闭网页也会准时收到通知');
+    toast('✅ 已保存并同步！关闭网页也会收到通知');
   } else {
-    toast('⚠️ 本地已保存，但未同步到GitHub（检查Token设置）');
+    toast('⚠️ 本地已保存，同步失败（检查Token设置）');
   }
 
   document.getElementById('rt').value='';
@@ -207,33 +213,33 @@ async function addReminder(){
   renderList();
 }
 
-// 同步 reminders.json 到 GitHub
 async function syncToGithub(){
   var tok = CFG.tok;
   if(!tok) return false;
   try {
-    // 获取当前文件 sha
-    var getR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json', {
-      headers: {'Authorization': 'token '+tok}
+    var getR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json',{
+      headers: {'Authorization':'token '+tok}
     });
     var getD = await getR.json();
 
-    // 构建新内容
     var data = {
       reminders: R.map(function(r){
         return {id:r.id, cat:r.cat, title:r.title, note:r.note||'', at:r.at, adv:r.adv||0, rep:r.rep||'none', done:r.done, _sent:false};
       })
     };
-    var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
 
-    // 上传
-    var putR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json', {
+    // 用 TextEncoder 正确处理中文
+    var json = JSON.stringify(data, null, 2);
+    var content = toBase64(json);
+
+    var putR = await fetch('https://api.github.com/repos/'+REPO+'/contents/reminders.json',{
       method: 'PUT',
-      headers: {'Authorization': 'token '+tok, 'Content-Type': 'application/json'},
-      body: JSON.stringify({message: 'add reminder: '+R[R.length-1].title, content: content, sha: getD.sha})
+      headers: {'Authorization':'token '+tok, 'Content-Type':'application/json'},
+      body: JSON.stringify({message:'update reminders', content:content, sha:getD.sha})
     });
     return putR.ok;
   } catch(e) {
+    console.log('sync error:', e);
     return false;
   }
 }
@@ -243,10 +249,10 @@ function testTok(){
   var el = document.getElementById('tokStatus');
   if(!tok){toast('请填写Token');return;}
   el.style.display='block'; el.textContent='连接中...';
-  fetch('https://api.github.com/repos/'+REPO, {headers:{'Authorization':'token '+tok}})
+  fetch('https://api.github.com/repos/'+REPO,{headers:{'Authorization':'token '+tok}})
     .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
     .then(function(x){
-      el.textContent = x.ok ? '✅ 连接成功！Token 有效' : '❌ '+(x.d.message||'失败');
+      el.textContent = x.ok ? '✅ 连接成功！' : '❌ '+(x.d.message||'失败');
       el.style.color = x.ok ? 'var(--g)' : 'var(--red)';
     }).catch(function(){ el.textContent='❌ 网络错误'; el.style.color='var(--red)'; });
 }
@@ -269,7 +275,6 @@ function renderList(){
     var ico = CAT[r.cat]||'📌';
     var dt = new Date(r.at);
     var ts = (dt.getMonth()+1)+'/'+dt.getDate()+' '+('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2);
-    var adv = r.adv ? ' · 提前'+r.adv+'分钟' : '';
     var sent = r._sent ? ' <span style="color:var(--g)">✓已发送</span>' : '';
     return '<div class="rcard'+(r.done?' done':'')+'">'+
       '<div class="rico">'+ico+'</div>'+
@@ -277,7 +282,7 @@ function renderList(){
       '<div class="rtitle">'+r.title+'</div>'+
       (r.note?'<div class="rnote">'+r.note+'</div>':'')+
       '<div class="rmeta"><span class="rtag">'+ico+' '+r.cat+'</span>'+
-      '<span class="rtime">⏰ '+ts+adv+sent+'</span></div>'+
+      '<span class="rtime">⏰ '+ts+(r.adv?' · 提前'+r.adv+'分钟':'')+sent+'</span></div>'+
       '<div class="rbtns">'+
       '<button class="rbtn ok" onclick="togDone(\''+r.id+'\')">'+(r.done?'↩️ 恢复':'✅ 完成')+'</button>'+
       '<button class="rbtn del" onclick="delR(\''+r.id+'\')">🗑️ 删除</button>'+
