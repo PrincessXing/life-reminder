@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
@@ -27,14 +28,25 @@ jobs:
       - name: 网页直接触发发送
         if: github.event_name == 'repository_dispatch'
         run: |
-          curl -s -X POST "$GC_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD"
+          python3 -c "
+import json, urllib.request, os
+payload = json.loads(os.environ['PAYLOAD'])
+msg = payload.get('text', '提醒')
+data = json.dumps({'text': msg}).encode('utf-8')
+req = urllib.request.Request(
+    os.environ['GC_WEBHOOK'],
+    data=data,
+    headers={'Content-Type': 'application/json'},
+    method='POST'
+)
+urllib.request.urlopen(req)
+print('sent:', msg[:50])
+"
         env:
           GC_WEBHOOK: ${{ secrets.GC_WEBHOOK }}
-          PAYLOAD: ${{ toJson(github.event.client_payload.message) }}
+          PAYLOAD: ${{ toJson(github.event.client_payload) }}
 
-      - name: 提交更新
+      - name: 提交更新后的 reminders.json
         if: github.event_name != 'repository_dispatch'
         run: |
           git config user.name "github-actions[bot]"
